@@ -1,0 +1,38 @@
+{
+  "name": "depa-authority",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=10",
+    "pnpm": ">=3"
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "dev": "tsc --watch --inlineSourceMap --inlineSources"
+  },
+  "devDependencies": {
+    "@types/dotenv-flow": "^3.1.0",
+    "@types/node": "^12.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.12.0",
+    "@typescript-eslint/parser": "^4.12.0",
+    "eslint": "^7.17.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-prettier": "^3.3.0",
+    "prettier": "^2.2.1",
+    "truffle": "^5.1.60",
+    "typescript": "^4.0.3"
+  },
+  "dependencies": {
+    "did-jwt": "^4.8.1",
+    "did-jwt-vc": "^1.0.6",
+    "did-resolver": "^2.1.2",
+    "dotenv-flow": "^3.2.0",
+    "ethereumjs-tx": "^2.1.2",
+    "ethereumjs-util": "^7.0.7",
+    "ethr-did-registry": "^0.0.3",
+    "ethr-did-resolver": "^3.0.3",
+    "ls": "^0.2.1",
+    "web3": "^1.3.1",
+    "web3-utils": "^1.3.1"
+  }
+}

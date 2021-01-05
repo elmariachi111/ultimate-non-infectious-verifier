@@ -1,0 +1,14 @@
+version: "3.7"
+services:
+  ganache:
+    image: trufflesuite/ganache-cli
+    volumes:
+      - ./.ganache_data:/ganache_data
+    entrypoint:
+      - node
+      - /app/ganache-core.docker.cli.js
+      - --deterministic
+      - --db=/ganache_data
+      - --gasPrice=5e9
+    ports:
+      - "7545:8545"

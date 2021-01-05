@@ -20,6 +20,7 @@
             "error",
             2
         ],
+        "@typescript-eslint/no-non-null-assertion": "warn",
         "react/jsx-filename-extension": [
             1,
             {
