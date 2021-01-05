@@ -1,13 +1,15 @@
 {
+    "root": true,
     "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "@typescript-eslint",
+        "prettier"
+    ],
     "extends": [
-        "plugin:@typescript-eslint/recommended",
         "eslint:recommended",
-        "react-app",
-        "plugin:prettier/recommended",
-        "prettier",
-        "prettier/react",
-        "prettier/@typescript-eslint"
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "prettier"
     ],
     "env": {
         "es6": true
@@ -27,17 +29,6 @@
                 ]
             }
         ],
-        "prettier/prettier": [
-            "error",
-            {
-                "trailingComma": "all",
-                "singleQuote": true,
-                "printWidth": 120
-            }
-        ]
-    },
-    "plugins": [
-        "@typescript-eslint",
-        "react"
-    ]
+        "prettier/prettier": 2
+    }
 }
