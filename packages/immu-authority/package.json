@@ -1,5 +1,5 @@
 {
-  "name": "depa-authority",
+  "name": "@immu/authority",
   "version": "0.1.0",
   "private": true,
   "engines": {
@@ -8,8 +8,11 @@
   },
   "scripts": {
     "build": "tsc -p .",
+    "contracts": "truffle migrate",
     "dev": "tsc --watch --inlineSourceMap --inlineSources"
   },
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "devDependencies": {
     "@types/dotenv-flow": "^3.1.0",
     "@types/node": "^12.0.0",
@@ -26,12 +29,10 @@
     "did-jwt": "^4.8.1",
     "did-jwt-vc": "^1.0.6",
     "did-resolver": "^2.1.2",
-    "dotenv-flow": "^3.2.0",
     "ethereumjs-tx": "^2.1.2",
     "ethereumjs-util": "^7.0.7",
     "ethr-did-registry": "^0.0.3",
     "ethr-did-resolver": "^3.0.3",
-    "ls": "^0.2.1",
     "web3": "^1.3.1",
     "web3-utils": "^1.3.1"
   }
