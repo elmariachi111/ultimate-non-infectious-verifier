@@ -1,0 +1,43 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "eslint:recommended",
+        "react-app",
+        "plugin:prettier/recommended",
+        "prettier",
+        "prettier/react",
+        "prettier/@typescript-eslint"
+    ],
+    "env": {
+        "es6": true
+    },
+    "rules": {
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/indent": [
+            "error",
+            2
+        ],
+        "react/jsx-filename-extension": [
+            1,
+            {
+                "extensions": [
+                    ".ts",
+                    ".tsx"
+                ]
+            }
+        ],
+        "prettier/prettier": [
+            "error",
+            {
+                "trailingComma": "all",
+                "singleQuote": true,
+                "printWidth": 120
+            }
+        ]
+    },
+    "plugins": [
+        "@typescript-eslint",
+        "react"
+    ]
+}
