@@ -1,5 +1,5 @@
 {
-  "name": "@immu/authority",
+  "name": "@immu/core",
   "version": "0.1.0",
   "private": true,
   "engines": {

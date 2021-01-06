@@ -1,5 +1,5 @@
 import { Command } from '@oclif/command'
-import { Verifier, VerifiedCredential } from '@immu/authority';
+import { Verifier, VerifiedCredential } from '@immu/core';
 
 export default class VerifyJwt extends Command {
   static description = 'verifies a JWT claim'

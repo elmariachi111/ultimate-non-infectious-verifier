@@ -1,5 +1,5 @@
 import { Command, flags } from '@oclif/command'
-import { Issuer } from '@immu/authority';
+import { Issuer } from '@immu/core';
 import { readFileSync } from 'fs';
 import cli from 'cli-ux'
 

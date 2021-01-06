@@ -1,4 +1,4 @@
-import { Issuer } from '@immu/authority';
+import { Issuer } from '@immu/core';
 import { Command } from '@oclif/command';
 import cli from 'cli-ux';
 import * as inquirer from 'inquirer';
