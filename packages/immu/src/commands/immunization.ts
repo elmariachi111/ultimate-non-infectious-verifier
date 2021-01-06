@@ -2,6 +2,8 @@ import { Issuer } from '@immu/authority';
 import { Command } from '@oclif/command';
 import cli from 'cli-ux';
 import * as inquirer from 'inquirer';
+//import * as qrcode from 'qrcode-terminal';
+import * as QRCode from 'qrcode'
 
 //https://ucum.org/ucum.html#section-Base-Units
 //https://www.hl7.org/fhir/immunization-definitions.html#Immunization.protocolApplied.series
@@ -114,7 +116,16 @@ export default class CreateImmunization extends Command {
       claim
     );
 
-    console.log(verifiedCredential);
+    console.debug(verifiedCredential);
+    
+    const url = await QRCode.toDataURL(verifiedCredential,{ 
+      errorCorrectionLevel: 'L' 
+    });
+    cli.open(url)
+
+
+    //qrcode.setErrorLevel('L');
+    //qrcode.generate(verifiedCredential, {small: true});
 
   }
 }
