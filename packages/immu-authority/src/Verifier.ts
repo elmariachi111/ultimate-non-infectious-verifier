@@ -1,4 +1,4 @@
-import { verifyCredential } from 'did-jwt-vc';
+import { VerifiedCredential, verifyCredential } from 'did-jwt-vc';
 import { Resolver } from 'did-resolver';
 import { getResolver } from 'ethr-did-resolver';
 
@@ -19,8 +19,8 @@ export class Verifier {
     this.didResolver = new Resolver(ethrDidResolver);
   }
 
-  async verifyClaim(claimJwt: string) {
+  async verifyClaim(claimJwt: string): Promise<VerifiedCredential> {
     const verifiedJwt = await verifyCredential(claimJwt, this.didResolver);
-    console.log(verifiedJwt);
+    return verifiedJwt;
   }
 }

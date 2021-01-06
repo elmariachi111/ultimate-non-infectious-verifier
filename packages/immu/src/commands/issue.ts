@@ -1,5 +1,7 @@
 import { Command, flags } from '@oclif/command'
 import { Issuer } from '@immu/authority';
+import { readFileSync } from 'fs';
+import cli from 'cli-ux'
 
 export default class Issue extends Command {
   static description = 'issues a claim'
@@ -10,23 +12,27 @@ export default class Issue extends Command {
 
   static flags = {
     help: flags.help({ char: 'h' }),
-    issuer: flags.string({ required: true, description: 'the issuers address' }),
-    subject: flags.string({ required: true, description: 'the claims subject address' }),
+    subject: flags.string({ required: true, description: 'the subject address' }),
   }
 
-  static args = [{
-    name: 'privateKey',
-  }]
+  static args = [
+    { name: 'claim' }
+  ]
 
   async run() {
     const { args, flags } = this.parse(Issue)
+    
+    const claim = JSON.parse(
+      readFileSync(args.claim, 'utf-8')
+    );
 
-    const issuer = new Issuer(process.env.ETHEREUM_NODE!, process.env.REGISTRY!);
+    const privateKey = process.env.PRIVATE_KEY || await cli.prompt('Enter your private key', {type: 'hide'});
 
-    const verifiedCredential = await issuer.issueAuthority(
-      args.privateKey,
-      flags.issuer,
-      flags.subject
+    const issuer = new Issuer(process.env.ETHEREUM_NODE!, process.env.REGISTRY!, privateKey);
+
+    const verifiedCredential = await issuer.issueClaim(
+      flags.subject,
+      claim
     )
 
     console.log(verifiedCredential);

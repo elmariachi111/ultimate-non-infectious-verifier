@@ -24,6 +24,19 @@ https://github.com/decentralized-identity/ethr-did-resolver
 https://github.com/decentralized-identity/did-jwt
 https://github.com/decentralized-identity/did-jwt-vc
 
+based on Joels work:
+https://medium.com/uport/erc1056-erc780-an-open-identity-and-claims-protocol-for-ethereum-aef7207bc744
+
+Lightweight Identity:
+https://eips.ethereum.org/EIPS/eip-1056
+
+Claims Registry:
+https://github.com/ethereum/EIPs/issues/780
+followed by:
+
+Verifiable Claims on Ethereum:
+https://eips.ethereum.org/EIPS/eip-1812
+
 #### Uport's local ethr did
 
 https://github.com/uport-project/ethr-did
