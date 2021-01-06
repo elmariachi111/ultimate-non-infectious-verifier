@@ -1,0 +1,6 @@
+{
+    "provider": {
+      "type": "ImmunizationProvider",
+      "name": "John Doe"
+    }
+}
