@@ -50,6 +50,11 @@ https://github.com/uport-project/nacl-did
 https://www.npmjs.com/package/vc-js/v/0.6.4?activeTab=readme
 https://www.w3.org/TR/vc-imp-guide/
 
+### Modern signature libraries:
+
+https://github.com/w3c-ccg/lds-jws2020
+https://github.com/digitalbazaar/vc-js
+(sig suites: https://github.com/digitalbazaar/vc-js/blob/master/BACKGROUND.md#generating-keys-and-suites)
 
 ### Linting
 

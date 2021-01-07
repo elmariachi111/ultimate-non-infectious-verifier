@@ -50,6 +50,8 @@ export default class Issue extends Command {
       subject,
       claim
     )
+    //const proof = await issuer.createProof(credential);
+    //console.log(proof);
 
     const verifiedCredential = await issuer.createJwt(credential);
     console.log(verifiedCredential);

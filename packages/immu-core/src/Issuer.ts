@@ -1,7 +1,7 @@
 import { Account } from 'web3-core';
 
 import { Issuer as DidIssuer, createVerifiableCredentialJwt } from 'did-jwt-vc';
-import { SimpleSigner } from 'did-jwt';
+import { EllipticSigner, SimpleSigner } from 'did-jwt';
 import { CredentialPayload, JwtCredentialSubject } from 'did-jwt-vc/lib/types';
 import { EthereumPrivateKey, EthereumAddress, Resolver } from './Resolver';
 
@@ -46,7 +46,9 @@ export class Issuer {
     return createVerifiableCredentialJwt(credential, didIssuer);
   }
 
-  async createProof(credentital: CredentialPayload) {
-    throw 'not impl';
+  async createProof(credential: CredentialPayload): Promise<string> {
+    const ellipticSigner = EllipticSigner(this.issuer.privateKey);
+    const signedJose = await ellipticSigner(JSON.stringify(credential));
+    return signedJose;
   }
 }
