@@ -51,7 +51,7 @@ export default class CreateImmunization extends Command {
   async run() {
     const { args } = this.parse(CreateImmunization)
 
-    const questions: any[]  = [
+    const questions: any[] = [
       {
         name: "lotNumber",
         message: "lotNumber",
@@ -64,13 +64,13 @@ export default class CreateImmunization extends Command {
         name: "route",
         message: "route of administration",
         choices: [
-          { name:"Injection, intramuscular", value: "IM" },
-          { name:"Injection, intradermal", value: "IDINJ" }, 
-          { name:"Injection, intravenous", value: "IVINJ" },
-          { name:"Injection, subcutaneous", value: "SQ" },
-          { name:"Transdermal", value: "TRNSDERM" },
-          { name:"Swallow, oral", value: "PO" },
-          { name:"Inhalation, nasal", value: "NASINHLC" },
+          { name: "Injection, intramuscular", value: "IM" },
+          { name: "Injection, intradermal", value: "IDINJ" },
+          { name: "Injection, intravenous", value: "IVINJ" },
+          { name: "Injection, subcutaneous", value: "SQ" },
+          { name: "Transdermal", value: "TRNSDERM" },
+          { name: "Swallow, oral", value: "PO" },
+          { name: "Inhalation, nasal", value: "NASINHLC" },
         ]
       },
       {
@@ -78,8 +78,8 @@ export default class CreateImmunization extends Command {
         name: "site",
         message: "site of administration",
         choices: [
-          { name:"left arm", value: "LA" }, 
-          { name:"right arm", value: "RA" },
+          { name: "left arm", value: "LA" },
+          { name: "right arm", value: "RA" },
         ]
       },
       {
@@ -91,17 +91,17 @@ export default class CreateImmunization extends Command {
     ]
     const prompt = inquirer.createPromptModule();
     const answers = await prompt(questions);
-    
-    let immunization  = baseImmunization;
+
+    let immunization = baseImmunization;
     immunization.lotNumber = answers.lotNumber
     immunization.route.coding[0].code = answers.route
     immunization.site.coding[0].code = answers.site
     immunization.doseQuantity.value = answers.quantity
-    
+
     // console.log(immunization);
 
     const subject = await cli.prompt('patient');
-    const privateKey = process.env.PRIVATE_KEY_PROVIDER || await cli.prompt('Enter your private key', {type: 'hide'});
+    const privateKey = process.env.PRIVATE_KEY_PROVIDER || await cli.prompt('Enter your private key', { type: 'hide' });
 
     const issuer = new Issuer(process.env.ETHEREUM_NODE!, process.env.REGISTRY!, privateKey);
     const claim = {
@@ -117,9 +117,9 @@ export default class CreateImmunization extends Command {
     );
 
     console.debug(verifiedCredential);
-    
-    const url = await QRCode.toDataURL(verifiedCredential,{ 
-      errorCorrectionLevel: 'L' 
+
+    const url = await QRCode.toDataURL(verifiedCredential, {
+      errorCorrectionLevel: 'L'
     });
     cli.open(url)
 

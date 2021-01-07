@@ -45,6 +45,12 @@ https://github.com/uport-project/ethr-did
 
 https://github.com/uport-project/nacl-did
 
+### more VC implementation details
+
+https://www.npmjs.com/package/vc-js/v/0.6.4?activeTab=readme
+https://www.w3.org/TR/vc-imp-guide/
+
+
 ### Linting
 
 https://khalilstemmler.com/blogs/tooling/prettier/

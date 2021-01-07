@@ -19,6 +19,10 @@ export class Verifier {
     this.didResolver = new Resolver(ethrDidResolver);
   }
 
+  get resolver(): Resolver {
+    return this.didResolver;
+  }
+
   async verifyClaim(claimJwt: string): Promise<VerifiedCredential> {
     const verifiedJwt = await verifyCredential(claimJwt, this.didResolver);
     return verifiedJwt;
