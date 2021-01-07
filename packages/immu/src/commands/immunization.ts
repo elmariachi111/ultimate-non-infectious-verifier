@@ -4,6 +4,11 @@ import cli from 'cli-ux';
 import * as inquirer from 'inquirer';
 //import * as qrcode from 'qrcode-terminal';
 import * as QRCode from 'qrcode'
+import resolver from '../resolver';
+
+//@ts-ignore
+import * as roles from '../../aliases.json';
+
 
 //https://ucum.org/ucum.html#section-Base-Units
 //https://www.hl7.org/fhir/immunization-definitions.html#Immunization.protocolApplied.series
@@ -101,9 +106,13 @@ export default class CreateImmunization extends Command {
     // console.log(immunization);
 
     const subject = await cli.prompt('patient');
-    const privateKey = process.env.PRIVATE_KEY_PROVIDER || await cli.prompt('Enter your private key', { type: 'hide' });
+    let privateKey = await cli.prompt('Enter your private key', { type: 'hide' });
+    if (!privateKey.startsWith('0x')) {
+      //@ts-ignore
+      privateKey = roles[privateKey]['privateKey'];
+    }
 
-    const issuer = new Issuer(process.env.ETHEREUM_NODE!, process.env.REGISTRY!, privateKey);
+    const issuer = new Issuer(resolver, privateKey);
     const claim = {
       immunization: {
         type: "ImmunizationDocument",
@@ -111,11 +120,11 @@ export default class CreateImmunization extends Command {
       }
     }
 
-    const verifiedCredential = await issuer.issueClaim(
+    const credential = await issuer.issueCredential(
       subject,
       claim
     );
-
+    const verifiedCredential = await issuer.createJwt(credential);
     console.debug(verifiedCredential);
 
     const url = await QRCode.toDataURL(verifiedCredential, {

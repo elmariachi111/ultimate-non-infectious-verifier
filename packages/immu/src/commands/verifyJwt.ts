@@ -1,5 +1,6 @@
 import { Command } from '@oclif/command'
 import { Verifier, VerifiedCredential } from '@immu/core';
+import resolver from '../resolver';
 
 export default class VerifyJwt extends Command {
   static description = 'verifies a JWT claim'
@@ -15,9 +16,9 @@ export default class VerifyJwt extends Command {
   async run() {
     const { args } = this.parse(VerifyJwt)
 
-    const verifier = new Verifier(process.env.ETHEREUM_NODE!, process.env.REGISTRY!);
+    const verifier = new Verifier(resolver);
 
-    const verifiedCredential: VerifiedCredential = await verifier.verifyClaim(args.jwt);
+    const verifiedCredential: VerifiedCredential = await verifier.verifyCredential(args.jwt);
 
     console.debug(verifiedCredential);
     console.log(verifiedCredential.payload.vc);

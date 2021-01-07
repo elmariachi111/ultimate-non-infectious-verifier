@@ -1,6 +1,7 @@
 import { Command } from '@oclif/command'
 import { Verifier, VerifiedCredential } from '@immu/core';
 import { readFileSync } from 'fs';
+import resolver from '../resolver';
 
 export default class CheckJwtChain extends Command {
   static description = 'verifies a JWT claim and the whole signature chain'
@@ -20,12 +21,12 @@ export default class CheckJwtChain extends Command {
       readFileSync(args.jwtCollectionFile, 'utf-8')
     );
 
-    const verifier = new Verifier(process.env.ETHEREUM_NODE!, process.env.REGISTRY!);
+    const verifier = new Verifier(resolver);
 
     const verified = {
-      patient: await verifier.verifyClaim(jwts.patient),
-      provider: await verifier.verifyClaim(jwts.provider),
-      site: await verifier.verifyClaim(jwts.site),
+      patient: await verifier.verifyCredential(jwts.patient),
+      provider: await verifier.verifyCredential(jwts.provider),
+      site: await verifier.verifyCredential(jwts.site),
     }
 
 
