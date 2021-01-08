@@ -1,5 +1,5 @@
 import { Issuer } from '@immu/core';
-import { Command } from '@oclif/command';
+import { Command, flags } from '@oclif/command';
 import cli from 'cli-ux';
 import * as inquirer from 'inquirer';
 //import * as qrcode from 'qrcode-terminal';
@@ -50,11 +50,15 @@ export default class CreateImmunization extends Command {
     `$ immu immunization <current lot number>`,
   ]
 
+  static flags = {
+    debug: flags.boolean({char: 'd', description: 'display debug info'}),
+  }
+
   static args = [
     { name: "defaultLotNumber", required: false }
   ]
   async run() {
-    const { args } = this.parse(CreateImmunization)
+    const { args, flags } = this.parse(CreateImmunization)
 
     const questions: any[] = [
       {
@@ -105,13 +109,18 @@ export default class CreateImmunization extends Command {
 
     // console.log(immunization);
 
-    const subject = await cli.prompt('patient');
+    let subject = await cli.prompt('patient DID');
+    if (!subject.startsWith('did:')) {
+      //@ts-ignore
+      subject = roles[subject]['did'];
+    }
+
     let privateKey = await cli.prompt('Enter your private key', { type: 'hide' });
     if (!privateKey.startsWith('0x')) {
       //@ts-ignore
       privateKey = roles[privateKey]['privateKey'];
     }
-
+    
     const issuer = new Issuer(resolver, privateKey);
     const claim = {
       immunization: {
@@ -124,15 +133,18 @@ export default class CreateImmunization extends Command {
       subject,
       claim
     );
+
+    if (flags.debug)
+      console.debug(JSON.stringify(credential, null, 2));
+
     const verifiedCredential = await issuer.createJwt(credential);
-    console.debug(verifiedCredential);
+    console.log(verifiedCredential);
 
     const url = await QRCode.toDataURL(verifiedCredential, {
       errorCorrectionLevel: 'L'
     });
     cli.open(url)
-
-
+    
     //qrcode.setErrorLevel('L');
     //qrcode.generate(verifiedCredential, {small: true});
 

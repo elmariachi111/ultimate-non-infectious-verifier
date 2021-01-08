@@ -20,7 +20,6 @@ export default class VerifyJwt extends Command {
 
     const verifiedCredential: VerifiedCredential = await verifier.verifyCredential(args.jwt);
 
-    console.debug(verifiedCredential);
-    console.log(verifiedCredential.payload.vc);
+    console.log(JSON.stringify(verifiedCredential,null, 2));
   }
 }

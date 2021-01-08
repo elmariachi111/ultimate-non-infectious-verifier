@@ -11,13 +11,14 @@ export default class Issue extends Command {
   static description = 'issues a claim'
 
   static examples = [
-    `$ immu issue <private key> --issuer --subject`,
+    `$ immu issue -p <private key> -s <subject did> [CLAIM]`,
   ]
 
   static flags = {
     help: flags.help({ char: 'h' }),
-    privateKey: flags.string({ char: 'p', description: 'provide a private key' }),
-    subject: flags.string({ char: 's', required: true, description: 'the subject address' }),
+    debug: flags.boolean({char: 'd', description: 'display debug info'}),
+    privateKey: flags.string({ char: 'p', required: true, description: 'provide a private key' }),
+    subject: flags.string({ char: 's', required: true, description: 'the subject DID' }),
   }
 
   static args = [
@@ -40,18 +41,19 @@ export default class Issue extends Command {
       privateKey = roles[privateKey]['privateKey'];
     }
 
-    const subject = (flags.subject.startsWith('0x'))
+    const subjectDid = (flags.subject.startsWith('did:'))
       ? flags.subject
       //@ts-ignore
-      : roles[flags.subject].account
+      : roles[flags.subject].did
     const issuer = new Issuer(resolver, privateKey);
 
     const credential = await issuer.issueCredential(
-      subject,
+      subjectDid,
       claim
     )
     //const proof = await issuer.createProof(credential);
-    //console.log(proof);
+    if (flags.debug)
+      console.debug(JSON.stringify(credential, null, 2));
 
     const verifiedCredential = await issuer.createJwt(credential);
     console.log(verifiedCredential);

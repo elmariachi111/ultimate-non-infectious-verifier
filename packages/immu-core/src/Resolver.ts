@@ -36,12 +36,14 @@ export class Resolver {
 
   async getDid(ethAddress: EthereumAddress): Promise<DIDDocument> {
     try {
-      const doc = await this.didResolver.resolve(`did:ethr:development:${ethAddress}`);
-      //console.debug(doc);
-      return doc;
+      return this.resolve(`did:ethr:development:${ethAddress}`);
     } catch (e) {
       console.error(e.message);
       throw e;
     }
+  }
+
+  async resolve(did: string): Promise<DIDDocument> {
+    return this.didResolver.resolve(did);
   }
 }

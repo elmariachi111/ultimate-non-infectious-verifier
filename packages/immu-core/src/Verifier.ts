@@ -1,4 +1,9 @@
-import { VerifiedCredential, verifyCredential } from 'did-jwt-vc';
+import {
+  VerifiedCredential,
+  VerifiedPresentation,
+  verifyCredential as jwtVerifyCredential,
+  verifyPresentation as jwtVerifyPresentation
+} from 'did-jwt-vc';
 import { Resolver } from './Resolver';
 
 export class Verifier {
@@ -9,6 +14,10 @@ export class Verifier {
   }
 
   async verifyCredential(claimJwt: string): Promise<VerifiedCredential> {
-    return verifyCredential(claimJwt, this.resolver.didResolver);
+    return jwtVerifyCredential(claimJwt, this.resolver.didResolver);
+  }
+
+  async verifyPresentation(presentationJwt: string): Promise<VerifiedPresentation> {
+    return jwtVerifyPresentation(presentationJwt, this.resolver.didResolver);
   }
 }

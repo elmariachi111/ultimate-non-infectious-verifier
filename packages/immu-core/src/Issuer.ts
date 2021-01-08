@@ -1,9 +1,14 @@
 import { Account } from 'web3-core';
 
-import { Issuer as DidIssuer, createVerifiableCredentialJwt } from 'did-jwt-vc';
+import {
+  Issuer as DidIssuer,
+  createVerifiableCredentialJwt,
+  JwtPresentationPayload,
+  createVerifiablePresentationJwt
+} from 'did-jwt-vc';
 import { EllipticSigner, SimpleSigner } from 'did-jwt';
-import { CredentialPayload, JwtCredentialSubject } from 'did-jwt-vc/lib/types';
-import { EthereumPrivateKey, EthereumAddress, Resolver } from './Resolver';
+import { CredentialPayload, JwtCredentialSubject, VerifiableCredential } from 'did-jwt-vc/lib/types';
+import { EthereumPrivateKey, Resolver } from './Resolver';
 
 export class Issuer {
   private resolver: Resolver;
@@ -15,19 +20,17 @@ export class Issuer {
   }
 
   async issueCredential(
-    subject: EthereumAddress,
+    subjectDid: string,
     claim: JwtCredentialSubject,
     credentialType: string[] = []
   ): Promise<CredentialPayload> {
     const issuerDid = await this.resolver.getDid(this.issuer.address);
-    const subjectDid = await this.resolver.getDid(subject);
-
     //const nbf = Math.floor( / 1000);
     const vcPayload: CredentialPayload = {
       '@context': ['https://www.w3.org/2018/credentials/v1'],
       issuanceDate: new Date(),
       credentialSubject: {
-        id: subjectDid.id,
+        id: subjectDid,
         ...claim
       },
       issuer: issuerDid.id,
@@ -35,7 +38,6 @@ export class Issuer {
     };
     return vcPayload;
   }
-
   async createJwt(credential: CredentialPayload) {
     const issuerDid = await this.resolver.getDid(this.issuer.address);
     const didIssuer: DidIssuer = {
@@ -44,6 +46,26 @@ export class Issuer {
     };
 
     return createVerifiableCredentialJwt(credential, didIssuer);
+  }
+
+  async createPresentation(credentials: VerifiableCredential[]) {
+    const vpPayload: JwtPresentationPayload = {
+      vp: {
+        '@context': ['https://www.w3.org/2018/credentials/v1'],
+        type: ['VerifiablePresentation'],
+        verifiableCredential: credentials
+      }
+    };
+    return vpPayload;
+  }
+
+  async createPresentationJwt(vpPayload: JwtPresentationPayload): Promise<string> {
+    const issuerDid = await this.resolver.getDid(this.issuer.address);
+    const didIssuer: DidIssuer = {
+      did: issuerDid.id,
+      signer: SimpleSigner(this.issuer.privateKey)
+    };
+    return createVerifiablePresentationJwt(vpPayload, didIssuer);
   }
 
   async createProof(credential: CredentialPayload): Promise<string> {
