@@ -9,7 +9,11 @@
   },
   "provider": {
     "privateKey": "0x6370fd033278c143179d81c5526140625662b8daa446c22ee2d73db3707e620c",
-    "did": "did:ethr:development:0x22d491Bde2303f2f43325b2108D26f1eAbA1e32b"
+    "did": "did:ethr:development:0x22d491Bde2303f2f43325b2108D26f1eAbA1e32b",
+    "verifier": {
+      "publicKey": "0x5886db6fca804a3be1438626d62011418d8a7409ad404fe7952d8d2462f8133c",
+      "privateKey": "0x45ff46d7dc4b043a2b7e23893ea74796cede390298df225542991c219c9851f95886db6fca804a3be1438626d62011418d8a7409ad404fe7952d8d2462f8133c"
+    }
   },
   "patient": {
     "privateKey": "0x646f1ce2fdad0e6deeeb5c7e8e5543bdde65e86029e2fd9fc169899c440a7913",
