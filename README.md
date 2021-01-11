@@ -41,20 +41,39 @@ https://eips.ethereum.org/EIPS/eip-1812
 
 https://github.com/uport-project/ethr-did
 
-### NaCL DIDs
-
-https://github.com/uport-project/nacl-did
-
 ### more VC implementation details
 
-https://www.npmjs.com/package/vc-js/v/0.6.4?activeTab=readme
+https://www.w3.org/TR/vc-data-model/
 https://www.w3.org/TR/vc-imp-guide/
+
+A nonfinal vc http api interface spec
+https://github.com/w3c-ccg/vc-http-api
 
 ### Modern signature libraries:
 
 https://github.com/w3c-ccg/lds-jws2020
-https://github.com/digitalbazaar/vc-js
+
+NaCL DIDs: https://github.com/uport-project/nacl-did
 (sig suites: https://github.com/digitalbazaar/vc-js/blob/master/BACKGROUND.md#generating-keys-and-suites)
+
+### Digital Bazaars Crypto / LD Suites
+
+Suite Middleware
+https://github.com/digitalbazaar/crypto-ld
+
+Ed25519 Suite
+https://github.com/digitalbazaar/ed25519-verification-key-2018
+
+More on ED25519:
+https://w3c-ccg.github.io/lds-ed25519-2018/
+
+signing VCs (vs-js) lib:
+https://github.com/digitalbazaar/vc-js/
+https://www.npmjs.com/package/vc-js/v/0.6.4?activeTab=readme
+
+based on W3C draft on Crypto LD signatures:
+https://w3c-ccg.github.io/ld-cryptosuite-registry/#ed25519
+https://github.com/w3c-ccg
 
 ### Linting
 
