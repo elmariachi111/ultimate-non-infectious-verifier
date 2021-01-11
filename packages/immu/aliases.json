@@ -17,6 +17,11 @@
   },
   "patient": {
     "privateKey": "0x646f1ce2fdad0e6deeeb5c7e8e5543bdde65e86029e2fd9fc169899c440a7913",
-    "did": "did:ethr:development:0xe11ba2b4d45eaed5996cd0823791e0c93114882d"
+    "did": "did:ethr:development:0xe11ba2b4d45eaed5996cd0823791e0c93114882d",
+    "verifier": {
+      "id": "did:ethr:development:0xe11ba2b4d45eaed5996cd0823791e0c93114882d#delegate-1",
+      "publicKeyBase58": "3uDwTbpsFHYDRHgC6cnuuf97PaDwM355XjeyPLVSrnTk",
+      "privateKeyBase58": "66zNFCC78B8N2JCgxUaYY4QzFoyTPfFS9mjVXPVhHjMnqQKEEEMiYhzvrCn9eHnxzFRnRv5zyLfD7bLXqj6NcCT4"
+    }
   }
 }

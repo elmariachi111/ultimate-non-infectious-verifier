@@ -11,6 +11,7 @@ import { Account } from 'web3-core';
 export type EthereumAddress = string;
 export type EthereumPrivateKey = string;
 
+//todo: make network aware (mainnet, rinkeby...)
 export class Resolver {
   didResolver: DIDResolver;
   web3: Web3;
@@ -38,16 +39,16 @@ export class Resolver {
     console.log(owner);
   }
 
-  async getDid(ethAddress: EthereumAddress): Promise<DIDDocument> {
+  async resolve(didOrAddress: EthereumAddress | DID): Promise<DIDDocument> {
     try {
-      return this.resolve(`did:ethr:development:${ethAddress}`);
+      if (didOrAddress.startsWith('did:')) {
+        return this.didResolver.resolve(didOrAddress);
+      } else {
+        return this.resolve(`did:ethr:development:${didOrAddress}`);
+      }
     } catch (e) {
       console.error(e.message);
       throw e;
     }
-  }
-
-  async resolve(did: string): Promise<DIDDocument> {
-    return this.didResolver.resolve(did);
   }
 }

@@ -69,6 +69,7 @@ importers:
   packages/immu-core:
     dependencies:
       '@digitalbazaar/ed25519-verification-key-2018': 1.1.0
+      '@relocke/base58': 1.0.0
       '@transmute/did-key-ed25519': 0.2.1-unstable.29
       '@transmute/did-key-secp256k1': 0.2.1-unstable.29
       '@transmute/did-key-web-crypto': 0.2.1-unstable.29
@@ -102,6 +103,7 @@ importers:
       typescript: 4.1.3
     specifiers:
       '@digitalbazaar/ed25519-verification-key-2018': ^1.1.0
+      '@relocke/base58': ^1.0.0
       '@transmute/did-key-ed25519': ^0.2.1-unstable.29
       '@transmute/did-key-secp256k1': ^0.2.1-unstable.29
       '@transmute/did-key-web-crypto': ^0.2.1-unstable.29
@@ -3044,6 +3046,12 @@ packages:
       react-dom: ^16.8.0
     resolution:
       integrity: sha512-O67fK7jz01TYu/V57RiDsxKY29ReHdQkpq+OV0ijmXsv7g5r3Nys51Ry+IqPrJst4Ve5xxFbiJsTt/bGwxorrQ==
+  /@relocke/base58/1.0.0:
+    dev: false
+    engines:
+      node: '>= 8'
+    resolution:
+      integrity: sha512-y6X7JfEAINK0MTr5L3S5lPTL3KiL3urewqsn8d0lpV2P/yA1axCv1eEA0k663ZG7H5rmeaVYmNkfGsIu1+tDKw==
   /@rollup/plugin-node-resolve/7.1.3_rollup@1.32.1:
     dependencies:
       '@rollup/pluginutils': 3.1.0_rollup@1.32.1

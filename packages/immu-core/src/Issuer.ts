@@ -24,7 +24,7 @@ export class Issuer {
     claim: JwtCredentialSubject,
     credentialType: string[] = []
   ): Promise<CredentialPayload> {
-    const issuerDid = await this.resolver.getDid(this.issuer.address);
+    const issuerDid = await this.resolver.resolve(this.issuer.address);
     //const nbf = Math.floor( / 1000);
     const vcPayload: CredentialPayload = {
       '@context': ['https://www.w3.org/2018/credentials/v1'],
@@ -39,7 +39,7 @@ export class Issuer {
     return vcPayload;
   }
   async createJwt(credential: CredentialPayload) {
-    const issuerDid = await this.resolver.getDid(this.issuer.address);
+    const issuerDid = await this.resolver.resolve(this.issuer.address);
     const didIssuer: DidIssuer = {
       did: issuerDid.id,
       signer: SimpleSigner(this.issuer.privateKey)
@@ -60,7 +60,7 @@ export class Issuer {
   }
 
   async createPresentationJwt(vpPayload: JwtPresentationPayload): Promise<string> {
-    const issuerDid = await this.resolver.getDid(this.issuer.address);
+    const issuerDid = await this.resolver.resolve(this.issuer.address);
     const didIssuer: DidIssuer = {
       did: issuerDid.id,
       signer: SimpleSigner(this.issuer.privateKey)

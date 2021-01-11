@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@digitalbazaar/ed25519-verification-key-2018": "^1.1.0",
+    "@relocke/base58": "^1.0.0",
     "@transmute/did-key-ed25519": "^0.2.1-unstable.29",
     "@transmute/did-key-secp256k1": "^0.2.1-unstable.29",
     "@transmute/did-key-web-crypto": "^0.2.1-unstable.29",
