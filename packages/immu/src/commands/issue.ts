@@ -16,7 +16,8 @@ export default class Issue extends Command {
 
   static flags = {
     help: flags.help({ char: 'h' }),
-    debug: flags.boolean({char: 'd', description: 'display debug info'}),
+    debug: flags.boolean({ char: 'd', description: 'display debug info' }),
+    proofType: flags.string({ char: 't', required: false, default: "jwt", description: 'how the proof is presented (default jwt)' }),
     privateKey: flags.string({ char: 'p', required: true, description: 'provide a private key' }),
     subject: flags.string({ char: 's', required: true, description: 'the subject DID' }),
   }
@@ -51,7 +52,7 @@ export default class Issue extends Command {
       subjectDid,
       claim
     )
-    //const proof = await issuer.createProof(credential);
+
     if (flags.debug)
       console.debug(JSON.stringify(credential, null, 2));
 
