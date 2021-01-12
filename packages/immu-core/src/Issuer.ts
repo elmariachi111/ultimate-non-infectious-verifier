@@ -9,6 +9,7 @@ import {
 import { EllipticSigner, SimpleSigner } from 'did-jwt';
 import { CredentialPayload, JwtCredentialSubject, VerifiableCredential } from 'did-jwt-vc/lib/types';
 import { EthereumPrivateKey, Resolver } from './Resolver';
+import { DIDDocument } from 'did-resolver';
 
 export class Issuer {
   private resolver: Resolver;
@@ -38,8 +39,13 @@ export class Issuer {
     };
     return vcPayload;
   }
+
+  async resolveIssuerDid(): Promise<DIDDocument> {
+    return await this.resolver.resolve(this.issuer.address);
+  }
+
   async createJwt(credential: CredentialPayload) {
-    const issuerDid = await this.resolver.resolve(this.issuer.address);
+    const issuerDid = await this.resolveIssuerDid();
     const didIssuer: DidIssuer = {
       did: issuerDid.id,
       signer: SimpleSigner(this.issuer.privateKey)

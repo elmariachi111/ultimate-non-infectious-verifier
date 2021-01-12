@@ -44,7 +44,7 @@ export class Resolver {
       if (didOrAddress.startsWith('did:')) {
         return this.didResolver.resolve(didOrAddress);
       } else {
-        return this.resolve(`did:ethr:development:${didOrAddress}`);
+        return this.resolve(`did:ethr:development:${didOrAddress.toLocaleLowerCase()}`);
       }
     } catch (e) {
       console.error(e.message);

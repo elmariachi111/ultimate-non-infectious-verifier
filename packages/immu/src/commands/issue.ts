@@ -1,11 +1,14 @@
 import { Command, flags } from '@oclif/command'
-import { Issuer, Resolver } from '@immu/core';
+import { Ed25519Signing, Issuer, Resolver } from '@immu/core';
 import { readFileSync } from 'fs';
 //@ts-ignore
 import * as roles from '../../aliases.json';
 
 import cli from 'cli-ux'
+import * as inquirer from 'inquirer';
 import resolver from '../resolver';
+//@ts-ignore
+
 
 export default class Issue extends Command {
   static description = 'issues a claim'
@@ -56,7 +59,32 @@ export default class Issue extends Command {
     if (flags.debug)
       console.debug(JSON.stringify(credential, null, 2));
 
-    const verifiedCredential = await issuer.createJwt(credential);
-    console.log(verifiedCredential);
+    if (flags.proofType == 'jwt') {
+      const verifiedCredential = await issuer.createJwt(credential);
+      console.log(verifiedCredential);
+    } else {
+      const issuerDid = await issuer.resolveIssuerDid();
+      
+      const prompt = inquirer.createPromptModule();
+      const {signingKey: signingKeyChoice} = await prompt([{
+        type: "list",
+        name: "signingKey",
+        message: "signing key to use",
+        choices: issuerDid.publicKey.map(publicKey => ({name: publicKey.id, value: publicKey.id}))
+      }]);
+      const [signingKey] = issuerDid.publicKey.filter(pk => pk.id == signingKeyChoice);
+      
+      const {signingPrivateKey} = await prompt([{
+        message: `private key (base58) for ${signingKey.id}`,
+        name: "signingPrivateKey",
+        type: "input"
+      }])
+
+      const keyPair = await Ed25519Signing.recoverEd25519KeyPair(signingKey, signingPrivateKey);
+      console.log(keyPair);
+
+      const out = await Ed25519Signing.sign("hello word", keyPair);
+      console.log(out);
+    }
   }
 }

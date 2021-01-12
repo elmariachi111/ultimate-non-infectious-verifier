@@ -1,5 +1,6 @@
 declare module '@digitalbazaar/ed25519-verification-key-2018';
 declare module 'crypto-ld';
+declare module 'jsonld-signatures';
 declare module '@relocke/base58';
 
 type BufferLike = Buffer | ArrayBuffer | Uint8Array;
