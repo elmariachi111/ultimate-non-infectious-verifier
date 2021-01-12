@@ -1,17 +1,11 @@
-import Web3 from 'web3';
-import { Contract } from 'web3-eth-contract';
 import { Ed25519VerificationKey2018 } from '@digitalbazaar/ed25519-verification-key-2018';
-//import {EcdsaSecp256k1VerificationKey2019} from 'ecdsa-secp256k1-verification-key-2019';
-import { EthereumAddress, EthereumPrivateKey, Resolver } from './Resolver';
+import { base58_to_binary, binary_to_base58 } from '@relocke/base58';
+import base64url from 'base64url';
+import { CryptoLD } from 'crypto-ld';
 import { PublicKey } from 'did-resolver';
 import { stringToBytes32 } from 'ethr-did-resolver';
-import { CryptoLD } from 'crypto-ld';
-import { base58_to_binary, binary_to_base58 } from '@relocke/base58';
-import { Account } from 'web3-core';
-
-import { Ed25519KeyPair } from '@transmute/did-key-ed25519';
-//@ts-ignore
-import { default as jsonLdUtil } from 'jsonld-signatures/lib/util';
+//import {EcdsaSecp256k1VerificationKey2019} from 'ecdsa-secp256k1-verification-key-2019';
+import { EthereumPrivateKey, Resolver } from './Resolver';
 
 const cryptoLd = new CryptoLD();
 cryptoLd.use(Ed25519VerificationKey2018);
@@ -38,9 +32,9 @@ export async function createEd25519VerificationKey(
  */
 export async function recoverEd25519KeyPair(
   key: PublicKey,
-  privateKeyBase58: string
+  privateKeyBase58?: string
 ): Promise<Ed25519VerificationKey2018> {
-  const keyConfig: PublicKey & { privateKeyBase58: string } = {
+  const keyConfig: PublicKey & { privateKeyBase58?: string } = {
     ...key,
     privateKeyBase58
   };
@@ -49,8 +43,6 @@ export async function recoverEd25519KeyPair(
     const b64 = Buffer.from(keyConfig.publicKeyBase64, 'base64');
     keyConfig.publicKeyBase58 = binary_to_base58(b64);
   }
-
-  console.log(keyConfig);
 
   return cryptoLd.from(keyConfig);
 }
@@ -75,46 +67,40 @@ export async function registerKey(
 }
 
 /**
+ * tried
  * https://github.com/digitalbazaar/jsonld-signatures/blob/master/lib/suites/JwsLinkedDataSignature.js
+ *
+ * but gave up and went with the plain idea:
+ * http://www.davedoesdev.com/json-web-signatures-on-node-js/
  */
-export async function sign(message: string, keyPair: Ed25519KeyPair): Promise<string> {
+export async function sign(message: string, keyPair: Ed25519VerificationKey2018): Promise<string> {
   const signer = keyPair.signer();
-  const verifyData = Buffer.from(message, 'utf-8');
-  //return signer.sign({ data });
 
   const header = {
     alg: 'EdDSA',
-    b64: false,
+    b64: false, //todo: figure out if that should be true...
     crit: ['b64']
   };
 
-  const encodedHeader = jsonLdUtil.encodeBase64Url(JSON.stringify(header));
-  const data = jsonLdUtil.createJws({ encodedHeader, verifyData });
-  const signature = await signer.sign({ data });
+  const encodedHeader = base64url(JSON.stringify(header));
+  const encodedData = base64url(message);
+  const payload = Buffer.from(`${encodedHeader}.${encodedData}`, 'utf-8');
 
-  // create detached content signature
-  const encodedSignature = jsonLdUtil.encodeBase64Url(signature);
+  const signature = await signer.sign({ data: payload });
+  const encodedSignature = base64url(<Buffer>signature);
+
   const jws = encodedHeader + '..' + encodedSignature;
   return jws;
 }
 
-/**
- * generate Ed25519 keys using @transmute libraries ()
- * unused
- */
-async function transmuteGenerateEd25519VerificationKey(): Promise<{ publicKey: string; privateKey: string }> {
-  const keyPair = await Ed25519KeyPair.generate({
-    secureRandom: () => {
-      return Uint8Array.from(Web3.utils.hexToBytes(Web3.utils.randomHex(32)));
-    }
-  });
+export async function verify(data: string, keyPair: Ed25519VerificationKey2018, jws: string): Promise<boolean> {
+  const verifier = keyPair.verifier();
 
-  const ret: any = {
-    publicKey: Web3.utils.bytesToHex(Array.from<number>(keyPair.publicKeyBuffer))
-  };
+  const [encodedHeader, , encodedSignature] = jws.split('.');
+  const signature = base64url.toBuffer(encodedSignature);
 
-  if (keyPair.privateKeyBuffer) {
-    ret.privateKey = Web3.utils.bytesToHex(Array.from(keyPair.privateKeyBuffer));
-  }
-  return ret;
+  const encodedData = base64url(data);
+  const payload = Buffer.from(`${encodedHeader}.${encodedData}`, 'utf-8');
+
+  return verifier.verify({ data: payload, signature });
 }

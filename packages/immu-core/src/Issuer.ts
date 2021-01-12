@@ -29,7 +29,7 @@ export class Issuer {
     //const nbf = Math.floor( / 1000);
     const vcPayload: CredentialPayload = {
       '@context': ['https://www.w3.org/2018/credentials/v1'],
-      issuanceDate: new Date(),
+      issuanceDate: new Date().toISOString(),
       credentialSubject: {
         id: subjectDid,
         ...claim

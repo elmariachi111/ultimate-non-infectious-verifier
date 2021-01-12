@@ -64,17 +64,16 @@ export default class Issue extends Command {
       console.log(verifiedCredential);
     } else {
       const issuerDid = await issuer.resolveIssuerDid();
-      
       const prompt = inquirer.createPromptModule();
-      const {signingKey: signingKeyChoice} = await prompt([{
+      const { signingKey: signingKeyChoice } = await prompt([{
         type: "list",
         name: "signingKey",
         message: "signing key to use",
-        choices: issuerDid.publicKey.map(publicKey => ({name: publicKey.id, value: publicKey.id}))
+        choices: issuerDid.publicKey.map(publicKey => ({ name: publicKey.id, value: publicKey.id }))
       }]);
       const [signingKey] = issuerDid.publicKey.filter(pk => pk.id == signingKeyChoice);
-      
-      const {signingPrivateKey} = await prompt([{
+
+      const { signingPrivateKey } = await prompt([{
         message: `private key (base58) for ${signingKey.id}`,
         name: "signingPrivateKey",
         type: "input"
@@ -83,8 +82,24 @@ export default class Issue extends Command {
       const keyPair = await Ed25519Signing.recoverEd25519KeyPair(signingKey, signingPrivateKey);
       console.log(keyPair);
 
-      const out = await Ed25519Signing.sign("hello word", keyPair);
-      console.log(out);
+      //create proof over credential
+      const jsonCredential = JSON.stringify(credential, null, 2);
+      console.debug(jsonCredential);
+      const jws = await Ed25519Signing.sign(jsonCredential, keyPair);
+
+      const proof = {
+        type: 'Ed25519Signature2018',
+        verificationMethod: signingKey.id,
+        created: (new Date()).toISOString(),
+        proofPurpose: 'assertionMethod',
+        jws
+      };
+
+      const verifiedCredential = {
+        ...credential,
+        proof
+      }
+      console.log(JSON.stringify(verifiedCredential, null, 2));
     }
   }
 }

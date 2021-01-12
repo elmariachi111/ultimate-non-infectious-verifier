@@ -75,6 +75,7 @@ importers:
       '@transmute/did-key-web-crypto': 0.2.1-unstable.29
       '@transmute/json-web-signature-2020': 1.1.0
       '@transmute/lds-ecdsa-secp256k1-2019': 0.1.3
+      base64url: 3.0.1
       crypto-ld: 4.0.3
       did-jwt: 4.8.1
       did-jwt-vc: 1.0.6
@@ -113,6 +114,7 @@ importers:
       '@types/node': ^12.0.0
       '@typescript-eslint/eslint-plugin': ^4.12.0
       '@typescript-eslint/parser': ^4.12.0
+      base64url: ^3.0.1
       crypto-ld: ^4.0.3
       did-jwt: ^4.8.1
       did-jwt-vc: ^1.0.6
