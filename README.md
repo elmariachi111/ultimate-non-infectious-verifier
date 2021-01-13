@@ -77,12 +77,10 @@ https://github.com/w3c-ccg/vc-http-api
 
 https://w3c-ccg.github.io/vc-extension-registry/#proof-methods
 (-> `Ed25519Signature2018` )
-A nonfinal vc http api interface spec
-https://github.com/w3c-ccg/vc-http-api
 
 ### Modern signature libraries:
 
-Microsofts approach looks *very* promising: https://github.com/microsoft/VerifiableCredentials-Crypto-SDK-Typescript
+Microsofts approach looks _very_ promising: https://github.com/microsoft/VerifiableCredentials-Crypto-SDK-Typescript
 
 https://github.com/w3c-ccg/lds-jws2020
 
@@ -92,7 +90,7 @@ NaCL DIDs: https://github.com/uport-project/nacl-did
 browser based ed25519: noble
 https://github.com/paulmillr/noble-ed25519
 
-How JWS signatures are built: http://www.davedoesdev.com/json-web-signatures-on-node-js/ 
+How JWS signatures are built: http://www.davedoesdev.com/json-web-signatures-on-node-js/
 
 ### Digital Bazaars Crypto / LD Suites
 

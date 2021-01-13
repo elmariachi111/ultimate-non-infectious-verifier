@@ -1,13 +1,13 @@
 import { Account } from 'web3-core';
 
-import {
-  Issuer as DidIssuer,
-  createVerifiableCredentialJwt,
-  JwtPresentationPayload,
-  createVerifiablePresentationJwt
-} from 'did-jwt-vc';
+import { Issuer as DidIssuer, createVerifiableCredentialJwt, createVerifiablePresentationJwt } from 'did-jwt-vc';
 import { EllipticSigner, SimpleSigner } from 'did-jwt';
-import { CredentialPayload, JwtCredentialSubject, VerifiableCredential } from 'did-jwt-vc/lib/types';
+import {
+  CredentialPayload,
+  JwtCredentialSubject,
+  PresentationPayload,
+  VerifiableCredential
+} from 'did-jwt-vc/lib/types';
 import { EthereumPrivateKey, Resolver } from './Resolver';
 import { DIDDocument } from 'did-resolver';
 
@@ -54,24 +54,26 @@ export class Issuer {
     return createVerifiableCredentialJwt(credential, didIssuer);
   }
 
-  async createPresentation(credentials: VerifiableCredential[]) {
-    const vpPayload: JwtPresentationPayload = {
-      vp: {
-        '@context': ['https://www.w3.org/2018/credentials/v1'],
-        type: ['VerifiablePresentation'],
-        verifiableCredential: credentials
-      }
+  async createPresentation(credentials: VerifiableCredential[]): Promise<PresentationPayload> {
+    const issuerDid = await this.resolver.resolve(this.issuer.address);
+
+    const payload: PresentationPayload = {
+      '@context': ['https://www.w3.org/2018/credentials/v1'],
+      type: ['VerifiablePresentation'],
+      holder: issuerDid.id,
+      verifiableCredential: credentials,
+      issuanceDate: new Date().toISOString()
     };
-    return vpPayload;
+    return payload;
   }
 
-  async createPresentationJwt(vpPayload: JwtPresentationPayload): Promise<string> {
+  async createPresentationJwt(presentationPayload: PresentationPayload): Promise<string> {
     const issuerDid = await this.resolver.resolve(this.issuer.address);
     const didIssuer: DidIssuer = {
       did: issuerDid.id,
       signer: SimpleSigner(this.issuer.privateKey)
     };
-    return createVerifiablePresentationJwt(vpPayload, didIssuer);
+    return createVerifiablePresentationJwt(presentationPayload, didIssuer);
   }
 
   async createProof(credential: CredentialPayload): Promise<string> {

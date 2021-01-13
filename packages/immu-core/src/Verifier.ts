@@ -22,9 +22,11 @@ interface JSONCredential {
 
 export class Verifier {
   private resolver: Resolver;
+  public verifierDID: DID;
 
-  constructor(resolver: Resolver) {
+  constructor(resolver: Resolver, verifierDID?: string) {
     this.resolver = resolver;
+    this.verifierDID = verifierDID || '';
   }
 
   async verifyCredential(claimJwt: string): Promise<VerifiedCredential> {

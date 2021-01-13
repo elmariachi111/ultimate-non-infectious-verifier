@@ -60,10 +60,10 @@ export default class Issue extends Command {
     if (flags.debug)
       console.debug(JSON.stringify(credential, null, 2));
 
-    let verifiedCredential;
+    let jsonVerifiedCredential;
 
     if (flags.proofType == 'jwt') {
-      verifiedCredential = await issuer.createJwt(credential);     
+      jsonVerifiedCredential = await issuer.createJwt(credential);     
     } else {
       const issuerDid = await issuer.resolveIssuerDid();
       const prompt = inquirer.createPromptModule();
@@ -96,13 +96,13 @@ export default class Issue extends Command {
         jws
       };
 
-      verifiedCredential = {
+      const verifiedCredential = {
         ...credential,
         proof
       }
+      jsonVerifiedCredential = JSON.stringify(verifiedCredential, null, 2);
     }
 
-    const jsonVerifiedCredential = JSON.stringify(verifiedCredential, null, 2);
     if (flags.out) {
       writeFileSync(flags.out,jsonVerifiedCredential,'utf-8');
     } else {
