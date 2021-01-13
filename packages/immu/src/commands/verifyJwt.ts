@@ -1,5 +1,5 @@
 import { Command } from '@oclif/command'
-import { Verifier, VerifiedCredential } from '@immu/core';
+import { Verifier, VerifiedCredential, displayCredential } from '@immu/core';
 import resolver from '../resolver';
 
 export default class VerifyJwt extends Command {
@@ -19,7 +19,7 @@ export default class VerifyJwt extends Command {
     const verifier = new Verifier(resolver);
 
     const verifiedCredential: VerifiedCredential = await verifier.verifyCredential(args.jwt);
+    console.log(displayCredential(verifiedCredential.verifiableCredential));
 
-    console.log(JSON.stringify(verifiedCredential,null, 2));
   }
 }

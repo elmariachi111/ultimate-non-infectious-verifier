@@ -36,10 +36,12 @@ export default class AddKey extends Command {
     const edKeyPair = await Ed25519Signing.createEd25519VerificationKey(seed, args.did);
 
     const exported = await edKeyPair.export({ publicKey: true, privateKey: true });
-    console.log("take down this private key:", exported);
-
     const tx = await Ed25519Signing.registerKey(resolver, privateKey, edKeyPair);
-    console.log(tx);
+    if (flags.debug) {
+      console.debug(tx);
+    }
+    console.log(exported);
+
   }
 }
 

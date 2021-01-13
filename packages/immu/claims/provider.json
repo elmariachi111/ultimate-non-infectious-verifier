@@ -1,6 +1,6 @@
 {
-    "provider": {
-      "type": "ImmunizationProvider",
-      "name": "John Doe"
-    }
+  "provider": {
+    "type": "ImmunizationProvider",
+    "name": "John Doe"
+  }
 }

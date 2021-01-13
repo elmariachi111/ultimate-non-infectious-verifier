@@ -1,6 +1,6 @@
 import { Command, flags } from '@oclif/command'
 import { Ed25519Signing, Issuer, Resolver } from '@immu/core';
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 //@ts-ignore
 import * as roles from '../../aliases.json';
 
@@ -23,6 +23,7 @@ export default class Issue extends Command {
     proofType: flags.string({ char: 't', required: false, default: "jwt", description: 'how the proof is presented (default jwt)' }),
     privateKey: flags.string({ char: 'p', required: true, description: 'provide a private key' }),
     subject: flags.string({ char: 's', required: true, description: 'the subject DID' }),
+    out: flags.string({char: 'o', required: false, description: "write to file"}),
   }
 
   static args = [
@@ -59,9 +60,10 @@ export default class Issue extends Command {
     if (flags.debug)
       console.debug(JSON.stringify(credential, null, 2));
 
+    let verifiedCredential;
+
     if (flags.proofType == 'jwt') {
-      const verifiedCredential = await issuer.createJwt(credential);
-      console.log(verifiedCredential);
+      verifiedCredential = await issuer.createJwt(credential);     
     } else {
       const issuerDid = await issuer.resolveIssuerDid();
       const prompt = inquirer.createPromptModule();
@@ -80,11 +82,10 @@ export default class Issue extends Command {
       }])
 
       const keyPair = await Ed25519Signing.recoverEd25519KeyPair(signingKey, signingPrivateKey);
-      console.log(keyPair);
 
       //create proof over credential
       const jsonCredential = JSON.stringify(credential, null, 2);
-      console.debug(jsonCredential);
+      
       const jws = await Ed25519Signing.sign(jsonCredential, keyPair);
 
       const proof = {
@@ -95,11 +96,17 @@ export default class Issue extends Command {
         jws
       };
 
-      const verifiedCredential = {
+      verifiedCredential = {
         ...credential,
         proof
       }
-      console.log(JSON.stringify(verifiedCredential, null, 2));
+    }
+
+    const jsonVerifiedCredential = JSON.stringify(verifiedCredential, null, 2);
+    if (flags.out) {
+      writeFileSync(flags.out,jsonVerifiedCredential,'utf-8');
+    } else {
+      console.log(jsonVerifiedCredential);
     }
   }
 }

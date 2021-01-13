@@ -1,0 +1,32 @@
+{
+  "immunization": {
+    "type": "ImmunizationDocument",
+    "doc": {
+      "resourceType": "Immunization",
+      "status": "completed",
+      "lotNumber": null,
+      "vaccineCode": null,
+      "route": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v3-RouteOfAdministration",
+            "code": null
+          }
+        ]
+      },
+      "site": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v3-ActSite",
+            "code": null
+          }
+        ]
+      },
+      "doseQuantity": {
+        "system": "http://unitsofmeasure.org",
+        "value": 0,
+        "code": "mg"
+      }
+    }
+  }
+}

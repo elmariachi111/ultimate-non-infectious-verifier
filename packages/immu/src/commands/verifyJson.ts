@@ -1,5 +1,5 @@
 import { Command } from '@oclif/command'
-import { Verifier, VerifiedCredential } from '@immu/core';
+import { Verifier, VerifiedCredential, displayCredential } from '@immu/core';
 import resolver from '../resolver';
 import { readFileSync } from 'fs';
 
@@ -21,6 +21,7 @@ export default class VerifyJson extends Command {
 
     const verifier = new Verifier(resolver);
     const isValid = await verifier.verifyJsonCredential(verifiedCredential)
+    console.log(displayCredential(verifiedCredential));
     console.log(isValid);
 
   }
