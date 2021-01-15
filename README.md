@@ -111,6 +111,26 @@ based on W3C draft on Crypto LD signatures:
 https://w3c-ccg.github.io/ld-cryptosuite-registry/#ed25519
 https://github.com/w3c-ccg
 
+### Wallets & commercial implementations
+
+trinsic.id (formerly streedcred): wallet, cloud wallet, mobile sdk
+https://docs.trinsic.id/docs implements DIDComm / Aries, based on sovrin
+
+Jolocom https://github.com/jolocom/jolocom-sdk . Rinkeby anchored, shines for presentations, migrates to KERI
+
+Evernym Connectme: https://www.evernym.com/products/?#ConnectMe general DID / VC wallet, based on sovrin + mobile wallet sdk
+
+### DID Comm
+
+General Specification for connection interactions: https://didcomm.org/, currently mostly managed by Aries people https://github.com/decentralized-identity/didcomm-messaging
+
+Specs: https://identity.foundation/didcomm-messaging/spec/
+
+### Sovrin
+
+is a public dlt to store DIDs and decentralize vc issuer credentials. https://sovrin.org/test-sovrin-tokens/ based on hyperledger indy.
+test directly on indy: https://sovrin.org/wp-content/uploads/Token-Test-Instructions.pdf
+
 ### Linting
 
 https://khalilstemmler.com/blogs/tooling/prettier/
