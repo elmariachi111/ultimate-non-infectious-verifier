@@ -11,8 +11,9 @@
     "privateKey": "0x6370fd033278c143179d81c5526140625662b8daa446c22ee2d73db3707e620c",
     "did": "did:ethr:development:0x22d491bde2303f2f43325b2108d26f1eaba1e32b",
     "verifier": {
-      "publicKey": "0xe925366d202475ffac3be42f7276fc3aa0c51787998e8964c50d9bb84ed989d2",
-      "privateKey": "0xed8c92ee9e5aa564a0df7746f62b49adb78aaf813db226c5f84010251fae77c3e925366d202475ffac3be42f7276fc3aa0c51787998e8964c50d9bb84ed989d2"
+      "id": "did:ethr:development:0x22d491bde2303f2f43325b2108d26f1eaba1e32b#delegate-1",
+      "publicKeyBase58": "DmmoWWJULteDtHydHAB43zeU2cRQ4ANNsBWJqzij7DFs",
+      "privateKeyBase58": "TZLMrHQ1bMJwMzKT2XzPFP8Nce1PYg6ivJMZG2bj9gCkhzYot1mfys5H2VyAVyvi6DzjvDsvNJ5uzVheoF6q8Nq"
     }
   },
   "patient": {
@@ -20,8 +21,12 @@
     "did": "did:ethr:development:0xe11ba2b4d45eaed5996cd0823791e0c93114882d",
     "verifier": {
       "id": "did:ethr:development:0xe11ba2b4d45eaed5996cd0823791e0c93114882d#delegate-1",
-      "publicKeyBase58": "3uDwTbpsFHYDRHgC6cnuuf97PaDwM355XjeyPLVSrnTk",
-      "privateKeyBase58": "66zNFCC78B8N2JCgxUaYY4QzFoyTPfFS9mjVXPVhHjMnqQKEEEMiYhzvrCn9eHnxzFRnRv5zyLfD7bLXqj6NcCT4"
+      "publicKeyBase58": "EZN5fL8ZF5aDXYMPxrdg7hzCkfAyLZpyzzMtMiwFe1Fv",
+      "privateKeyBase58": "53hf2ZbpECHtAF7q9ek26xmYoLt7V8HHgcQrTEnyi1RXCUn5mCXkcYNifBc22Jwit6Jq3N6VPf82LMkAncsy49wv"
     }
+  },
+  "gate": {
+    "did": "did:ethr:development:0xd03ea8624C8C5987235048901fB614fDcA89b117",
+    "privateKey": "0xadd53f9a7e588d003326d1cbf9e4a43c061aadd9bc938c843a79e7b4fd2ad743"
   }
 }

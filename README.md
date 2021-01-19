@@ -1,47 +1,56 @@
 # Questions
 
-is the proof part of the vc?  
-what's the difference of `vp` and `verfifiablePresentation`? (JWT vs JSON-LD)  
-are ethr-did-registry key definitions compat to json-ld-signatures?  
-do we need the "assumption" types?  
-shall we spike IDX / Keri to setup a chain independent controller resolver?  
-when do we need universal resolution?  
-What's a DID service, actually?
+- is the proof part of the vc?  
+- what's the difference of `vp` and `verfifiablePresentation`? (JWT vs JSON-LD)  
+- are ethr-did-registry key definitions compat to json-ld-signatures?  
+- do we need the "assumption" types?  
+- shall we spike IDX / Keri to setup a chain independent controller resolver?  
+- when do we need universal resolution?  
+- What's a DID service, actually?
 
 # Todos
 
-create a presentation request and inline a challenge
+- create a presentation request and inline a challenge
+- test against generic did/vc wallets
+- create a JSON-LD scheme for an immunization proof
+- what's that Segment 4 spec of the CCI working group?
+- use a VC revocation tool like ERC780 /
+- revoke Credentials using their hash (see: are ld proofs part of that hash?? )
+- store a remote picture on ipfs that's resolveable by the verifier / part of the credential (or another credential?)
 
-test against generic did/vc wallets
+## flow ideas for totally untrusted VCs
 
-create a JSON-LD scheme for an immunization proof
-
-what's that Segment 4 spec of the CCI working group?
-
-use a VC revocation tool like ERC780 /
-
-revoke Credentials using their hash (see: are ld proofs part of that hash?? )
-
-store a remote picture on ipfs that's resolveable by the verifier / part of the credential (or another credential?)
+https://docs.google.com/drawings/d/13b9sgbuBdMUyieHmv9rLTJEK8jzxQr-jtFhBX3_Ox9E/edit
+https://docs.google.com/drawings/d/1WAYKZuJconP5IY7ZivE2VdVv0udourOjaEUOW1Kjs88/edit
+https://docs.google.com/drawings/d/1tlYGOYkzx7LOUWkncpYN8j2ZdULznufuDyzinlpTq24/edit
 
 ## DID backgrounders
 
 https://www.w3.org/TR/did-core/#a-simple-example
 https://www.w3.org/TR/vc-data-model/#proofs-signatures
 
+The official, generic universal DIF DID resolver:
+https://github.com/decentralized-identity/universal-resolver
+
+Mattr is a cli tool for all kinds of DID / VC ops
+https://mattr.global/
+APIs: https://learn.mattr.global/
+
+
 ### Eth based registrars
 
+https://github.com/uport-project/ethr-did-registry
 https://github.com/decentralized-identity/ethr-did-resolver/blob/master/doc/did-method-spec.md
+
 https://github.com/gatacaid/gataca-did-method
 https://github.com/cryptonicsconsulting/signor-did-contracts/blob/master/did-method-spec.md
 https://lianxi-tech.github.io/monid/ (neu)
 https://github.com/SelfKeyFoundation/selfkey-did-ledger/blob/develop/DIDMethodSpecs.md
 
-## flow ideas
+### general registrars
 
-https://docs.google.com/drawings/d/13b9sgbuBdMUyieHmv9rLTJEK8jzxQr-jtFhBX3_Ox9E/edit
-https://docs.google.com/drawings/d/1WAYKZuJconP5IY7ZivE2VdVv0udourOjaEUOW1Kjs88/edit
-https://docs.google.com/drawings/d/1tlYGOYkzx7LOUWkncpYN8j2ZdULznufuDyzinlpTq24/edit
+https://uniregistrar.io
+
 
 ### Ethr DID related projects
 
@@ -58,6 +67,7 @@ https://eips.ethereum.org/EIPS/eip-1056
 
 Claims Registry:
 https://github.com/ethereum/EIPs/issues/780
+
 followed by:
 
 Verifiable Claims on Ethereum:
@@ -67,7 +77,8 @@ https://eips.ethereum.org/EIPS/eip-1812
 
 https://github.com/uport-project/ethr-did
 
-### more VC implementation details
+
+### Verifiable Credential implementation details
 
 https://www.w3.org/TR/vc-data-model/
 https://www.w3.org/TR/vc-imp-guide/
@@ -77,6 +88,19 @@ https://github.com/w3c-ccg/vc-http-api
 
 https://w3c-ccg.github.io/vc-extension-registry/#proof-methods
 (-> `Ed25519Signature2018` )
+
+DIF specs
+https://github.com/decentralized-identity/claims-credentials
+
+
+#### Verifiable Presentation Requests
+https://w3c-ccg.github.io/vp-request-spec/
+needed to request a credential from a holder
+
+https://identity.foundation/presentation-exchange/
+https://github.com/decentralized-identity/presentation-exchange
+
+
 
 ### Modern signature libraries:
 
@@ -126,12 +150,18 @@ General Specification for connection interactions: https://didcomm.org/, current
 
 Specs: https://identity.foundation/didcomm-messaging/spec/
 
+Jolocom's Rust impl samples
+(TODO: reimpl in Typescript ;) ) 
+https://github.com/jolocom/didcomm-rs/blob/main/README.md
+
+
 ### Sovrin
 
 is a public dlt to store DIDs and decentralize vc issuer credentials. https://sovrin.org/test-sovrin-tokens/ based on hyperledger indy.
 test directly on indy: https://sovrin.org/wp-content/uploads/Token-Test-Instructions.pdf
 
-### Linting
+
+### OT: Linting TS
 
 https://khalilstemmler.com/blogs/tooling/prettier/
 https://khalilstemmler.com/blogs/typescript/eslint-for-typescript/
