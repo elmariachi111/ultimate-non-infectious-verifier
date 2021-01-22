@@ -1,11 +1,11 @@
 # Questions
 
-- is the proof part of the vc?  
-- what's the difference of `vp` and `verfifiablePresentation`? (JWT vs JSON-LD)  
-- are ethr-did-registry key definitions compat to json-ld-signatures?  
-- do we need the "assumption" types?  
-- shall we spike IDX / Keri to setup a chain independent controller resolver?  
-- when do we need universal resolution?  
+- is the proof part of the vc?
+- what's the difference of `vp` and `verfifiablePresentation`? (JWT vs JSON-LD)
+- are ethr-did-registry key definitions compat to json-ld-signatures?
+- do we need the "assumption" types?
+- shall we spike IDX / Keri to setup a chain independent controller resolver?
+- when do we need universal resolution?
 - What's a DID service, actually?
 
 # Todos
@@ -18,39 +18,37 @@
 - revoke Credentials using their hash (see: are ld proofs part of that hash?? )
 - store a remote picture on ipfs that's resolveable by the verifier / part of the credential (or another credential?)
 
-## flow ideas for totally untrusted VCs
-
-https://docs.google.com/drawings/d/13b9sgbuBdMUyieHmv9rLTJEK8jzxQr-jtFhBX3_Ox9E/edit
-https://docs.google.com/drawings/d/1WAYKZuJconP5IY7ZivE2VdVv0udourOjaEUOW1Kjs88/edit
-https://docs.google.com/drawings/d/1tlYGOYkzx7LOUWkncpYN8j2ZdULznufuDyzinlpTq24/edit
-
 ## DID backgrounders
 
+https://w3c-ccg.github.io/did-primer/
 https://www.w3.org/TR/did-core/#a-simple-example
 https://www.w3.org/TR/vc-data-model/#proofs-signatures
 
 The official, generic universal DIF DID resolver:
 https://github.com/decentralized-identity/universal-resolver
 
+Specs & links to lots of Method implementations
+https://w3c.github.io/did-spec-registries/#did-methods
+
+A lot of use case samples (maily non tech) https://www.w3.org/TR/did-use-cases/
+
 Mattr is a cli tool for all kinds of DID / VC ops
 https://mattr.global/
 APIs: https://learn.mattr.global/
 
-
 ### Eth based registrars
 
-https://github.com/uport-project/ethr-did-registry
 https://github.com/decentralized-identity/ethr-did-resolver/blob/master/doc/did-method-spec.md
-
 https://github.com/gatacaid/gataca-did-method
 https://github.com/cryptonicsconsulting/signor-did-contracts/blob/master/did-method-spec.md
 https://lianxi-tech.github.io/monid/ (neu)
 https://github.com/SelfKeyFoundation/selfkey-did-ledger/blob/develop/DIDMethodSpecs.md
 
-### general registrars
+## flow ideas
 
-https://uniregistrar.io
-
+https://docs.google.com/drawings/d/13b9sgbuBdMUyieHmv9rLTJEK8jzxQr-jtFhBX3_Ox9E/edit
+https://docs.google.com/drawings/d/1WAYKZuJconP5IY7ZivE2VdVv0udourOjaEUOW1Kjs88/edit
+https://docs.google.com/drawings/d/1tlYGOYkzx7LOUWkncpYN8j2ZdULznufuDyzinlpTq24/edit
 
 ### Ethr DID related projects
 
@@ -77,7 +75,6 @@ https://eips.ethereum.org/EIPS/eip-1812
 
 https://github.com/uport-project/ethr-did
 
-
 ### Verifiable Credential implementation details
 
 https://www.w3.org/TR/vc-data-model/
@@ -92,15 +89,15 @@ https://w3c-ccg.github.io/vc-extension-registry/#proof-methods
 DIF specs
 https://github.com/decentralized-identity/claims-credentials
 
-
 #### Verifiable Presentation Requests
+
 https://w3c-ccg.github.io/vp-request-spec/
 needed to request a credential from a holder
 
 https://identity.foundation/presentation-exchange/
 https://github.com/decentralized-identity/presentation-exchange
-
-
+https://w3c-ccg.github.io/vp-request-spec/
+needed to request a credential from a holder
 
 ### Modern signature libraries:
 
@@ -151,15 +148,28 @@ General Specification for connection interactions: https://didcomm.org/, current
 Specs: https://identity.foundation/didcomm-messaging/spec/
 
 Jolocom's Rust impl samples
-(TODO: reimpl in Typescript ;) ) 
+(TODO: reimpl in Typescript ;) )
 https://github.com/jolocom/didcomm-rs/blob/main/README.md
-
 
 ### Sovrin
 
 is a public dlt to store DIDs and decentralize vc issuer credentials. https://sovrin.org/test-sovrin-tokens/ based on hyperledger indy.
 test directly on indy: https://sovrin.org/wp-content/uploads/Token-Test-Instructions.pdf
 
+### Immunization related schemas
+
+Qatar open data:
+https://www.data.gov.qa/explore/dataset/h4-vaccination/information/
+
+FHIR4 IMmunization JSON schema
+https://www.hl7.org/fhir/immunization.schema.json.html
+
+Using FHIR4 information in health credentials
+https://healthwallet.cards/credential-modeling/
+https://github.com/microsoft-healthcare-madison/health-wallet-demo/blob/master/src/fixtures/vc.json
+Covid 19 sample:
+
+https://github.com/microsoft-healthcare-madison/health-wallet-demo/blob/master/src/fixtures/vc.pcr.json
 
 ### OT: Linting TS
 

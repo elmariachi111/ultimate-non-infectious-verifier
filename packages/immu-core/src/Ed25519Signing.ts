@@ -1,23 +1,16 @@
-import { Ed25519VerificationKey2018 } from '@digitalbazaar/ed25519-verification-key-2018';
-import { base58_to_binary, binary_to_base58 } from '@relocke/base58';
+//import { Ed25519VerificationKey2018 } from '@digitalbazaar/ed25519-verification-key-2018';
+import { Ed25519KeyPair } from '@transmute/did-key-ed25519';
 import base64url from 'base64url';
-import { CryptoLD } from 'crypto-ld';
+import bs58 from 'bs58';
+//import { CryptoLD } from 'crypto-ld';
+import crypto from 'crypto';
 import { PublicKey } from 'did-resolver';
 import { stringToBytes32 } from 'ethr-did-resolver';
-//import {EcdsaSecp256k1VerificationKey2019} from 'ecdsa-secp256k1-verification-key-2019';
 import { EthereumPrivateKey, Resolver } from './Resolver';
 
-const cryptoLd = new CryptoLD();
-cryptoLd.use(Ed25519VerificationKey2018);
-
-export async function createEd25519VerificationKey(
-  seed: BufferLike,
-  controller: DID
-): Promise<Ed25519VerificationKey2018> {
-  const edKeyPair = await cryptoLd.generate({
-    type: 'Ed25519VerificationKey2018',
-    controller,
-    seed
+export async function createEd25519VerificationKey(seed?: Uint8Array): Promise<Ed25519KeyPair> {
+  const edKeyPair = await Ed25519KeyPair.generate({
+    secureRandom: () => (seed ? seed : crypto.randomBytes(32))
   });
 
   return edKeyPair;
@@ -30,39 +23,38 @@ export async function createEd25519VerificationKey(
  * @param PublicKey publicKey the controlled public key from registry
  * @param string privateKey the private key in base58
  */
-export async function recoverEd25519KeyPair(
-  key: PublicKey,
-  privateKeyBase58?: string
-): Promise<Ed25519VerificationKey2018> {
-  const keyConfig: PublicKey & { privateKeyBase58?: string } = {
+export async function recoverEd25519KeyPair(key: PublicKey, privateKeyBase58?: string): Promise<Ed25519KeyPair> {
+  const keyConfig = {
     ...key,
+    publicKeyBase58: key.publicKeyBase58 || bs58.encode(Buffer.from(key.publicKeyBase64!, 'base64')),
     privateKeyBase58
   };
 
-  if (keyConfig.publicKeyBase64) {
-    const b64 = Buffer.from(keyConfig.publicKeyBase64, 'base64');
-    keyConfig.publicKeyBase58 = binary_to_base58(b64);
+  if (!keyConfig.publicKeyBase58) {
+    throw new Error('needs a public key');
   }
 
-  return cryptoLd.from(keyConfig);
+  return Ed25519KeyPair.from(keyConfig);
 }
 
 export async function registerKey(
   resolver: Resolver,
   ethController: EthereumPrivateKey,
-  key: Ed25519VerificationKey2018
+  key: Ed25519KeyPair
 ): Promise<any> {
   const controllingAccount = resolver.web3.eth.accounts.privateKeyToAccount(ethController);
 
   const duration = 60 * 60 * 24 * 365 * 2;
-  const binKey = base58_to_binary(key.publicKeyBase58);
-  //console.log(binKey);
   const tx = await resolver.didReg.methods
-    .setAttribute(controllingAccount.address, stringToBytes32('did/pub/Ed25519/veriKey/base64'), binKey, duration)
+    .setAttribute(
+      controllingAccount.address.toLowerCase(),
+      stringToBytes32('did/pub/Ed25519/veriKey/base58'),
+      key.publicKeyBuffer,
+      duration
+    )
     .send({
       from: controllingAccount.address
     });
-
   return tx;
 }
 
@@ -73,7 +65,7 @@ export async function registerKey(
  * but gave up and went with the plain idea:
  * http://www.davedoesdev.com/json-web-signatures-on-node-js/
  */
-export async function sign(message: string, keyPair: Ed25519VerificationKey2018): Promise<string> {
+export async function sign(message: string, keyPair: Ed25519KeyPair): Promise<string> {
   const signer = keyPair.signer();
 
   const header = {
@@ -93,7 +85,7 @@ export async function sign(message: string, keyPair: Ed25519VerificationKey2018)
   return jws;
 }
 
-export async function verify(data: string, keyPair: Ed25519VerificationKey2018, jws: string): Promise<boolean> {
+export async function verify(data: string, keyPair: Ed25519KeyPair, jws: string): Promise<boolean> {
   const verifier = keyPair.verifier();
 
   const [encodedHeader, , encodedSignature] = jws.split('.');

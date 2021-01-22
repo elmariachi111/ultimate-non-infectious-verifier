@@ -4,9 +4,9 @@ import { readFileSync, writeFileSync } from 'fs';
 //@ts-ignore
 import * as roles from '../../aliases.json';
 
-import cli from 'cli-ux'
 import * as inquirer from 'inquirer';
 import resolver from '../resolver';
+import requestAndResolvePrivateKey from '../helpers/resolvePrivateKey';
 //@ts-ignore
 
 
@@ -37,14 +37,7 @@ export default class Issue extends Command {
       readFileSync(args.claim, 'utf-8')
     );
 
-    let privateKey: string = flags.privateKey
-      || await cli.prompt('Enter your private key', {
-        type: 'hide'
-      });
-    if (!privateKey.startsWith('0x')) {
-      //@ts-ignore
-      privateKey = roles[privateKey]['privateKey'];
-    }
+    const privateKey = await requestAndResolvePrivateKey(flags.privateKey);
 
     const subjectDid = (flags.subject.startsWith('did:'))
       ? flags.subject
