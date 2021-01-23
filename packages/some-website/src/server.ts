@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
 import session from 'express-session';
+import cons from 'consolidate';
 
 import config from '../config.json';
 import { getFilesWithKeyword } from './utils/getFilesWithKeyword';
@@ -12,6 +13,10 @@ const app: Express = express();
 /************************************************************************************
  *                              Basic Express Middlewares
  ***********************************************************************************/
+
+app.engine('twig', cons.twig);
+app.set('view engine', 'twig');
+app.set('views', __dirname + '/app/views');
 
 app.set('json spaces', 4);
 //app.use(express.json());

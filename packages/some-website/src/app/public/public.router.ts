@@ -36,13 +36,10 @@ router.get(PUBLIC_ENDPOINT + '/', (req, res) => {
       `
     )
   } else {
-    res.status(200).send(
-      html`
-      <div>
-        <div>This is a public facing site. You can <a href="${PUBLIC_ENDPOINT}/authenticate">authenticate</a> here. </div>
-      </div>
-      `
-    )
+    res.render('index', {
+      title: "foo",
+      auth_url: `${PUBLIC_ENDPOINT}/authenticate`
+    })
   }
 });
 
