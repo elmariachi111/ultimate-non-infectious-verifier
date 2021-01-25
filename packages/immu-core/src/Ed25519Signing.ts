@@ -65,7 +65,7 @@ export async function registerKey(
  * but gave up and went with the plain idea:
  * http://www.davedoesdev.com/json-web-signatures-on-node-js/
  */
-export async function sign(message: string, keyPair: Ed25519KeyPair): Promise<string> {
+export async function signJws(message: string, keyPair: Ed25519KeyPair): Promise<string> {
   const signer = keyPair.signer();
 
   const header = {
@@ -85,7 +85,7 @@ export async function sign(message: string, keyPair: Ed25519KeyPair): Promise<st
   return jws;
 }
 
-export async function verify(data: string, keyPair: Ed25519KeyPair, jws: string): Promise<boolean> {
+export async function verifyJws(data: string, keyPair: Ed25519KeyPair, jws: string): Promise<boolean> {
   const verifier = keyPair.verifier();
 
   const [encodedHeader, , encodedSignature] = jws.split('.');

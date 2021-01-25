@@ -3,6 +3,8 @@ import base58 from 'bs58';
 import { DIDDocument, Resolver as DIDResolver } from 'did-resolver';
 import DidRegistryContract from 'ethr-did-registry';
 import { bytes32toString, getResolver } from 'ethr-did-resolver';
+import { default as getKeyResolver } from 'key-did-resolver';
+
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
@@ -28,7 +30,10 @@ export class Resolver {
     };
     this.web3 = new Web3(ethereumRpcUrl);
     const ethrDidResolver = getResolver(providerConfig);
-    this.didResolver = new DIDResolver(ethrDidResolver);
+    this.didResolver = new DIDResolver({
+      ...ethrDidResolver,
+      ...getKeyResolver.getResolver()
+    });
 
     this.didReg = new this.web3.eth.Contract(DidRegistryContract.abi as AbiItem[], process.env.REGISTRY);
   }

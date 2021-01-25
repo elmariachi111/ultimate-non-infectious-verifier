@@ -108,6 +108,9 @@ https://github.com/w3c-ccg/lds-jws2020
 NaCL DIDs: https://github.com/uport-project/nacl-did
 (sig suites: https://github.com/digitalbazaar/vc-js/blob/master/BACKGROUND.md#generating-keys-and-suites)
 
+generic did:key methods Transmute
+https://github.com/transmute-industries/did-key.js
+
 browser based ed25519: noble
 https://github.com/paulmillr/noble-ed25519
 
@@ -150,6 +153,9 @@ Specs: https://identity.foundation/didcomm-messaging/spec/
 Jolocom's Rust impl samples
 (TODO: reimpl in Typescript ;) )
 https://github.com/jolocom/didcomm-rs/blob/main/README.md
+
+A good overview of supported DID-Auth schemas
+https://nbviewer.jupyter.org/github/WebOfTrustInfo/rebooting-the-web-of-trust-spring2018/blob/master/final-documents/did-auth.pdf
 
 ### Sovrin
 
