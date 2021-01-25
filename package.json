@@ -6,6 +6,9 @@
     "node": ">=10",
     "pnpm": ">=3"
   },
+  "scripts": {
+    "preinstall": "npx only-allow pnpm"
+  },
   "browserslist": {
     "production": [
       ">0.2%",
