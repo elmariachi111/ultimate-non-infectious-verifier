@@ -2,10 +2,13 @@ import { Command } from '@oclif/command';
 import resolver from '../../resolver';
 
 export default class Resolve extends Command {
-  static description = 'resolves an (ethr) did (or address)'
+  static description = `
+    resolves aa did (or eth address). 
+    Support methods atm: [ethr|key]
+  `
 
   static examples = [
-    `$ immu resolve <did:ethr:development:0xabcde>`,
+    `$ immu did:resolve <did:ethr:development:0xabcde>`,
   ]
 
   static args = [{

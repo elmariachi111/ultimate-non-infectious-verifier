@@ -1,6 +1,6 @@
 import { Issuer } from '@immu/core';
 import { Command, flags } from '@oclif/command';
-import requestAndresolvePrivateKey from '../../helpers/resolvePrivateKey';
+import {requestAndResolvePrivateKey} from '../../helpers/prompts';
 //@ts-ignore
 import resolver from '../../resolver';
 import {PresentationRequest} from '@immu/core';
@@ -27,7 +27,7 @@ export default class CreatePresentation extends Command {
   async run() {
     const { args, flags } = this.parse(CreatePresentation);
     
-    const privateKey = await requestAndresolvePrivateKey(flags.privateKey);
+    const privateKey = await requestAndResolvePrivateKey(flags.privateKey);
 
     const presentationRequest: PresentationRequest = JSON.parse(readFileSync(args.presentationRequest, 'utf-8'));
 
