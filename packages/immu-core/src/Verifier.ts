@@ -9,7 +9,7 @@ import { Secp256k1Signing } from '.';
 
 import { Resolver } from './Resolver';
 
-interface JSONProof {
+export interface JSONProof {
   type: string;
   verificationMethod: DID;
   created: string;
@@ -17,7 +17,7 @@ interface JSONProof {
   jws: string;
 }
 
-interface JSONCredential {
+export interface JSONCredential {
   [x: string]: any;
   proof: JSONProof;
 }

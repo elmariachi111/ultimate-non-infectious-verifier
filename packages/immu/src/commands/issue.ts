@@ -6,22 +6,23 @@ import * as roles from '../../aliases.json';
 
 import * as inquirer from 'inquirer';
 import resolver from '../resolver';
-import requestAndResolvePrivateKey from '../helpers/resolvePrivateKey';
+import {requestAndResolvePrivateKey, chooseDidFromRoles} from '../helpers/prompts';
 //@ts-ignore
 
 
 export default class Issue extends Command {
-  static description = 'issues a claim'
+  static description = 'issues a claim. Asks for private keys'
 
   static examples = [
-    `$ immu issue -p <private key> -s <subject did> [CLAIM]`,
+    `$ immu issue -s <subject did> -i <issuer did> [CLAIM.json]`,
   ]
 
   static flags = {
     help: flags.help({ char: 'h' }),
     debug: flags.boolean({ char: 'd', description: 'display debug info' }),
     proofType: flags.string({ char: 't', required: false, default: "jwt", description: 'proof type (jwt|jws)' }),
-    privateKey: flags.string({ char: 'p', required: true, description: 'provide a private key' }),
+    issuer: flags.string({char: 'i', required: false, description: 'issuer did'}),
+    privateKey: flags.string({ char: 'p', required: false, description: 'provide a private key' }),
     subject: flags.string({ char: 's', required: true, description: 'the subject DID' }),
     out: flags.string({char: 'o', required: false, description: "write to file"}),
   }
@@ -37,12 +38,15 @@ export default class Issue extends Command {
       readFileSync(args.claim, 'utf-8')
     );
 
-    const privateKey = await requestAndResolvePrivateKey(flags.privateKey);
-
+    
     const subjectDid = (flags.subject.startsWith('did:'))
-      ? flags.subject
-      //@ts-ignore
-      : roles[flags.subject].did
+    ? flags.subject
+    //@ts-ignore
+    : roles[flags.subject].did
+    
+    const issuerDid = await chooseDidFromRoles(flags.issuer) 
+    const privateKey = await requestAndResolvePrivateKey(flags.privateKey);
+    
     const issuer = new Issuer(resolver, privateKey);
 
     const credential = await issuer.issueCredential(
@@ -57,7 +61,7 @@ export default class Issue extends Command {
 
     if (flags.proofType == 'jwt') {
       jsonVerifiedCredential = await issuer.createJwt(credential);     
-    } else if (flags.proofType == 'jws'){
+    } else if (flags.proofType == 'jws') {
       const issuerDid = await issuer.resolveIssuerDid();
       const prompt = inquirer.createPromptModule();
       const { signingKey: signingKeyChoice } = await prompt([{

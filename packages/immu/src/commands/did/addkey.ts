@@ -1,6 +1,6 @@
 import { Ed25519Signing } from '@immu/core';
 import { Command, flags } from '@oclif/command';
-import requestAndResolvePrivateKey from '../../helpers/resolvePrivateKey';
+import {requestAndResolvePrivateKey} from '../../helpers/prompts';
 import resolver from '../../resolver';
 
 export default class AddKey extends Command {

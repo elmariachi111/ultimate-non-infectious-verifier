@@ -1,5 +1,5 @@
 export { Issuer } from './Issuer';
-export { Verifier } from './Verifier';
+export { Verifier, JSONCredential, JSONProof } from './Verifier';
 export { Resolver } from './Resolver';
 
 export { VerifiedCredential } from 'did-jwt-vc';

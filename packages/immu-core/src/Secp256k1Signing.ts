@@ -78,18 +78,16 @@ export async function signJwsWithPrivateKey(message: string, privateKey: Ethereu
   return jwsWithoutPayload;
 }
 
+/**
+ * @throws Error
+ */
 export function verifyEthSignature(message: string, publicKey: PublicKey, jws: string): boolean {
   const [encodedHeader, , encodedSignature] = jws.split('.');
   const encodedPayload = base64url(Buffer.from(message, 'utf-8'));
 
   const jwsToCheck = `${encodedHeader}.${encodedPayload}.${encodedSignature}`;
 
-  try {
-    const retPublicKey = didJwtVerifyJWS(jwsToCheck, publicKey);
+  const retPublicKey = didJwtVerifyJWS(jwsToCheck, publicKey);
 
-    return deepEqual({ ...retPublicKey }, { ...publicKey });
-  } catch (e) {
-    console.error(e);
-    return false;
-  }
+  return deepEqual({ ...retPublicKey }, { ...publicKey });
 }
