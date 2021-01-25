@@ -6,4 +6,10 @@ const resolver = new Resolver(process.env.ETHEREUM_NODE!, process.env.REGISTRY!)
 
 const verifier = new Verifier(resolver);
 
-export { resolver, verifier };
+const trustedIssuers = process.env.TRUSTED_ISSUERS?.split(',') || [];
+
+const isIssuerTrusted = (issuerDid: string): boolean => {
+  return trustedIssuers.includes(issuerDid);
+};
+
+export { resolver, verifier, isIssuerTrusted };

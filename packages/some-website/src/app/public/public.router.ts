@@ -3,7 +3,7 @@ import bs58 from 'bs58';
 import * as crypto from 'crypto';
 import { Router } from 'express';
 import { PUBLIC_ENDPOINT } from '../../constants/endpoint';
-import { verifier } from '../services/verifier';
+import { isIssuerTrusted, verifier } from '../services/verifier';
 import { JSONCredential } from '@immu/core';
 
 // Export module for registering router in express app
@@ -50,7 +50,11 @@ router.post(PUBLIC_ENDPOINT + '/authorize', async (req, res, next) => {
         throw new Error(`the credential subject (${credential.credentialSubject.id}) is not you ${req.session.did}`);
 
       if (!credential.credentialSubject['roles']) {
-        throw new Error(`the credential subject is not about roles.`);
+        throw new Error(`the credential subject doesn't deal with roles.`);
+      }
+
+      if (!isIssuerTrusted(credential.issuer)) {
+        throw new Error(`the credential looks good but ${credential.issuer} is not on the trust list.`);
       }
 
       req.session.roles = credential.credentialSubject['roles'];
