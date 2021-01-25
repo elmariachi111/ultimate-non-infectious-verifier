@@ -1,0 +1,45 @@
+{% extends "../scaffold.twig" %}
+
+{% block body %}
+	{% embed '../include/hello.twig' with {'did': did} %}
+		{% block cta %}
+			<p>Now that you're authenticated,
+				<b>authorize</b>
+				yourself as a user who might see secrets
+			</p>
+		{% endblock %}
+	{% endembed %}
+
+	<section class="section has-background-dark has-text-white">
+		<div class="container">
+			<h2 class="is-size-3">Your Roles</h2>
+			{% if roles|length == 0 %}
+				<p>you ain't got any roles at the moment. Ask
+					<code>0xabcde</code>
+					to issue them for you
+				</p>
+			{% else %}
+				<p class="block">Your current roles are</p>
+				<ul>
+					{% for role in roles %}
+						<li>
+							<code>{{role}}</code>
+						</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		</div>
+	</section>
+
+	<section class="section">
+		<form method="post" action="{{ authorize_url }}">
+			<div class="field">
+				<label class="label" for="vc">a verifiable credential that certifies you're authorized</label>
+				<div class="control">
+					<textarea class="textarea" name="vc" placeholder="put a trusted verifiable page credential here"></textarea>
+				</div>
+			</div>
+			<button class="button is-primary" type="submit">submit</button>
+		</form>
+	</section>
+{% endblock %}
