@@ -16,7 +16,9 @@ This is a monorepo built on pnpm workspaces. Get a global pnpm if you haven't go
 
 At the moment we support two DID methods: ethr and key. The ethr method relies on blockchain lookups. We prepared a local ganache chain in the docker-compose file. Run `docker-compose up -d` to bring it up.
 
-We're using Typescript. Most tsconfigs extends the root tsconfig.json
+Since in development we're relying on a local ethr did registry we must deploy on onto our local ganache blockchain. Cd into `immu-core` and `pnpm run contracts` should to that. Take down its address and put it in your .env.local files (`immu` and `some-website`)
+
+We're using Typescript. Most tsconfigs extends the root tsconfig.json. We rely on eslint and use `dotenv-flow` for env configurations. `.env` are sample files and go into VCS, you override them by `.env.local` files (or your environment ;) ).
 
 There are three main packages relevant at the moment:
 
@@ -26,7 +28,7 @@ comes with foundational classes and no interactivity or environmental assumption
 
 ### `immu`
 
-is a mostly isolated cli wrapper around immu-core and contains interactive cli tools to interact with the code found in immu-core. Most noteably, we're _not_ really building a cli wallet but for convenience we're relying on the `aliases.json` file that keeps track of public and private keys. Make triple sure to never put any real secret in there! It's going to be removed from VCS when someone adds a little agent / wallet functionality that makes it obsolete. The CLI foundation is `oclif` which ist somewhat proposed by the official Typescript website.
+is a mostly isolated cli wrapper around immu-core and contains interactive cli tools to interact with the code found in immu-core. Most noteably, we're _not_ really building a cli wallet but for convenience we're relying on the `aliases.json` file that keeps track of public and private keys (based on ganache's public seed `myth like bonus scare over problem client lizard pioneer submit female collect`). Make triple sure to never put any real secret in there! It's going to be removed from VCS when someone adds a little agent / wallet functionality that makes it obsolete. The CLI foundation is `oclif` which ist somewhat proposed by the official Typescript website.
 
 ### `immu-patient`
 
@@ -39,6 +41,10 @@ yet another React scaffold without any functionality
 ### `some-website`
 
 is an express based demonstration service that should feel familiar to many "backend developers". All rendering happens server side (using the modern twig engine twing, so PHP devs will know what they're looking at). The whole purpose is to demonstrate how to trust, verify and validate credentials on a backend and transform them to session secrets once accepted. The idea is to show how you can exchange email/password pairs with DID auths and credential presentations.
+
+## fork of uport's ethr-did-resolver to support base58 verification keys
+
+https://github.com/decentralized-identity/ethr-did-resolver/pull/106 : the resolver would be able to resolve key material in base58 encoding (instead of base64url) as required by most crypto did libraries at the moment.
 
 # Background
 

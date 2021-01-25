@@ -1,7 +1,7 @@
 import { Command } from '@oclif/command'
 import { Verifier, VerifiedCredential } from '@immu/core';
 import { readFileSync } from 'fs';
-import resolver from '../resolver';
+import resolver from '../../resolver';
 
 export default class CheckJwtChain extends Command {
   static description = 'verifies a JWT claim and the whole signature chain'

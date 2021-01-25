@@ -9,24 +9,14 @@
   },
   "provider": {
     "privateKey": "0x6370fd033278c143179d81c5526140625662b8daa446c22ee2d73db3707e620c",
-    "did": "did:ethr:development:0x22d491bde2303f2f43325b2108d26f1eaba1e32b",
-    "verifier": {
-      "id": "did:ethr:development:0x22d491bde2303f2f43325b2108d26f1eaba1e32b#delegate-1",
-      "publicKeyBase58": "DmmoWWJULteDtHydHAB43zeU2cRQ4ANNsBWJqzij7DFs",
-      "privateKeyBase58": "TZLMrHQ1bMJwMzKT2XzPFP8Nce1PYg6ivJMZG2bj9gCkhzYot1mfys5H2VyAVyvi6DzjvDsvNJ5uzVheoF6q8Nq"
-    }
+    "did": "did:ethr:development:0x22d491bde2303f2f43325b2108d26f1eaba1e32b"
   },
   "patient": {
     "privateKey": "0x646f1ce2fdad0e6deeeb5c7e8e5543bdde65e86029e2fd9fc169899c440a7913",
-    "did": "did:ethr:development:0xe11ba2b4d45eaed5996cd0823791e0c93114882d",
-    "verifier": {
-      "id": "did:ethr:development:0xe11ba2b4d45eaed5996cd0823791e0c93114882d#delegate-1",
-      "publicKeyBase58": "EZN5fL8ZF5aDXYMPxrdg7hzCkfAyLZpyzzMtMiwFe1Fv",
-      "privateKeyBase58": "53hf2ZbpECHtAF7q9ek26xmYoLt7V8HHgcQrTEnyi1RXCUn5mCXkcYNifBc22Jwit6Jq3N6VPf82LMkAncsy49wv"
-    }
+    "did": "did:ethr:development:0xe11ba2b4d45eaed5996cd0823791e0c93114882d"
   },
   "gate": {
-    "did": "did:ethr:development:0xd03ea8624C8C5987235048901fB614fDcA89b117",
-    "privateKey": "0xadd53f9a7e588d003326d1cbf9e4a43c061aadd9bc938c843a79e7b4fd2ad743"
+    "privateKey": "0xadd53f9a7e588d003326d1cbf9e4a43c061aadd9bc938c843a79e7b4fd2ad743",
+    "did": "did:ethr:development:0xd03ea8624c8c5987235048901fb614fdca89b117"
   }
 }

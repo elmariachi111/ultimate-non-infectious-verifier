@@ -1,10 +1,9 @@
+import { Ed25519Signing, PublicKey } from '@immu/core';
 import { Command, flags } from '@oclif/command';
-import * as fs from 'fs';
-import * as inquirer from 'inquirer';
 import * as base58 from 'bs58';
-
-import { Ed25519Signing, PublicKey, Authentication, DIDDocument } from '@immu/core';
+import * as inquirer from 'inquirer';
 import resolver from '../../resolver';
+
 
 export default class Sign extends Command {
   static description = 'creates a new ed25519 signature on message. Asks for private keys'
@@ -32,21 +31,20 @@ export default class Sign extends Command {
       return;
     }
  
-    const authOptions = did.authentication.map( (auth: string | Authentication |PublicKey ) => {  
-      if (typeof auth === "string") return auth;
-      return (<Authentication>auth).publicKey;
-    })
+    const authOptions = did.publicKey
+      .map( (pubKey: PublicKey) => ({  
+        name: `(${pubKey.type}) ${pubKey.id}`,
+        value: pubKey
+      }));
 
     const prompt = inquirer.createPromptModule();
-    const {signingKeyChoice} = await prompt([{
+    const {signingKey} = await prompt([{
       type: "list",
-      name: "signingKeyChoice",
+      name: "signingKey",
       message: "signing key to use",
       choices: authOptions
     }]);
     
-    const [signingKey] = did.publicKey.filter(pk => pk.id == signingKeyChoice);
-
     const { signingPrivateKey } = await prompt([{
       message: `private key (base58) for ${signingKey.id}`,
       name: "signingPrivateKey",

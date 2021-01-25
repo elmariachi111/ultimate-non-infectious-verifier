@@ -13,7 +13,7 @@ export default class AddKey extends Command {
   static flags = {
     help: flags.help({ char: 'h' }),
     debug: flags.boolean({ char: 'd', description: 'display debug info' }),
-    privateKey: flags.string({ char: 'p', required: true, description: 'a private key that controls the identity that should receive a new key' }),
+    privateKey: flags.string({ char: 'p', required: false, description: 'a private key that controls the identity that should receive a new key' }),
   }
 
   async run() {
