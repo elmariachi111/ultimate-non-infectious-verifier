@@ -12,4 +12,4 @@ const isIssuerTrusted = (issuerDid: string): boolean => {
   return trustedIssuers.includes(issuerDid);
 };
 
-export { resolver, verifier, isIssuerTrusted };
+export { resolver, verifier, isIssuerTrusted, trustedIssuers };

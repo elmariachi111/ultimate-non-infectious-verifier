@@ -11,13 +11,11 @@ router.use(SECRET_ENDPOINT, async (req, res, next) => {
     await req.flash('info', `you're not authenticated`);
     return res.redirect(PUBLIC_ENDPOINT + '/');
   }
-  res.locals.did = req.session.did;
 
   if (!req.session.roles) {
     await req.flash('info', `you're not authorized`);
     return res.status(401).redirect(PUBLIC_ENDPOINT + '/');
   }
-  console.log(req.session.roles);
 
   if (!req.session.roles.includes(MAY_SEE_SECRETS)) {
     await req.flash('info', `you're not authorized to see secrets`);

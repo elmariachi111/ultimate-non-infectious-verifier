@@ -47,7 +47,7 @@ app.use(async (req, res, next) => {
   next();
 });
 app.use(async (req, res, next) => {
-  res.locals.did = req.session['did'];
+  res.locals.session = req.session;
   next();
 });
 // Handle logs in console during development

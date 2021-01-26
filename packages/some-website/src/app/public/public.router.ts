@@ -3,7 +3,7 @@ import bs58 from 'bs58';
 import * as crypto from 'crypto';
 import { Router } from 'express';
 import { PUBLIC_ENDPOINT } from '../../constants/endpoint';
-import { isIssuerTrusted, verifier } from '../services/verifier';
+import { isIssuerTrusted, trustedIssuers, verifier } from '../services/verifier';
 import { JSONCredential } from '@immu/core';
 
 // Export module for registering router in express app
@@ -13,9 +13,8 @@ export const router: Router = Router();
 router.get(PUBLIC_ENDPOINT + '/', async (req, res) => {
   if (req.session.did) {
     res.render(`public/authenticated.twig`, {
-      did: req.session.did,
       authorize_url: `${PUBLIC_ENDPOINT}/authorize`,
-      roles: req.session.roles || []
+      trusted_issuers: trustedIssuers
     });
   } else {
     if (!req.session.nonce) {
@@ -23,7 +22,6 @@ router.get(PUBLIC_ENDPOINT + '/', async (req, res) => {
     }
 
     res.render('public/authenticate.twig', {
-      nonce: req.session.nonce,
       auth_url: `${PUBLIC_ENDPOINT}/authenticate`
     });
   }
@@ -34,11 +32,12 @@ router.post(PUBLIC_ENDPOINT + '/authenticate', async (req, res) => {
     throw 'no nonce in your session';
   } else {
     const proveResult = await prove(req.body.did, req.session.nonce, req.body.signature);
+    console.log(`${req.body.did} signed ${req.session.nonce} correctly`);
     if (proveResult) {
       req.session.did = req.body.did;
     }
   }
-  res.redirect(PUBLIC_ENDPOINT + '/');
+  return res.redirect(PUBLIC_ENDPOINT + '/');
 });
 
 router.post(PUBLIC_ENDPOINT + '/authorize', async (req, res, next) => {

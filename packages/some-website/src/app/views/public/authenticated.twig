@@ -1,27 +1,29 @@
 {% extends "../scaffold.twig" %}
 
 {% block body %}
-	{% embed '../include/hello.twig' with {'did': did} %}
+	{% embed '../include/hello.twig' with {'did': session.did} %}
 		{% block cta %}
-			<p>Now that you're authenticated,
-				<b>authorize</b>
-				yourself as a user who might see secrets
-			</p>
+			{% if session.roles|length == 0 %}
+				<p>Now that you're authenticated,
+					<b>authorize</b>
+					yourself as a user who might see secrets
+				</p>
+			{% endif %}
 		{% endblock %}
 	{% endembed %}
 
 	<section class="section has-background-dark has-text-white">
 		<div class="container">
 			<h2 class="is-size-3">Your Roles</h2>
-			{% if roles|length == 0 %}
+			{% if session.roles|length == 0 %}
 				<p>you ain't got any roles at the moment. Ask
-					<code>0xabcde</code>
-					to issue them for you
+					<code>{{ trusted_issuers | join(' or ') }}</code>
+					to issue one for you
 				</p>
 			{% else %}
 				<p class="block">Your current roles are</p>
 				<ul>
-					{% for role in roles %}
+					{% for role in session.roles %}
 						<li>
 							<code>{{role}}</code>
 						</li>

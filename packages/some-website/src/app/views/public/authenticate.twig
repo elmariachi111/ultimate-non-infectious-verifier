@@ -4,11 +4,11 @@
 	<section class="section">
 		<p class="block">
 			This website allows you to authenticate using DIDs and signatures,
-			and authorize yourself by presenting Verifiable credentials.
+									and authorize yourself by presenting Verifiable credentials.
 		</p>
 		<p class="block">To prove control over your DID, send us your DID &amp; a signature about this nonce:</p>
 		<code class="is-size-4">
-			{{ nonce }}
+			{{ session.nonce }}
 		</code>
 	</section>
 	<section class="section">
@@ -23,7 +23,7 @@
 
 			<div class="field">
 				<label class="label" for="signature">Your base58 signature of
-					<code>{{nonce}}</code>
+					<code>{{session.nonce}}</code>
 				</label>
 				<div class="control">
 					<textarea name="signature" class="textarea" placeholder="the base58 encoded signature"></textarea>
