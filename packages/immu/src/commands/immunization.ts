@@ -44,10 +44,10 @@ const baseImmunization = {
 }
 
 export default class CreateImmunization extends Command {
-  static description = 'creates an immunization claim'
+  static description = 'issues an immunization credential'
 
   static examples = [
-    `$ immu immunization <current lot number>`,
+    `$ immu immunization`,
   ]
 
   static flags = {
@@ -58,9 +58,6 @@ export default class CreateImmunization extends Command {
     proofType: flags.string({ char: 't', required: false, default: "jwt", description: 'proof type (jwt|jws)' }),
   }
 
-  static args = [
-    { name: "defaultLotNumber", required: false }
-  ]
   async run() {
     const { args, flags } = this.parse(CreateImmunization)
 
@@ -69,7 +66,6 @@ export default class CreateImmunization extends Command {
         name: "lotNumber",
         message: "lotNumber",
         type: "input",
-        default: args.defaultLotNumber,
         validate: (inp: string) => inp.match(/\w{5,10}/g) ? true : false
       },
       {

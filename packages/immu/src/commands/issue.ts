@@ -9,7 +9,7 @@ import { resolver } from '../resolver';
 
 
 export default class Issue extends Command {
-  static description = 'issues a claim. Asks for private keys'
+  static description = 'issues a generic credential. Asks for private keys'
 
   static examples = [
     `$ immu issue -s <subject did> -i <issuer did> [CLAIM.json]`,
@@ -26,7 +26,7 @@ export default class Issue extends Command {
   }
 
   static args = [
-    { name: 'claim' }
+    { name: 'claim', required: true }
   ]
 
   async run() {

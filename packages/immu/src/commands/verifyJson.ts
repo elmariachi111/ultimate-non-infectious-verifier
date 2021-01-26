@@ -11,7 +11,7 @@ export default class VerifyJson extends Command {
   ]
 
   static args = [{
-    name: 'file',
+    name: 'file', required: true
   }]
 
   async run() {
