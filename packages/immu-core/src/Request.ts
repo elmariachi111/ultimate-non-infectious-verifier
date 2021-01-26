@@ -6,6 +6,9 @@ export interface PresentationRequest {
   requestedSubjects: string[];
   challenge: string;
 }
+/**
+ * //todo this is **totally** made up
+ */
 export function createRequest(requester: DID, subjects: string[]): PresentationRequest {
   const challenge = Web3.utils.randomHex(32);
   const presentationRequest = {
