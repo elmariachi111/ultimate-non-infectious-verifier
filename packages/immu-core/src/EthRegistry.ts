@@ -31,22 +31,30 @@ export class EthRegistry {
     console.log(owner);
   }
 
-  //todo (low prio): add support for additional Sec256k keys
-  async addKey(ethController: EthereumPrivateKey, publicKey: Ed25519KeyPair, network: string): Promise<any> {
-    const { web3, contract } = this.didRegistries[network];
-
-    const controllingAccount = web3.eth.accounts.privateKeyToAccount(ethController);
+  /**
+   * //todo (low prio): add support for additional Sec256k keys
+   * //todo this will only work with a provider that controls address
+   *
+   * registers a new key on an ethr did registry
+   *
+   * @param newPublicKey
+   * @param ethPrivateKey
+   * @param network string development | mainnet | rinkeby | goerli
+   */
+  async addKey(newPublicKey: Ed25519KeyPair, address: EthereumAddress, network = 'development'): Promise<any> {
+    const { contract } = this.didRegistries[network];
 
     const duration = 60 * 60 * 24 * 365 * 2;
+
     const tx = contract.methods
       .setAttribute(
-        controllingAccount.address.toLowerCase(),
+        address.toLowerCase(),
         stringToBytes32('did/pub/Ed25519/veriKey/base58'),
-        publicKey.publicKeyBuffer,
+        newPublicKey.publicKeyBuffer,
         duration
       )
       .send({
-        from: controllingAccount.address
+        from: address
       });
     return tx;
   }

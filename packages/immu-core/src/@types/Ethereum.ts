@@ -1,3 +1,5 @@
+import { provider } from 'web3-core';
+
 export type EthereumAddress = string;
 export type EthereumPrivateKey = string;
 
