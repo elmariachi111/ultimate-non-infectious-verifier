@@ -1,6 +1,7 @@
 export { Issuer } from './Issuer';
 export { Verifier, JSONCredential, JSONProof } from './Verifier';
 export { Resolver } from './Resolver';
+export { EthRegistry } from './EthRegistry';
 
 export { VerifiedCredential } from 'did-jwt-vc';
 export { JwtCredentialSubject } from 'did-jwt-vc/lib/types';

@@ -1,5 +1,5 @@
 import { Command } from '@oclif/command';
-import resolver from '../../resolver';
+import { resolver } from '../../resolver';
 
 export default class Resolve extends Command {
   static description = `

@@ -1,6 +1,6 @@
 import { Command } from '@oclif/command'
 import { Verifier, VerifiedCredential, displayCredential } from '@immu/core';
-import resolver from '../resolver';
+import { resolver } from '../resolver';
 
 export default class VerifyJwt extends Command {
   static description = 'verifies a JWT claim'
