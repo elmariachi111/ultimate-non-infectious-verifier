@@ -2,11 +2,13 @@ import { Issuer } from '@immu/core';
 import { Command, flags } from '@oclif/command';
 import cli from 'cli-ux';
 import * as inquirer from 'inquirer';
-//import * as qrcode from 'qrcode-terminal';
 import * as QRCode from 'qrcode'
-import resolver from '../resolver';
+import { resolver } from '../resolver';
+//@ts-ignore
+import * as roles from '../../aliases.json';
 
-import { chooseSigningKey, requestAndResolvePrivateKey } from '../helpers/prompts';
+import { chooseDidFromRoles, chooseSigningKey, requestAndResolvePrivateKey } from '../helpers/prompts';
+import { issueCredential } from '../helpers/issueCredential';
 
 
 //https://ucum.org/ucum.html#section-Base-Units
@@ -41,7 +43,6 @@ const baseImmunization = {
   }
 }
 
-
 export default class CreateImmunization extends Command {
   static description = 'creates an immunization claim'
 
@@ -50,7 +51,10 @@ export default class CreateImmunization extends Command {
   ]
 
   static flags = {
-    debug: flags.boolean({char: 'd', description: 'display debug info'}),
+    debug: flags.boolean({ char: 'd', description: 'display debug info' }),
+    issuer: flags.string({ char: 'i', required: false, description: 'issuer did' }),
+    out: flags.string({ char: 'o', required: false, description: "write to file" }),
+    subject: flags.string({ char: 's', required: false, description: 'the subject DID' }),
     proofType: flags.string({ char: 't', required: false, default: "jwt", description: 'proof type (jwt|jws)' }),
   }
 
@@ -109,15 +113,7 @@ export default class CreateImmunization extends Command {
 
     // console.log(immunization);
 
-    let subject = await cli.prompt('patient DID');
-    if (!subject.startsWith('did:')) {
-      //@ts-ignore
-      subject = roles[subject]['did'];
-    }
-
-    const privateKey = await requestAndResolvePrivateKey();
-  
-    const issuer = new Issuer(resolver, privateKey);
+    const subjectDid = await chooseDidFromRoles(flags.subject)
     const claim = {
       immunization: {
         type: "ImmunizationDocument",
@@ -125,31 +121,19 @@ export default class CreateImmunization extends Command {
       }
     }
 
+    const issuerDid = await chooseDidFromRoles(flags.issuer)
+    const issuer = new Issuer(resolver, issuerDid);
+
     const credential = await issuer.issueCredential(
-      subject,
+      subjectDid,
       claim
     );
 
-    if (flags.debug)
-      console.debug(JSON.stringify(credential, null, 2));
-    
-    let jsonVerifiedCredential;
-    if (flags.proofType == 'jwt') {
-      jsonVerifiedCredential = await issuer.createJwt(credential);     
-    } else if (flags.proofType == 'jws') {
-      const {signingKey, signingPrivateKey} = await chooseSigningKey(await issuer.resolveIssuerDid());
-      jsonVerifiedCredential = await issuer.createJsonProof(credential, signingKey, signingPrivateKey);
-    }
+    const jsonVerifiableCredential = await issueCredential(credential, issuer, flags);
 
-    console.log(jsonVerifiedCredential);
-
-    const url = await QRCode.toDataURL(jsonVerifiedCredential, {
+    const url = await QRCode.toDataURL(jsonVerifiableCredential, {
       errorCorrectionLevel: 'L'
     });
     cli.open(url)
-    
-    //qrcode.setErrorLevel('L');
-    //qrcode.generate(verifiedCredential, {small: true});
-
   }
 }

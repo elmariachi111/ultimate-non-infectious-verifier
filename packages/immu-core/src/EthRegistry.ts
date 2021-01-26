@@ -33,7 +33,10 @@ export class EthRegistry {
 
   /**
    * //todo (low prio): add support for additional Sec256k keys
-   * //todo this will only work with a provider that controls address
+   *
+   * // todo this will only work with a provider that controls address
+   * // might be soleable by adding an account using a private key to the providers eth.wallets like soL
+   * https://web3js.readthedocs.io/en/v1.3.0/web3-eth-accounts.html#wallet-add
    *
    * registers a new key on an ethr did registry
    *

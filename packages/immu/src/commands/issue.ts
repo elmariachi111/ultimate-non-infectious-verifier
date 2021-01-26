@@ -3,7 +3,8 @@ import { Command, flags } from '@oclif/command';
 import { readFileSync, writeFileSync } from 'fs';
 //@ts-ignore
 import * as roles from '../../aliases.json';
-import { chooseDidFromRoles, chooseSigningKey, requestAndResolvePrivateKey } from '../helpers/prompts';
+import { issueCredential } from '../helpers/issueCredential';
+import { chooseDidFromRoles } from '../helpers/prompts';
 import { resolver } from '../resolver';
 
 
@@ -41,7 +42,6 @@ export default class Issue extends Command {
       : roles[flags.subject].did
 
     const issuerDid = await chooseDidFromRoles(flags.issuer)
-
     const issuer = new Issuer(resolver, issuerDid);
 
     const credential = await issuer.issueCredential(
@@ -49,23 +49,7 @@ export default class Issue extends Command {
       claim
     )
 
-    if (flags.debug)
-      console.debug(JSON.stringify(credential, null, 2));
+    issueCredential(credential, issuer, flags);
 
-    let jsonVerifiedCredential;
-
-    if (flags.proofType == 'jwt') {
-      const privateKey = await requestAndResolvePrivateKey(flags.privateKey);
-      jsonVerifiedCredential = await issuer.createJwt(credential, privateKey);
-    } else if (flags.proofType == 'jws') {
-      const { signingKey, signingPrivateKey } = await chooseSigningKey(await issuer.resolveIssuerDid());
-      jsonVerifiedCredential = await issuer.createJsonProof(credential, signingKey, signingPrivateKey);
-    }
-
-    if (flags.out) {
-      writeFileSync(flags.out, jsonVerifiedCredential, 'utf-8');
-    } else {
-      console.log(jsonVerifiedCredential);
-    }
   }
 }

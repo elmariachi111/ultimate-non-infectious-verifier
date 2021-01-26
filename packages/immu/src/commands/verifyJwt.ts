@@ -20,6 +20,6 @@ export default class VerifyJwt extends Command {
 
     const verifiedCredential: VerifiedCredential = await verifier.verifyCredential(args.jwt);
     console.log(displayCredential(verifiedCredential.verifiableCredential));
-
+    console.log(true) // verifier will throw an error if jwt cant be verified
   }
 }
