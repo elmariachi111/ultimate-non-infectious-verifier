@@ -1,8 +1,9 @@
-import { Ed25519Signing, PublicKey } from '@immu/core';
+import { Ed25519Signing, PublicKey, Secp256k1Signing } from '@immu/core';
 import { Command, flags } from '@oclif/command';
 import * as base58 from 'bs58';
 import * as inquirer from 'inquirer';
-import resolver from '../../resolver';
+import { chooseSigningKey } from '../../helpers/prompts';
+import { resolver } from '../../resolver';
 
 
 export default class Sign extends Command {
@@ -18,41 +19,35 @@ export default class Sign extends Command {
   }
 
   static args = [
-    {name: 'did', required: true},
-    {name: 'message', required: true}
+    { name: 'did', required: true },
+    { name: 'message', required: true }
   ]
 
   async run() {
     const { flags, args } = this.parse(Sign);
-   
+
     const did = await resolver.resolve(args.did);
     if (!did.authentication) {
       console.error("no authentication methods found in your did");
       return;
     }
- 
-    const authOptions = did.publicKey
-      .map( (pubKey: PublicKey) => ({  
-        name: `(${pubKey.type}) ${pubKey.id}`,
-        value: pubKey
-      }));
+    const { signingKey, signingPrivateKey } = await chooseSigningKey(did);
 
-    const prompt = inquirer.createPromptModule();
-    const {signingKey} = await prompt([{
-      type: "list",
-      name: "signingKey",
-      message: "signing key to use",
-      choices: authOptions
-    }]);
-    
-    const { signingPrivateKey } = await prompt([{
-      message: `private key (base58) for ${signingKey.id}`,
-      name: "signingPrivateKey",
-      type: "input"
-    }])
-    
-    const edKeyPair = await Ed25519Signing.recoverEd25519KeyPair(signingKey, signingPrivateKey);
-    const signature = await edKeyPair.signer().sign({
+    let signer;
+    if (signingKey.type == 'Secp256k1VerificationKey2018') {
+      const s256keyPair = await (signingKey.ethereumAddress
+        ? Secp256k1Signing.recoverKeyPairFromEthereumAccount(signingPrivateKey.slice(2))
+        : Secp256k1Signing.recoverKeyPair(signingKey, signingPrivateKey)
+      );
+      signer = s256keyPair.signer();
+    } else if (signingKey.type == 'Ed25519VerificationKey2018') {
+      const edKeyPair = await Ed25519Signing.recoverEd25519KeyPair(signingKey, signingPrivateKey);
+      signer = await edKeyPair.signer();
+    } else {
+      throw new Error(`unsupported key type ${signingKey.type}`)
+    }
+
+    const signature = await signer.sign({
       data: args.message
     });
 

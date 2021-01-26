@@ -5,8 +5,6 @@ import bs58 from 'bs58';
 //import { CryptoLD } from 'crypto-ld';
 import crypto from 'crypto';
 import { PublicKey } from 'did-resolver';
-import { stringToBytes32 } from 'ethr-did-resolver';
-import { EthereumPrivateKey, Resolver } from './Resolver';
 
 export async function createEd25519VerificationKey(seed?: Uint8Array): Promise<Ed25519KeyPair> {
   const edKeyPair = await Ed25519KeyPair.generate({
@@ -35,27 +33,6 @@ export async function recoverEd25519KeyPair(key: PublicKey, privateKeyBase58?: s
   }
 
   return Ed25519KeyPair.from(keyConfig);
-}
-
-export async function registerKey(
-  resolver: Resolver,
-  ethController: EthereumPrivateKey,
-  key: Ed25519KeyPair
-): Promise<any> {
-  const controllingAccount = resolver.web3.eth.accounts.privateKeyToAccount(ethController);
-
-  const duration = 60 * 60 * 24 * 365 * 2;
-  const tx = await resolver.didReg.methods
-    .setAttribute(
-      controllingAccount.address.toLowerCase(),
-      stringToBytes32('did/pub/Ed25519/veriKey/base58'),
-      key.publicKeyBuffer,
-      duration
-    )
-    .send({
-      from: controllingAccount.address
-    });
-  return tx;
 }
 
 /**

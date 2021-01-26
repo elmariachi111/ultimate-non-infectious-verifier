@@ -1,6 +1,6 @@
 import { Command } from '@oclif/command'
 import { Verifier, VerifiedCredential, displayCredential } from '@immu/core';
-import resolver from '../resolver';
+import { resolver } from '../resolver';
 import { readFileSync } from 'fs';
 
 export default class VerifyJson extends Command {
@@ -11,7 +11,7 @@ export default class VerifyJson extends Command {
   ]
 
   static args = [{
-    name: 'file',
+    name: 'file', required: true
   }]
 
   async run() {

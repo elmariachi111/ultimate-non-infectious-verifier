@@ -1,8 +1,16 @@
-import { Resolver } from "@immu/core";
+import { EthRegistry, Resolver } from "@immu/core";
 
-const resolver = new Resolver(
-    process.env.ETHEREUM_NODE!,
-    process.env.REGISTRY!
-);
+const config =
+    [
+        ...Resolver.ethProviderConfig(process.env.INFURA_ID!),
+        {
+            name: "development",
+            rpcUrl: process.env.ETHEREUM_NODE!,
+            registry: process.env.REGISTRY!
+        }
+    ];
+export const registry = new EthRegistry(config);
+export const resolver = new Resolver(config);
 
-export default resolver;
+
+

@@ -1,16 +1,16 @@
 import { Command } from '@oclif/command'
 import { Verifier, VerifiedCredential, displayCredential } from '@immu/core';
-import resolver from '../resolver';
+import { resolver } from '../resolver';
 
 export default class VerifyJwt extends Command {
-  static description = 'verifies a JWT claim'
+  static description = 'verifies a JWT credential'
 
   static examples = [
     `$ immu verify <jwt>`,
   ]
 
   static args = [{
-    name: 'jwt',
+    name: 'jwt', required: true
   }]
 
   async run() {
@@ -20,6 +20,6 @@ export default class VerifyJwt extends Command {
 
     const verifiedCredential: VerifiedCredential = await verifier.verifyCredential(args.jwt);
     console.log(displayCredential(verifiedCredential.verifiableCredential));
-
+    console.log(true) // verifier will throw an error if jwt cant be verified
   }
 }

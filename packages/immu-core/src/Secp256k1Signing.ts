@@ -6,7 +6,8 @@ import crypto from 'crypto';
 import { createJWS, SimpleSigner, verifyJWS as didJwtVerifyJWS } from 'did-jwt';
 import { PublicKey } from 'did-resolver';
 import secp256k1 from 'secp256k1';
-import { EthereumPrivateKey } from './Resolver';
+import { EthereumPrivateKey } from './@types/Ethereum';
+
 import deepEqual from './util/deepEqual';
 
 export async function createVerificationKey(seed?: Uint8Array): Promise<Secp256k1KeyPair> {
