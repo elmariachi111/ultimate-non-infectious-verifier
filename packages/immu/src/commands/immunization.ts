@@ -6,8 +6,7 @@ import * as inquirer from 'inquirer';
 import * as QRCode from 'qrcode'
 import resolver from '../resolver';
 
-//@ts-ignore
-import * as roles from '../../aliases.json';
+import { chooseSigningKey, requestAndResolvePrivateKey } from '../helpers/prompts';
 
 
 //https://ucum.org/ucum.html#section-Base-Units
@@ -52,6 +51,7 @@ export default class CreateImmunization extends Command {
 
   static flags = {
     debug: flags.boolean({char: 'd', description: 'display debug info'}),
+    proofType: flags.string({ char: 't', required: false, default: "jwt", description: 'proof type (jwt|jws)' }),
   }
 
   static args = [
@@ -115,12 +115,8 @@ export default class CreateImmunization extends Command {
       subject = roles[subject]['did'];
     }
 
-    let privateKey = await cli.prompt('Enter your private key', { type: 'hide' });
-    if (!privateKey.startsWith('0x')) {
-      //@ts-ignore
-      privateKey = roles[privateKey]['privateKey'];
-    }
-    
+    const privateKey = await requestAndResolvePrivateKey();
+  
     const issuer = new Issuer(resolver, privateKey);
     const claim = {
       immunization: {
@@ -136,11 +132,18 @@ export default class CreateImmunization extends Command {
 
     if (flags.debug)
       console.debug(JSON.stringify(credential, null, 2));
+    
+    let jsonVerifiedCredential;
+    if (flags.proofType == 'jwt') {
+      jsonVerifiedCredential = await issuer.createJwt(credential);     
+    } else if (flags.proofType == 'jws') {
+      const {signingKey, signingPrivateKey} = await chooseSigningKey(await issuer.resolveIssuerDid());
+      jsonVerifiedCredential = await issuer.createJsonProof(credential, signingKey, signingPrivateKey);
+    }
 
-    const verifiedCredential = await issuer.createJwt(credential);
-    console.log(verifiedCredential);
+    console.log(jsonVerifiedCredential);
 
-    const url = await QRCode.toDataURL(verifiedCredential, {
+    const url = await QRCode.toDataURL(jsonVerifiedCredential, {
       errorCorrectionLevel: 'L'
     });
     cli.open(url)

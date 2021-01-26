@@ -1,3 +1,4 @@
+import { DIDDocument, PublicKey } from '@immu/core';
 import { EthereumPrivateKey } from '@immu/core/build/Resolver';
 import cli from 'cli-ux';
 import * as inquirer from 'inquirer';
@@ -32,4 +33,25 @@ export async function chooseDidFromRoles(givenDid?: string): Promise<string>  {
       choices: choices
     }]);
     return did;
+}
+
+export async function chooseSigningKey(issuerDid: DIDDocument): Promise<{ signingKey: PublicKey, signingPrivateKey: string }> {
+    const prompt = inquirer.createPromptModule();
+    const { signingKey: signingKeyChoice } = await prompt([{
+        type: "list",
+        name: "signingKey",
+        message: "signing key to use",
+        choices: issuerDid.publicKey.map(publicKey => ({ name: `${publicKey.id}(${publicKey.type}) `, value: publicKey.id }))
+    }]);
+    const [signingKey] = issuerDid.publicKey.filter(pk => pk.id == signingKeyChoice);
+
+    const { signingPrivateKey } = await prompt([{
+        message: `private key for ${signingKey.id}`,
+        name: "signingPrivateKey",
+        type: "hide"
+    }])
+
+    return {
+        signingKey, signingPrivateKey
+    }
 }

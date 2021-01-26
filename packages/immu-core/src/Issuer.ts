@@ -9,7 +9,8 @@ import {
   VerifiableCredential
 } from 'did-jwt-vc/lib/types';
 import { EthereumPrivateKey, Resolver } from './Resolver';
-import { DIDDocument } from 'did-resolver';
+import { DIDDocument, PublicKey } from 'did-resolver';
+import { Ed25519Signing, Secp256k1Signing } from '.';
 
 export class Issuer {
   private resolver: Resolver;
@@ -76,6 +77,37 @@ export class Issuer {
     return createVerifiablePresentationJwt(presentationPayload, didIssuer);
   }
 
+  async createJsonProof(
+    credential: CredentialPayload,
+    signingKey: PublicKey,
+    signingPrivateKey: string
+  ): Promise<string> {
+    //create proof over credential
+    let jws, proofType;
+    const jsonCredential = JSON.stringify(credential, null, 2);
+    if (signingKey.type == 'Ed25519VerificationKey2018') {
+      const keyPair = await Ed25519Signing.recoverEd25519KeyPair(signingKey, signingPrivateKey);
+      jws = await Ed25519Signing.signJws(jsonCredential, keyPair);
+      proofType = 'Ed25519Signature2018';
+    } else if (signingKey.type == 'Secp256k1VerificationKey2018') {
+      jws = await Secp256k1Signing.signJwsWithPrivateKey(jsonCredential, signingPrivateKey);
+      proofType = 'EcdsaSecp256k1Signature2019';
+    }
+
+    const proof = {
+      type: proofType,
+      verificationMethod: signingKey.id,
+      created: new Date().toISOString(),
+      proofPurpose: 'assertionMethod',
+      jws
+    };
+
+    const verifiedCredential = {
+      ...credential,
+      proof
+    };
+    return JSON.stringify(verifiedCredential, null, 2);
+  }
   async createProof(credential: CredentialPayload): Promise<string> {
     const ellipticSigner = EllipticSigner(this.issuer.privateKey);
     const signedJose = await ellipticSigner(JSON.stringify(credential));

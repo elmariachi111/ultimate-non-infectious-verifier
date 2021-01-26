@@ -6,7 +6,7 @@ import * as roles from '../../aliases.json';
 
 import * as inquirer from 'inquirer';
 import resolver from '../resolver';
-import {requestAndResolvePrivateKey, chooseDidFromRoles} from '../helpers/prompts';
+import {requestAndResolvePrivateKey, chooseDidFromRoles, chooseSigningKey} from '../helpers/prompts';
 //@ts-ignore
 
 
@@ -62,50 +62,8 @@ export default class Issue extends Command {
     if (flags.proofType == 'jwt') {
       jsonVerifiedCredential = await issuer.createJwt(credential);     
     } else if (flags.proofType == 'jws') {
-      const issuerDid = await issuer.resolveIssuerDid();
-      const prompt = inquirer.createPromptModule();
-      const { signingKey: signingKeyChoice } = await prompt([{
-        type: "list",
-        name: "signingKey",
-        message: "signing key to use",
-        choices: issuerDid.publicKey.map(publicKey => ({ name: `${publicKey.id}(${publicKey.type}) `, value: publicKey.id }))
-      }]);
-      const [signingKey] = issuerDid.publicKey.filter(pk => pk.id == signingKeyChoice);
-
-      const { signingPrivateKey } = await prompt([{
-        message: `private key for ${signingKey.id}`,
-        name: "signingPrivateKey",
-        type: "input"
-      }])
-
-      //create proof over credential
-      let jws, proofType;
-      const jsonCredential = JSON.stringify(credential, null, 2);
-      if (signingKey.type == 'Ed25519VerificationKey2018') {
-        const keyPair = await Ed25519Signing.recoverEd25519KeyPair(signingKey, signingPrivateKey);
-        jws = await Ed25519Signing.signJws(jsonCredential, keyPair);
-        proofType = 'Ed25519Signature2018'
-      } else if (signingKey.type == 'Secp256k1VerificationKey2018') {
-        // const keyPair = await Secp256k1Signing.recoverKeyPairFromEthereumAccount(
-        //   signingPrivateKey
-        // )
-        jws = await Secp256k1Signing.signJwsWithPrivateKey(jsonCredential, signingPrivateKey);
-        proofType = 'EcdsaSecp256k1Signature2019'
-      }
-      
-      const proof = {
-        type: proofType,
-        verificationMethod: signingKey.id,
-        created: (new Date()).toISOString(),
-        proofPurpose: 'assertionMethod',
-        jws
-      };
-
-      const verifiedCredential = {
-        ...credential,
-        proof
-      }
-      jsonVerifiedCredential = JSON.stringify(verifiedCredential, null, 2);
+      const {signingKey, signingPrivateKey} = await chooseSigningKey(await issuer.resolveIssuerDid());
+      jsonVerifiedCredential = await issuer.createJsonProof(credential, signingKey, signingPrivateKey);
     }
 
     if (flags.out) {
