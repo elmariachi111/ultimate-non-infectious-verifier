@@ -1,8 +1,14 @@
 import { Resolver, Verifier } from '@immu/core';
 
-console.log('eth', process.env.ETHEREUM_NODE);
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-const resolver = new Resolver(process.env.ETHEREUM_NODE!, process.env.REGISTRY!);
+const resolverConfig = [
+  ...Resolver.ethProviderConfig(process.env.INFURA_ID!),
+  {
+    name: 'development',
+    rpcUrl: process.env.ETHEREUM_NODE!,
+    registry: process.env.REGISTRY!
+  }
+];
+const resolver = new Resolver(resolverConfig);
 
 const verifier = new Verifier(resolver);
 

@@ -70,6 +70,8 @@ router.get(PUBLIC_ENDPOINT + '/logout', async (req, res, next) => {
   });
 });
 
+//todo: this is supposed to work with sec256k keys, too
+//might be solved by using specialized authorization credentials
 async function prove(did: string, nonce: string, b58Signature: string) {
   const signature = bs58.decode(b58Signature);
   const didDocument = await didKeyDriver.get({ did });
