@@ -1,6 +1,6 @@
 # DID immunizations
 
-is a proof of concept for interoperable usage of verifiable credentials used to prove aspects of an user. This project concentrates on medical use cases and explicitly strives to demonstrate the usage of W3C compliant DIDs and VCs for an immunization health pass. Our operational goal is to demonstrate that
+this project is a proof of concept for interoperable usage of verifiable credentials used to prove aspects of an user. This project concentrates on medical use cases and explicitly strives to demonstrate the usage of W3C compliant DIDs and VCs for an immunization health pass. Our operational goal is to demonstrate that
 
 - we can use (more or less) arbitrary DIDs for authentication and as credential subject
 - we can interoperate with more than one user wallet at the same time
@@ -104,6 +104,20 @@ https://eips.ethereum.org/EIPS/eip-1812
 #### Uport's local ethr did
 
 https://github.com/uport-project/ethr-did
+
+### Other DID / SSI wallet approaches worth considering
+
+- [Ceramic / IDX](https://developers.ceramic.network/build/authentication/) is by far the most decentralized and far-though solution for a truly distributed and user controlled identity management. Based on IPFS. In Beta.
+
+- [Sovrin / Evernym](https://sovrin.org/developers/). By far the most advanced and used solution. Runs on a commercial permissioned blockchain. Root anchoring would cost "real" (€) money. Support sub identities and drives DidComm development.
+
+- [Jolocom](https://jolocom.github.io/jolocom-sdk/1.0.0/). Highly involved in the SSI/DID space, drives the INATBA international SSI consortium. Concentrates on DIDComm v2 (open sourced a Rust implementation / JWK, JWM recently)
+
+- [lissi.id](https://lissi.id/). A government driven (and financed) wallet based on Hyperledger (?) with a focus on eIDAS compliance (later). Supported by TU BErlin, Bundesdruckerei, Deutsche Bahn e.a.
+
+- [trinsic.id](https://trinsic.id/) tries to implement standards for Verifiable claims. Also based on Hyperledger standards (Aries). Offers Credential services like issuance, revocation and a studio application to design credential schemas.
+
+- Apple Wallet (sic) also fundamentally builds upon VC schematics.
 
 ### Verifiable Credential implementation details
 

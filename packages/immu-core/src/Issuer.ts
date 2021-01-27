@@ -80,7 +80,7 @@ export class Issuer {
     let jws, proofType;
     const jsonCredential = JSON.stringify(credential, null, 2);
     if (signingKey.type == 'Ed25519VerificationKey2018') {
-      const keyPair = await Ed25519Signing.recoverEd25519KeyPair(signingKey, privateKey);
+      const keyPair = Ed25519Signing.recoverEd25519KeyPair(signingKey, privateKey);
       jws = await Ed25519Signing.signJws(jsonCredential, keyPair);
       proofType = 'Ed25519Signature2018';
     } else if (signingKey.type == 'Secp256k1VerificationKey2018') {

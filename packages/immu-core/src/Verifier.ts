@@ -48,7 +48,7 @@ export class Verifier {
 
     let result;
     if (veriKey.type == 'Ed25519VerificationKey2018') {
-      const key = await Ed25519Signing.recoverEd25519KeyPair(veriKey);
+      const key = Ed25519Signing.recoverEd25519KeyPair(veriKey);
       result = await Ed25519Signing.verifyJws(payload, key, proof.jws);
     } else if (veriKey.type == 'Secp256k1VerificationKey2018') {
       result = Secp256k1Signing.verifyEthSignature(payload, veriKey, proof.jws);
