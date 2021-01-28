@@ -9,18 +9,27 @@
   "scripts": {
     "build": "tsc -p .",
     "contracts": "truffle migrate",
-    "dev": "tsc --watch --inlineSourceMap --inlineSources"
+    "dev": "tsc --watch --inlineSourceMap --inlineSources",
+    "test": "jest"
   },
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-typescript": "^7.12.7",
+    "@truffle/contract": "^4.3.5",
     "@types/dotenv-flow": "^3.1.0",
+    "@types/jest": "^26.0.20",
     "@types/node": "^12.0.0",
     "@typescript-eslint/eslint-plugin": "^4.12.0",
     "@typescript-eslint/parser": "^4.12.0",
+    "babel-jest": "^26.6.3",
     "eslint": "^7.17.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-prettier": "^3.3.0",
+    "ganache-cli": "^6.12.2",
+    "jest": "^26.6.3",
     "microbundle": "^0.13.0",
     "prettier": "^2.2.1",
     "truffle": "^5.1.60",

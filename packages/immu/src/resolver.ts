@@ -12,5 +12,3 @@ const config =
 export const registry = new EthRegistry(config);
 export const resolver = new Resolver(config);
 
-
-

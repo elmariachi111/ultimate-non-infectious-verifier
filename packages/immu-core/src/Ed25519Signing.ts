@@ -1,4 +1,3 @@
-//import { Ed25519VerificationKey2018 } from '@digitalbazaar/ed25519-verification-key-2018';
 import { Ed25519KeyPair } from '@transmute/did-key-ed25519';
 import base64url from 'base64url';
 import bs58 from 'bs58';
@@ -21,16 +20,21 @@ export async function createEd25519VerificationKey(seed?: Uint8Array): Promise<E
  * @param PublicKey publicKey the controlled public key from registry
  * @param string privateKey the private key in base58
  */
-export async function recoverEd25519KeyPair(key: PublicKey, privateKeyBase58?: string): Promise<Ed25519KeyPair> {
+export function recoverEd25519KeyPair(key: PublicKey, privateKeyBase58?: string): Ed25519KeyPair {
+  let publicKeyBase58 = key.publicKeyBase58;
+  if (!publicKeyBase58) {
+    if (key.publicKeyBase64) {
+      publicKeyBase58 = bs58.encode(Buffer.from(key.publicKeyBase64, 'base64'));
+    } else {
+      throw Error('no compatible public key found');
+    }
+  }
+
   const keyConfig = {
     ...key,
-    publicKeyBase58: key.publicKeyBase58 || bs58.encode(Buffer.from(key.publicKeyBase64!, 'base64')),
+    publicKeyBase58,
     privateKeyBase58
   };
-
-  if (!keyConfig.publicKeyBase58) {
-    throw new Error('needs a public key');
-  }
 
   return Ed25519KeyPair.from(keyConfig);
 }
