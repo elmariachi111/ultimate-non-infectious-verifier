@@ -57,7 +57,7 @@ https://www.w3.org/TR/vc-data-model/#proofs-signatures
 The official, generic universal DIF DID resolver:
 https://github.com/decentralized-identity/universal-resolver
 
-Specs & links to lots of Method implementations
+**Specs & links to lots of Method implementations**
 https://w3c.github.io/did-spec-registries/#did-methods
 
 A lot of use case samples (maily non tech) https://www.w3.org/TR/did-use-cases/
@@ -237,6 +237,8 @@ https://khalilstemmler.com/blogs/typescript/eslint-for-typescript/
 - What's a DID service, actually?
 
 # Todos
+
+- let immu-core only operate on signer `({data}) => Uint8Array` interfaces and add private key converters for the different key types accordingly (get rid of Signer)
 
 - create a presentation request and inline a challenge
 - test against generic did/vc wallets

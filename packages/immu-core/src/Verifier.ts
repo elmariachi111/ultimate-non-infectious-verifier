@@ -30,11 +30,11 @@ export class Verifier {
   }
 
   async verifyCredential(claimJwt: string): Promise<VerifiedCredential> {
-    return jwtVerifyCredential(claimJwt, this.resolver.didResolver);
+    return jwtVerifyCredential(claimJwt, this.resolver);
   }
 
   async verifyPresentation(presentationJwt: string): Promise<VerifiedPresentation> {
-    return jwtVerifyPresentation(presentationJwt, this.resolver.didResolver);
+    return jwtVerifyPresentation(presentationJwt, this.resolver);
   }
 
   async verifyJsonCredential(jsonCredential: JSONCredential): Promise<boolean> {

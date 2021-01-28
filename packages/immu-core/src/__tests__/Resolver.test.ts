@@ -1,35 +1,16 @@
-//import { Resolver } from '../Resolver';
-import Web3 from 'web3';
-//@ts-ignore
-import ganache from 'ganache-cli';
-import contract from '@truffle/contract';
-import DidRegistryContract from 'ethr-did-registry';
 import { Ed25519Signing, Resolver } from '../';
+import web3 from './common/web3Provider';
+import newRegistry from './common/newRegistry';
 
 describe('Resolver', () => {
-  const provider = ganache.provider({
-    mnemonic: 'myth like bonus scare over problem client lizard pioneer submit female collect',
-    total_accounts: 10,
-    default_balance_ether: 100
-  });
-  const web3 = new Web3(provider);
-  const DidReg = contract(DidRegistryContract);
-  DidReg.setProvider(provider);
-
   let resolver: Resolver;
   describe('ethrResolver', () => {
     beforeAll(async () => {
-      const accounts = await web3.eth.getAccounts();
-      const registry = await DidReg.new({
-        from: accounts[9],
-        gasPrice: 100000000000,
-        gas: 4712388 // 1779962
-      });
-
+      const registry = await newRegistry(web3);
       resolver = new Resolver([
         {
           name: 'development',
-          provider,
+          provider: web3.currentProvider,
           registry: registry.address
         }
       ]);
