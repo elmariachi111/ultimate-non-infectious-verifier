@@ -221,6 +221,24 @@ Covid 19 sample:
 
 https://github.com/microsoft-healthcare-madison/health-wallet-demo/blob/master/src/fixtures/vc.pcr.json
 
+### Vaccination credential initiatives
+
+Linux Foundation Public Health Covid Credential Initiative (LFPH CCI)  
+- https://www.covidcreds.org/  
+- https://www.lfph.io/2020/12/16/press-release/  
+- https://www.youtube.com/watch?v=ionT4gvM4Os
+
+Vaccination Credential Initiative  
+(Microsoft, Oracle, Salesforce etc)
+- https://vaccinationcredential.org/
+
+IATA Travel Pass Initiative  
+- https://www.iata.org/en/programs/passenger/travel-pass/
+
+Digital Immunization Passport  
+- https://dapsi.ngi.eu/hall-of-fame/dip/
+- https://www.youtube.com/watch?v=fFKeMfYrK8M
+
 ### OT: Linting TS
 
 https://khalilstemmler.com/blogs/tooling/prettier/
