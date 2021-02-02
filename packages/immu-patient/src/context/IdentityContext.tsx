@@ -1,21 +1,31 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Account } from 'web3-core';
 import { useWeb3 } from './Web3Context';
+import { DIDDocument, Resolver } from '@immu/core';
 
 const PRIVATE_KEY = 'private-key';
 
 interface IAccountContext {
-  account: Account | null;
+  account?: Account | undefined;
+  resolver?: Resolver | undefined;
+  did?: DIDDocument | undefined;
 }
 
-const IdentityContext = React.createContext<IAccountContext>({
-  account: null
-});
+const ETH_NETWORKS: { [networkId: string]: string } = {
+  '1': '',
+  '3': 'ropsten',
+  '4': 'rinkeby',
+  '42': 'goerli',
+  '1337': 'development'
+};
+const IdentityContext = React.createContext<IAccountContext>({});
 
 const useIdentity = () => useContext(IdentityContext);
 
 const IdentityProvider = ({ children }: { children: React.ReactNode }) => {
-  const { web3 } = useWeb3();
+  const { web3, chainId } = useWeb3();
+
+  const [did, setDid] = useState<DIDDocument>();
 
   const loadAccount = (): Account | null => {
     const pk = localStorage.getItem(PRIVATE_KEY);
@@ -32,10 +42,37 @@ const IdentityProvider = ({ children }: { children: React.ReactNode }) => {
 
   const account = loadAccount() || createAccount();
 
+  const config = [
+    ...Resolver.ethProviderConfig(process.env.REACT_APP_INFURA_ID!),
+    {
+      name: 'development',
+      rpcUrl: process.env.REACT_APP_WEB3_RPC_URL!,
+      registry: process.env.REACT_APP_REGISTRY!
+    }
+  ];
+
+  const resolver = new Resolver(config);
+
+  useEffect(() => {
+    (async () => {
+      if (chainId) {
+        const address = account.address.toLowerCase();
+
+        const _did = Object.keys(ETH_NETWORKS).includes(chainId)
+          ? `did:ethr:${ETH_NETWORKS[chainId]}:${address}`
+          : `did:ethr:${address}`;
+
+        setDid(await resolver.resolve(_did));
+      }
+    })();
+  }, [chainId]);
+
   return (
     <IdentityContext.Provider
       value={{
-        account
+        account,
+        resolver,
+        did
       }}
     >
       {children}

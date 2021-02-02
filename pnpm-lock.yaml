@@ -169,6 +169,7 @@ importers:
       '@chakra-ui/react': 1.1.2_04ef53a1eaf223d834829548e71ad9b0
       '@emotion/react': 11.1.4_773f12ba017c7edc3b04b13ffb477acd
       '@emotion/styled': 11.0.0_e6a4295f84f90f7efe2aedd657cdab6c
+      '@immu/core': link:../immu-core
       '@testing-library/jest-dom': 5.11.8
       '@testing-library/react': 11.2.2_react-dom@17.0.1+react@17.0.1
       '@testing-library/user-event': 12.6.0
@@ -191,6 +192,7 @@ importers:
       '@chakra-ui/react': ^1.1.2
       '@emotion/react': ^11.1.4
       '@emotion/styled': ^11.0.0
+      '@immu/core': workspace:*
       '@testing-library/jest-dom': ^5.11.4
       '@testing-library/react': ^11.1.0
       '@testing-library/user-event': ^12.1.10
@@ -8567,7 +8569,7 @@ packages:
       bn.js: 2.0.4
       brorand: 1.1.0
       hash.js: 1.1.7
-      inherits: 2.0.1
+      inherits: 2.0.4
     dev: false
     resolution:
       integrity: sha1-hlybQgv75VAGuflp+XoNLESWZZU=

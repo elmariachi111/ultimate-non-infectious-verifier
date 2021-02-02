@@ -3,6 +3,7 @@ import Web3 from 'web3';
 
 interface IWeb3Context {
   web3: Web3;
+  chainId?: string | undefined;
 }
 
 console.log(process.env.REACT_APP_WEB3_RPC_URL);
@@ -16,11 +17,18 @@ const useWeb3 = () => useContext(Web3Context);
 
 const Web3Provider = ({ children }: { children: React.ReactNode }) => {
   const [web3] = useState<Web3>(_web3);
+  const [chainId, setChainId] = useState<string>();
+
+  (async function init() {
+    const chainId = await web3.eth.getChainId();
+    setChainId(chainId.toString());
+  })();
 
   return (
     <Web3Context.Provider
       value={{
-        web3
+        web3,
+        chainId
       }}
     >
       {children}

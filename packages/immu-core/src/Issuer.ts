@@ -1,4 +1,4 @@
-import { SimpleSigner } from 'did-jwt';
+import { SimpleSigner, createJWT as DidCreateJWT } from 'did-jwt';
 import { createVerifiableCredentialJwt, createVerifiablePresentationJwt, Issuer as DidIssuer } from 'did-jwt-vc';
 import {
   CredentialPayload,
@@ -73,6 +73,16 @@ export class Issuer {
       signer: SimpleSigner(privateKey)
     };
     return createVerifiablePresentationJwt(presentationPayload, didIssuer);
+  }
+
+  async createAnyJwt(payload: any, privateKey: string): Promise<string> {
+    const signer = SimpleSigner(privateKey);
+    const jwt = await DidCreateJWT(payload, {
+      issuer: this.did,
+      signer,
+      alg: 'ES256K'
+    });
+    return jwt;
   }
 
   async createJsonProof(credential: CredentialPayload, signingKey: PublicKey, privateKey: string): Promise<string> {
