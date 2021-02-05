@@ -1,0 +1,39 @@
+{
+    "resource": {
+        "resourceType": "Immunization",
+        "status": "completed",
+        "meta": {
+            "profile": [
+                "http://hl7.org/fhir/us/vaccinecredential/StructureDefinition/vaccine-credential-immunization"
+            ]
+        },
+        "vaccineCode": {
+            "coding": []
+        },
+        "occurrenceDateTime": "",
+        "primarySource": true,
+        "lotNumber": "",
+        "protocolApplied": [
+            {
+                "targetDisease": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "840539006",
+                                "display": "COVID-19"
+                            }
+                        ]
+                    }
+                ],
+                "doseNumberPositiveInt": 0,
+                "seriesDosesPositiveInt": 2
+            }
+        ],
+        "doseQuantity": {
+            "system": "http://unitsofmeasure.org",
+            "value": 0,
+            "code": "ml"
+        }
+    }
+}

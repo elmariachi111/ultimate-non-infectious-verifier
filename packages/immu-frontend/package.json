@@ -29,8 +29,8 @@
   },
   "scripts": {
     "clean": "rm -rf ./lib",
-    "start": "react-scripts start",
     "build": "tsc --build \"./tsconfig.json\"",
+    "dev": "tsc --watch --inlineSourceMap --inlineSources ",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

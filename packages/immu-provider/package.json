@@ -3,13 +3,14 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@immu/frontend": "workspace:*",
     "@chakra-ui/react": "^1.2.1",
     "@emotion/react": "^11.1.4",
     "@emotion/styled": "^11.0.0",
+    "@immu/frontend": "workspace:*",
     "framer-motion": "^3.3.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-hook-form": "^6.15.1",
     "react-scripts": "4.0.1",
     "web-vitals": "^0.2.4"
   },
