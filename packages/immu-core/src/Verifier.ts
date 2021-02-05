@@ -37,6 +37,8 @@ export class Verifier {
     return jwtVerifyPresentation(presentationJwt, this.resolver);
   }
 
+  async verifyAnyJwt(jwt: string) {}
+
   async verifyJsonCredential(jsonCredential: JSONCredential): Promise<boolean> {
     const { proof, ...credential } = jsonCredential;
     const payload = JSON.stringify(credential, null, 2);

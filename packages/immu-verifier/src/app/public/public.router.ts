@@ -4,12 +4,13 @@ import * as crypto from 'crypto';
 import { Router } from 'express';
 import { PUBLIC_ENDPOINT } from '../../constants/endpoint';
 import { isIssuerTrusted, trustedIssuers, verifier } from '../services/verifier';
-import { JSONCredential } from '@immu/core';
+import { JSONCredential, createRequest } from '@immu/core';
+import { account, verifierDid, issuer } from '../services/verifierAccount';
+//@ts-ignore
+import QRCode from 'qrcode';
 
-// Export module for registering router in express app
 export const router: Router = Router();
 
-// Define your routes here
 router.get(PUBLIC_ENDPOINT + '/', async (req, res) => {
   if (req.session.did) {
     res.render(`public/authenticated.twig`, {
@@ -21,8 +22,20 @@ router.get(PUBLIC_ENDPOINT + '/', async (req, res) => {
       req.session.nonce = bs58.encode(crypto.randomBytes(32));
     }
 
+    const verificationRequest = createRequest({
+      requester: verifierDid,
+      requestedSubjects: ['ProofOfImmunization'],
+      challenge: req.session.nonce,
+      callbackUrl: `${process.env.SERVER_HOST}/${PUBLIC_ENDPOINT}present`
+    });
+
+    const presentationRequestJwt = await issuer.createAnyJwt(verificationRequest, account.privateKey);
+    console.log(presentationRequestJwt);
+
+    const qrCode = await QRCode.toDataURL(presentationRequestJwt);
+
     res.render('public/authenticate.twig', {
-      auth_url: `${PUBLIC_ENDPOINT}/authenticate`
+      qr_code: qrCode
     });
   }
 });

@@ -1,7 +1,7 @@
 import { Resolver, Verifier } from '@immu/core';
 
 const resolverConfig = [
-  ...Resolver.ethProviderConfig(process.env.INFURA_ID!),
+  //...Resolver.ethProviderConfig(process.env.INFURA_ID!),
   {
     name: 'development',
     rpcUrl: process.env.ETHEREUM_NODE!,

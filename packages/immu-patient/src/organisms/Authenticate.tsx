@@ -3,7 +3,7 @@ import { useIdentity } from 'context/IdentityContext';
 import { Box, Button, FormControl, FormHelperText, FormLabel, Textarea } from '@chakra-ui/react';
 
 const Authenticate = () => {
-  const { did } = useIdentity();
+  const { did, account } = useIdentity();
 
   const submitted = (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -11,6 +11,8 @@ const Authenticate = () => {
       authenticationRequest: { value: string };
     };
     const req = target.authenticationRequest.value;
+
+    const response = {};
 
     target.authenticationRequest.value = '';
   };

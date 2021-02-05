@@ -1,0 +1,129 @@
+{
+    "didDocument": {
+        "@context": [
+            "https://www.w3.org/ns/did/v1"
+        ],
+        "id": "did:sov:WRfXPg8dantKVubE3HX8pw",
+        "verificationMethod": [
+            {
+                "type": [
+                    "Ed25519VerificationKey2018"
+                ],
+                "id": "did:sov:WRfXPg8dantKVubE3HX8pw#key-1",
+                "publicKeyBase58": "H3C2AVvLMv6gmMNam3uVAjZpfkcJCwDwnZn6z3wXmqPV"
+            }
+        ],
+        "authentication": [
+            {
+                "type": [
+                    "Ed25519SignatureAuthentication2018"
+                ],
+                "verificationMethod": "did:sov:WRfXPg8dantKVubE3HX8pw#key-1"
+            }
+        ],
+        "service": [
+            {
+                "type": [
+                    "agent"
+                ],
+                "serviceEndpoint": "https://agents.danubeclouds.com/agent/WRfXPg8dantKVubE3HX8pw"
+            },
+            {
+                "type": [
+                    "xdi"
+                ],
+                "serviceEndpoint": "https://xdi03-at.danubeclouds.com/cl/+!:did:sov:WRfXPg8dantKVubE3HX8pw"
+            }
+        ]
+    },
+    "content": null,
+    "contentType": "application/did+ld+json",
+    "didResolutionMetadata": null,
+    "didDocumentMetadata": {
+        "network": "_",
+        "poolVersion": 2,
+        "nymResponse": {
+            "result": {
+                "type": "105",
+                "identifier": "RAS2CYZksygDNTsWTci6XJ",
+                "dest": "WRfXPg8dantKVubE3HX8pw",
+                "state_proof": {
+                    "root_hash": "F92KJXTUuZEKsggC5dZpvMPF5aajMsaLrSAkzPXzE3YN",
+                    "multi_signature": {
+                        "signature": "R3fyUPzfCZNWhD2xN3gTG4ndCAKESSFjXyyojLpvsQ7NBtw6nxmLWEKY2wn3sAXYRbVQDxifVuRWMwTQjW2Qa4qg2YnvwQQiNsHcnhaH9Yk2bCqJJiuBbxTCQx1KCiHkVL2iTDGTV2KAdrzHej5w5P2BK8JhuKA1QFhdvzJyb5XfzF",
+                        "value": {
+                            "txn_root_hash": "J8w3YWH2FRTLXR9gdwp8Kmxkztdyp4dEt7ym2mqCYyPv",
+                            "ledger_id": 1.0,
+                            "timestamp": 1.612451453E9,
+                            "pool_state_root_hash": "4Asf2cSvxUguXoSsxHxbKSmgXHiaNgWWYR5uLj35BiuA",
+                            "state_root_hash": "F92KJXTUuZEKsggC5dZpvMPF5aajMsaLrSAkzPXzE3YN"
+                        },
+                        "participants": [
+                            "DustStorm",
+                            "atbsovrin",
+                            "Stuard",
+                            "VeridiumIDC",
+                            "BIGAWSUSEAST1-001",
+                            "royal_sovrin",
+                            "danube",
+                            "pcValidator01",
+                            "sovrin.sicpa.com",
+                            "ServerVS",
+                            "icenode",
+                            "OASFCU",
+                            "esatus_AG"
+                        ]
+                    },
+                    "proof_nodes": "+QWN+QHxoA32YZZrEiz6R/IfuEF/xSdC4Qz6WuoJILRlyRPvxmMtoMORNj+eQusijT004ajqg9/55qMK78krAyWKV3bCnoRvgKAT7b6wtStLzc/nKJpEoSRD45CPQ9rXqrTKHGExzoBlZKCLfW28LyD4YMjAiH+Thizhis6aJQLM1GLd8r1tCnYeg6Djwe5nEKQs/fPP3bkJkELjj+N7UgHEbTX2WbGVmPqn9qBZjhcmjaCfjEuaXvS+9zrmvsmetm69wAfx1gFd34OAlaC7JzgabRmyJo4wfNsD0bQpiP1D7fg7sF1mDY+Hjo9VO6CVhzJGj2WBHodeXhdq8CQo3DpWcrZYj475xNMbS5PwyqCSExYZYc63wVTSmd8q4HymG5NzJI3RsWa9pNU/0LWqO6DqqG2Ibk1+NSWvTCguqCdk+VhGEtpVlC59cyz+fyU7kqCN1s2ke9FVcxYmDsviCP4tmPiUHWW7c/Kf8h1srsajH6BZnJPTchQV9z1/DLQcawF8FCRDIUJ61hvruMqk2ydD7KBV6XVRpeULom87bO7b3EzAr04/pGYSavoj0FEYaeoZfaBl2OJX1J84bB5TtKsG3QUvGuYGHN4d4pXTxd3c9yUOBaCeD7Q5b9yb4KiVUeCWF+6M4dwlf6TMHCcm4tSBP95daYD4nZ8gRRdZeaI7NSNcCX7SDVZNyK1qXvfMfxm1PoODhgEtuHv4ebh3eyJpZGVudGlmaWVyIjoiQnJZREE1TnViZWpEVkhrQ1lCYnBZNSIsInJvbGUiOm51bGwsInNlcU5vIjoxMDQsInR4blRpbWUiOjE1NDE3MDk0OTUsInZlcmtleSI6In5QN0YzQk5zNVZtUTZlVnB3a05LSjVEIn34UYCAgICAgICAoO8V+swI4um4v2CLO2UEbXVu8nRBnCnxEvqNZVnR5pljoHsrE/GgkHA9T2mPhnVxjnqdyd1kF2PgzTbku/q43X6vgICAgICAgPiRoC/QAFfhm+QZXA8WfoRBpZEgzypyUKrPDgS7+0lt2aXJgICgQDj+RMw3oDQR033N2xB1faB3Lt7tmCG8NxKXJ2k8yxyAgICAgICgTVGRVdLjRSHPrDOfuBUcTzb6TNl/RmE9Nvfh6urMYJCAgICAoIV9l2oQ++sRf52AZfu2vTUsv34IPmvoVIVOaoZsv7bdgPkCEaD/jXc7K0Hp+zoQ3mQ3GyGI3ChWDd0yAEtXkDcZSDCouKCFt0pGIGY9QwsZ6FjVjyyprG2eAxoNFJxdMheZVScuTKD7gwQK9F54EH0UOpYjmiC4A1pM57d/dpUM1z5WI/bp+aDX4UNzqb2KU18hAJJ3RwrIGQy9rA+t+rRyRBOC2Ivy2qAT8QH1qQj/SRr9b6M+liLntvTRU2YIHBvGZE6gf6FWK6D+qAl6kfMtIvjHu/IyBGi5+Nse8gohdyEcG635kqG/j6CTEf4Zlqd574SJ3kNESQpG2bJ5oO/cx3nYPwDF1bIsNKCztZniiOobK6w+gw8rYegQnWJpNNIKfqkhvk80iZ+nLKBP+BSUDRhzusnzGgRLaFexzhIafTmZxfvHtvqVA3poZKCQSjlRwVUYYT7PlUB9wQjWwNglXhruUycBIJRIk5/OkqCXOnbdcWnoJ1vIjAMQSc2u5+Itv0U/Ofa1DQcSey4Gr6DLFttfyjlbTXrx0cvQO+z1jLh5URC6qGU7n3W0TrFrGKD9PPJCn07VwwiTBSA+1sW1diwsSOW7E7nqT7zq7G1L2KAK7nnL0RZqyEL9g27sD7W4ZaCZ34n581cdUJseSM2i/aBup4kpfv2Q3imqu+bVAmWMIcdI9rNagrDwGOAzjvGG66Cd3bzHbdBrhHSwMlrWN1z3iENhmQkc/HIxN61WRPP4goA="
+                },
+                "data": "{\"dest\":\"WRfXPg8dantKVubE3HX8pw\",\"identifier\":\"BrYDA5NubejDVHkCYBbpY5\",\"role\":null,\"seqNo\":104,\"txnTime\":1541709495,\"verkey\":\"~P7F3BNs5VmQ6eVpwkNKJ5D\"}",
+                "txnTime": 1.541709495E9,
+                "seqNo": 104.0,
+                "reqId": 1.61245154794736691E18
+            },
+            "op": "REPLY"
+        },
+        "attrResponse": {
+            "result": {
+                "type": "104",
+                "identifier": "RAS2CYZksygDNTsWTci6XJ",
+                "dest": "WRfXPg8dantKVubE3HX8pw",
+                "state_proof": {
+                    "root_hash": "F92KJXTUuZEKsggC5dZpvMPF5aajMsaLrSAkzPXzE3YN",
+                    "multi_signature": {
+                        "signature": "R3fyUPzfCZNWhD2xN3gTG4ndCAKESSFjXyyojLpvsQ7NBtw6nxmLWEKY2wn3sAXYRbVQDxifVuRWMwTQjW2Qa4qg2YnvwQQiNsHcnhaH9Yk2bCqJJiuBbxTCQx1KCiHkVL2iTDGTV2KAdrzHej5w5P2BK8JhuKA1QFhdvzJyb5XfzF",
+                        "value": {
+                            "txn_root_hash": "J8w3YWH2FRTLXR9gdwp8Kmxkztdyp4dEt7ym2mqCYyPv",
+                            "ledger_id": 1.0,
+                            "timestamp": 1.612451453E9,
+                            "pool_state_root_hash": "4Asf2cSvxUguXoSsxHxbKSmgXHiaNgWWYR5uLj35BiuA",
+                            "state_root_hash": "F92KJXTUuZEKsggC5dZpvMPF5aajMsaLrSAkzPXzE3YN"
+                        },
+                        "participants": [
+                            "DustStorm",
+                            "atbsovrin",
+                            "Stuard",
+                            "VeridiumIDC",
+                            "BIGAWSUSEAST1-001",
+                            "royal_sovrin",
+                            "danube",
+                            "pcValidator01",
+                            "sovrin.sicpa.com",
+                            "ServerVS",
+                            "icenode",
+                            "OASFCU",
+                            "esatus_AG"
+                        ]
+                    },
+                    "proof_nodes": "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"
+                },
+                "txnTime": 1.504719117E9,
+                "data": "{\"endpoint\":{\"agent\":\"https://agents.danubeclouds.com/agent/WRfXPg8dantKVubE3HX8pw\",\"xdi\":\"https://xdi03-at.danubeclouds.com/cl/+!:did:sov:WRfXPg8dantKVubE3HX8pw\"}}",
+                "raw": "endpoint",
+                "seqNo": 21.0,
+                "reqId": 1.61245154815081498E18
+            },
+            "op": "REPLY"
+        }
+    }
+}

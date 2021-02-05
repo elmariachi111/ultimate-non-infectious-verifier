@@ -31,7 +31,10 @@ export default class PresentationRequest extends Command {
     const { args, flags } = this.parse(PresentationRequest);
 
     const verifier = await chooseDidFromRoles(flags.verifier);
-    const presentationRequest = createRequest(verifier, args.credentialType.split(","));
+    const presentationRequest = createRequest({
+      requester: verifier,
+      requestedSubjects: args.credentialType.split(",")
+    });
     console.log(JSON.stringify(presentationRequest, null, 2));
   }
 }

@@ -6,12 +6,23 @@ export interface PresentationRequest {
   requestedSubjects: string[];
   challenge: string;
 }
+
+export interface PresentationRequestCreationParams {
+  requester: DID;
+  requestedSubjects: string[];
+  challenge?: string;
+  callbackUrl?: string;
+}
 /**
  * //todo this is **totally** made up
  */
-export function createRequest(requester: DID, subjects: string[]): PresentationRequest {
-  const challenge = Web3.utils.randomHex(32);
+export function createRequest(params: PresentationRequestCreationParams): PresentationRequest {
   const presentationRequest = {
+    type: ['VerifiablePresentationRequest'],
+    requestedDate: new Date().toISOString(),
+    ...params,
+    challenge: params.challenge || Web3.utils.randomHex(32)
+
     //
     // from Jolocom:
     // query: [
@@ -24,11 +35,6 @@ export function createRequest(requester: DID, subjects: string[]): PresentationR
     //     }
     //   }
     // ],
-    type: ['VerifiablePresentationRequest'],
-    requestedDate: new Date().toISOString(),
-    requester,
-    requestedSubjects: subjects,
-    challenge: challenge
   };
   return presentationRequest;
 }
