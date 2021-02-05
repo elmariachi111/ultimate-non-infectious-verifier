@@ -1,6 +1,7 @@
 import { DIDDocument, Resolver as DIDResolver } from 'did-resolver';
 import { getResolver } from 'ethr-did-resolver';
 import { default as getKeyResolver } from 'key-did-resolver';
+import { DID } from './@types';
 import { EthereumAddress, EthProviderConfig } from './@types/Ethereum';
 
 export class Resolver {

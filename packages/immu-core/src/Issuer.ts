@@ -8,6 +8,7 @@ import {
 } from 'did-jwt-vc/lib/types';
 import { DIDDocument, PublicKey } from 'did-resolver';
 import { Ed25519Signing, Secp256k1Signing } from '.';
+import { DID } from './@types';
 import { Resolver } from './Resolver';
 
 export class Issuer {

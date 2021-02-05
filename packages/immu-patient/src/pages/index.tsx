@@ -1,4 +1,4 @@
-import { Heading } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
 import { JWTVerified } from '@immu/core';
 import AcceptPresentationRequest from 'organisms/AcceptPresentationRequest';
 import RespondToPresentationRequest from 'organisms/RespondToPresentationRequest';
@@ -9,13 +9,18 @@ const IndexPage: React.FC = () => {
 
   return (
     <div>
-      <Heading size="lg">prove immunization</Heading>
+      <Box my={3}>
+        <Heading size="lg">prove immunization</Heading>
 
-      {presentationRequest ? (
-        <RespondToPresentationRequest presentationRequest={presentationRequest} />
-      ) : (
-        <AcceptPresentationRequest onAccepted={setPresentationRequest} />
-      )}
+        {presentationRequest ? (
+          <RespondToPresentationRequest presentationRequest={presentationRequest} />
+        ) : (
+          <AcceptPresentationRequest onAccepted={setPresentationRequest} />
+        )}
+      </Box>
+      <Box my={3}>
+        <Heading size="lg">accept immunization</Heading>
+      </Box>
     </div>
   );
 };

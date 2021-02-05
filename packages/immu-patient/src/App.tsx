@@ -1,7 +1,7 @@
 import { Container } from '@chakra-ui/react';
 import React from 'react';
-import { IdentityProvider } from 'context/IdentityContext';
-import { Web3Provider } from 'context/Web3Context';
+import { IdentityProvider } from '@immu/frontend';
+import { Web3Provider } from '@immu/frontend';
 import IndexPage from './pages';
 import Navbar from 'molecules/Navbar';
 

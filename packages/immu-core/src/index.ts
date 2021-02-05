@@ -18,3 +18,5 @@ export {
   PresentationPayload,
   VerifiableCredential
 } from 'did-jwt-vc/lib/types';
+
+export { DID, BufferLike } from './@types';

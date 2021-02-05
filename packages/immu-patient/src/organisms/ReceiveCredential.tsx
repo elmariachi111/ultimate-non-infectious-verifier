@@ -1,5 +1,5 @@
 import React from 'react';
-import { useIdentity } from 'context/IdentityContext';
+import { useIdentity } from '@immu/frontend';
 
 const ReceiveCredential = () => {
   const { resolver } = useIdentity();

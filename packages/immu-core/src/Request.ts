@@ -1,4 +1,5 @@
 import Web3 from 'web3';
+import { DID } from './@types';
 
 export interface PresentationRequest {
   requestedDate: string;

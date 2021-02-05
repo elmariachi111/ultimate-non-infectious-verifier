@@ -1,6 +1,6 @@
 import { Box, Flex, Heading, Spacer, Text } from '@chakra-ui/react';
-import { useIdentity } from 'context/IdentityContext';
-import { useWeb3 } from 'context/Web3Context';
+import { useIdentity } from '@immu/frontend';
+import { useWeb3 } from '@immu/frontend';
 import React from 'react';
 
 const Navbar = () => {

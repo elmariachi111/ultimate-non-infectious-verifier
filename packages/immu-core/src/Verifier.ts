@@ -9,6 +9,7 @@ import { Secp256k1Signing } from '.';
 
 import { Resolver } from './Resolver';
 import { JWTVerified, verifyJWT as DidCVerifyJWT } from 'did-jwt';
+import { DID } from './@types';
 
 export interface JSONProof {
   type: string;
