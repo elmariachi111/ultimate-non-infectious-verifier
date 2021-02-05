@@ -35,6 +35,7 @@ router.get(PUBLIC_ENDPOINT + '/', async (req, res) => {
     const qrCode = await QRCode.toDataURL(presentationRequestJwt);
 
     res.render('public/authenticate.twig', {
+      presentation_jwt: presentationRequestJwt,
       qr_code: qrCode
     });
   }

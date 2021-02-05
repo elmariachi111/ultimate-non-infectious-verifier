@@ -8,6 +8,7 @@ import { Ed25519Signing } from '.';
 import { Secp256k1Signing } from '.';
 
 import { Resolver } from './Resolver';
+import { JWTVerified, verifyJWT as DidCVerifyJWT } from 'did-jwt';
 
 export interface JSONProof {
   type: string;
@@ -37,7 +38,11 @@ export class Verifier {
     return jwtVerifyPresentation(presentationJwt, this.resolver);
   }
 
-  async verifyAnyJwt(jwt: string) {}
+  async verifyAnyJwt(jwt: string): Promise<JWTVerified> {
+    return DidCVerifyJWT(jwt, {
+      resolver: this.resolver
+    });
+  }
 
   async verifyJsonCredential(jsonCredential: JSONCredential): Promise<boolean> {
     const { proof, ...credential } = jsonCredential;

@@ -6,7 +6,6 @@ interface IWeb3Context {
   chainId?: string | undefined;
 }
 
-console.log(process.env.REACT_APP_WEB3_RPC_URL);
 const _web3 = new Web3(process.env.REACT_APP_WEB3_RPC_URL!);
 
 const Web3Context = React.createContext<IWeb3Context>({

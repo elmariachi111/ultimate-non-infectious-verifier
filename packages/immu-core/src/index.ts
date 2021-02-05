@@ -4,6 +4,7 @@ export { Resolver } from './Resolver';
 export { EthRegistry } from './EthRegistry';
 
 export { VerifiedCredential } from 'did-jwt-vc';
+export { JWTVerified } from 'did-jwt';
 
 export { PublicKey, Authentication, DIDDocument } from 'did-resolver';
 export * as Ed25519Signing from './Ed25519Signing';

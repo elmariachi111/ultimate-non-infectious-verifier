@@ -1,24 +1,21 @@
-import { Box, Container, Heading, Text, Textarea } from '@chakra-ui/react';
+import { Heading } from '@chakra-ui/react';
+import { JWTVerified } from '@immu/core';
+import AcceptPresentationRequest from 'organisms/AcceptPresentationRequest';
+import RespondToPresentationRequest from 'organisms/RespondToPresentationRequest';
 import React, { useState } from 'react';
-import { useIdentity } from 'context/IdentityContext';
-import { useWeb3 } from 'context/Web3Context';
-import { DIDDocument } from '@immu/core';
-import Authenticate from 'organisms/Authenticate';
 
 const IndexPage: React.FC = () => {
-  const i = 0;
-  const { account, did } = useIdentity();
-
-  const { web3, chainId } = useWeb3();
+  const [presentationRequest, setPresentationRequest] = useState<JWTVerified>();
 
   return (
     <div>
-      <Heading size="lg">acquire immunization</Heading>
-      <Text>
-        hello {account?.address} | {did?.id} | chainId: {chainId}
-      </Text>
+      <Heading size="lg">prove immunization</Heading>
 
-      <Authenticate />
+      {presentationRequest ? (
+        <RespondToPresentationRequest presentationRequest={presentationRequest} />
+      ) : (
+        <AcceptPresentationRequest onAccepted={setPresentationRequest} />
+      )}
     </div>
   );
 };

@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Account } from 'web3-core';
 import { useWeb3 } from './Web3Context';
-import { DIDDocument, Resolver } from '@immu/core';
+import { DIDDocument, Resolver, Verifier } from '@immu/core';
 
 const PRIVATE_KEY = 'private-key';
 
 interface IAccountContext {
   account?: Account | undefined;
   resolver?: Resolver | undefined;
+  verifier?: Verifier | undefined;
   did?: DIDDocument | undefined;
 }
 
@@ -53,6 +54,8 @@ const IdentityProvider = ({ children }: { children: React.ReactNode }) => {
 
   const resolver = new Resolver(config);
 
+  const verifier = new Verifier(resolver);
+
   useEffect(() => {
     (async () => {
       if (chainId) {
@@ -72,6 +75,7 @@ const IdentityProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         account,
         resolver,
+        verifier,
         did
       }}
     >

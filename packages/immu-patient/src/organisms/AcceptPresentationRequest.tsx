@@ -1,18 +1,23 @@
-import React, { FormEvent } from 'react';
-import { useIdentity } from 'context/IdentityContext';
 import { Box, Button, FormControl, FormHelperText, FormLabel, Textarea } from '@chakra-ui/react';
+import { useIdentity } from 'context/IdentityContext';
+import React from 'react';
+import { JWTVerified } from '@immu/core';
 
-const Authenticate = () => {
-  const { did, account } = useIdentity();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const AcceptPresentationRequest = ({ onAccepted }: { onAccepted: (verified: JWTVerified) => void }) => {
+  const { verifier } = useIdentity();
 
-  const submitted = (e: React.SyntheticEvent) => {
+  const submitted = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     const target = e.target as typeof e.target & {
       authenticationRequest: { value: string };
     };
     const req = target.authenticationRequest.value;
 
-    const response = {};
+    const verified = await verifier?.verifyAnyJwt(req);
+    if (verified) {
+      onAccepted(verified);
+    }
 
     target.authenticationRequest.value = '';
   };
@@ -33,4 +38,4 @@ const Authenticate = () => {
   );
 };
 
-export default Authenticate;
+export default AcceptPresentationRequest;

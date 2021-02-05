@@ -2,14 +2,17 @@
 
 {% block body %}
 	<section class="section">
-		Please present a valid proof of covid19 immunization. 
-								We're accepting a vaccination protocol at the moment
+		<p>Please present a valid proof of covid19 immunization.
+		</p>
+		<p>We're accepting a vaccination protocol at the moment</p>
 	</section>
 	<section class="section">
 
 		<h1>Scan this QR code to get started</h1>
 		<img src="{{qr_code}}" alt="qr code"/>
 
-	</form>
 
-</section>{% endblock %}
+		<code>{{presentation_jwt}}</code>
+
+	</section>
+{% endblock %}
