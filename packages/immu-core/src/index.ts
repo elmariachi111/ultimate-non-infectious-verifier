@@ -1,5 +1,5 @@
 export { Issuer } from './Issuer';
-export { Verifier, JSONCredential, JSONProof } from './Verifier';
+export { Verifier, JSONCredential } from './Verifier';
 export { Resolver } from './Resolver';
 export { EthRegistry } from './EthRegistry';
 
@@ -19,4 +19,5 @@ export {
   VerifiableCredential
 } from 'did-jwt-vc/lib/types';
 
-export { DID, BufferLike } from './@types';
+export { DID, BufferLike, JSONProof } from './@types';
+export * from './@types/Jolocom';

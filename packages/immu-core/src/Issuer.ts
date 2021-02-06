@@ -4,6 +4,7 @@ import {
   CredentialPayload,
   JwtCredentialSubject,
   PresentationPayload,
+  Proof,
   VerifiableCredential
 } from 'did-jwt-vc/lib/types';
 import { DIDDocument, PublicKey } from 'did-resolver';
@@ -86,7 +87,11 @@ export class Issuer {
     return jwt;
   }
 
-  async createJsonProof(credential: CredentialPayload, signingKey: PublicKey, privateKey: string): Promise<string> {
+  async createJsonProof(
+    credential: CredentialPayload | Record<string, any>,
+    signingKey: PublicKey,
+    privateKey: string
+  ): Promise<Proof> {
     //create proof over credential
     let jws, proofType;
     const jsonCredential = JSON.stringify(credential, null, 2);
@@ -107,11 +112,7 @@ export class Issuer {
       jws
     };
 
-    const verifiedCredential = {
-      ...credential,
-      proof
-    };
-    return JSON.stringify(verifiedCredential, null, 2);
+    return proof;
   }
 
   /**

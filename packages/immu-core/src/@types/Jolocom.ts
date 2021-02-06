@@ -1,4 +1,4 @@
-import { DID } from '@immu/core';
+import { JSONProof } from '.';
 
 export interface CredentialOfferInputRequest {
   [key: string]: string | null;
@@ -51,7 +51,5 @@ export interface CredentialOfferResponseAttrs {
 
 //customized
 export interface SignedCredentialOfferResponseAttrs extends CredentialOfferResponseAttrs {
-  did: DID;
-  nonce: string;
-  proof: string;
+  proof: JSONProof;
 }

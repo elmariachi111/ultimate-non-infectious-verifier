@@ -60,6 +60,9 @@ https://github.com/decentralized-identity/universal-resolver
 **Specs & links to lots of Method implementations**
 https://w3c.github.io/did-spec-registries/#did-methods
 
+Did resolution process definition
+https://w3c-ccg.github.io/did-resolution/
+
 A lot of use case samples (maily non tech) https://www.w3.org/TR/did-use-cases/
 
 Mattr is a cli tool for all kinds of DID / VC ops

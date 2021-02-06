@@ -28,7 +28,7 @@ export const useCredentialStorage = () => {
 
     const credentials = findCredential(type);
     credentials.push(credential);
-    localStorage.setItem(`credentials[${type}]`, `[${JSON.stringify(credentials)}]`);
+    localStorage.setItem(`credentials[${type}]`, JSON.stringify(credentials));
   };
 
   return { findCredential, addCredential };

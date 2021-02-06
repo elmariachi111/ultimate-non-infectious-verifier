@@ -2,7 +2,7 @@ import { Issuer } from '@immu/core';
 import { useIdentity } from '@immu/frontend';
 import FhirImmunizationForm from 'organisms/FhirImmunizationForm';
 import { useState } from 'react';
-import { CredentialOfferRequestAttrs, CredentialRenderTypes, SignedCredentialOfferResponseAttrs } from 'types/Jolocom';
+import { CredentialOfferRequestAttrs, CredentialRenderTypes, SignedCredentialOfferResponseAttrs } from '@immu/core';
 import crypto from 'crypto';
 import bs58 from 'bs58';
 import { Box } from '@chakra-ui/react';
@@ -11,38 +11,58 @@ import QRCode from 'qrcode';
 
 const SMARTHEALTH_CARD_CRED_TYPE = 'https://smarthealth.cards#covid19';
 
-const IndexPage: React.FC = () => {
-  const { account, resolver, did } = useIdentity();
+type FHIRDocument = any;
 
-  const [fhirDocument, setFhirDocument] = useState<any>();
-  const [, setInteractionToken] = useState<string>();
+const IndexPage: React.FC = () => {
+  const { account, resolver, did, verifier } = useIdentity();
+
+  const [, setFhirDocument] = useState<FHIRDocument>();
 
   const [offerJwt, setOfferJwt] = useState<string>();
   const [offerJwtQrCode, setOfferJwtQrCode] = useState<string>();
 
-  const offerResponseReceived = async (response: SignedCredentialOfferResponseAttrs) => {
-    if (resolver && did && account) {
-      const receiverDid = await resolver?.resolve(response.did);
-      //check that offer response is valid...
+  const offerResponseReceived = async (
+    response: SignedCredentialOfferResponseAttrs,
+    _fhirDocument: FHIRDocument,
+    _interactionToken: string
+  ) => {
+    if (verifier && resolver && did && account) {
+      const proven = await verifier.verifyJsonCredential(response);
+      if (!proven) {
+        throw Error('the offer proof is invalid');
+      }
+      const receiverDid = await resolver.resolve(response.proof.verificationMethod);
+
       const issuer = new Issuer(resolver, did.id);
       const credential = await issuer.issueCredential(
         receiverDid.id,
         {
           fhirVersion: '4.0.1',
-          fhirResource: fhirDocument
+          fhirResource: _fhirDocument
         },
         response.selectedCredentials.map((selected) => selected.type)
       );
 
       const credentialJwt = await issuer.createJwt(credential, account.privateKey);
       console.log(credentialJwt);
-      //send that jwt to response.callbackURL
+
+      const receiveResponse = await fetch(
+        `${process.env.REACT_APP_COMM_SERVER}/${_interactionToken}?flow=receiveCredential`,
+        {
+          method: 'POST',
+          body: JSON.stringify({ signedCredentialJwt: credentialJwt }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      console.log(await receiveResponse.json());
     }
   };
-  const onFhirCreated = async (fhirDocument: any) => {
-    setFhirDocument(fhirDocument);
+  const onFhirCreated = async (_fhirDocument: FHIRDocument) => {
+    setFhirDocument(_fhirDocument);
     const interactionToken = bs58.encode(crypto.randomBytes(32));
-    setInteractionToken(interactionToken);
 
     const offerRequest: CredentialOfferRequestAttrs = {
       callbackURL: `${process.env.REACT_APP_COMM_SERVER}/${interactionToken}?flow=credentialOfferResponse`,
@@ -71,9 +91,10 @@ const IndexPage: React.FC = () => {
 
       const eventSource = new EventSource(`${process.env.REACT_APP_COMM_SERVER}/listen/${interactionToken}`);
 
-      eventSource.addEventListener('credentialOfferResponse', function (event: any) {
+      eventSource.addEventListener('credentialOfferResponse', async function (event: any) {
         const data: SignedCredentialOfferResponseAttrs = JSON.parse(event.data);
-        offerResponseReceived(data);
+        await offerResponseReceived(data, _fhirDocument, interactionToken);
+        eventSource.close();
       });
     }
   };
@@ -83,7 +104,7 @@ const IndexPage: React.FC = () => {
       <FhirImmunizationForm onFhirCreated={onFhirCreated} />
       {offerJwt && (
         <Box>
-          <img src={offerJwtQrCode} />
+          <img src={offerJwtQrCode} alt="qr code" />
           <code>{offerJwt}</code>
         </Box>
       )}

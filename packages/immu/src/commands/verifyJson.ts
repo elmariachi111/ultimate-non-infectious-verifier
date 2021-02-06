@@ -21,8 +21,8 @@ export default class VerifyJson extends Command {
 
     const verifier = new Verifier(resolver);
     const isValid = await verifier.verifyJsonCredential(verifiedCredential)
+    console.log("isValid", isValid);
     console.log(displayCredential(verifiedCredential));
-    console.log(isValid);
-
+    
   }
 }

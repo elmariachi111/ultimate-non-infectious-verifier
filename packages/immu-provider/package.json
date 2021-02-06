@@ -9,6 +9,7 @@
     "@immu/core": "workspace:*",
     "@immu/frontend": "workspace:*",
     "bs58": "^4.0.1",
+    "cross-fetch": "^3.0.6",
     "framer-motion": "^3.3.0",
     "qrcode": "^1.4.4",
     "react": "^17.0.1",

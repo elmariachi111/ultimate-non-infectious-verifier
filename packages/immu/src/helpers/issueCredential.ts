@@ -22,7 +22,10 @@ export async function issueCredential(credential: CredentialPayload, issuer: Iss
         jsonVerifiableCredential = await issuer.createJwt(credential, privateKey);
     } else if (flags.proofType == 'jws') {
         const { signingKey, signingPrivateKey } = await chooseSigningKey(await issuer.resolveIssuerDid());
-        jsonVerifiableCredential = await issuer.createJsonProof(credential, signingKey, signingPrivateKey);
+        jsonVerifiableCredential = JSON.stringify({
+              ...credential,
+              proof: await issuer.createJsonProof(credential, signingKey, signingPrivateKey)
+          }, null, 2); 
     } else {
         throw Error(`proof type ${flags.proofType} is not supported`)
     }

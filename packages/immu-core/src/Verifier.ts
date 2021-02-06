@@ -9,15 +9,7 @@ import { Secp256k1Signing } from '.';
 
 import { Resolver } from './Resolver';
 import { JWTVerified, verifyJWT as DidCVerifyJWT } from 'did-jwt';
-import { DID } from './@types';
-
-export interface JSONProof {
-  type: string;
-  verificationMethod: DID;
-  created: string;
-  proofPurpose: string;
-  jws: string;
-}
+import { JSONProof } from './@types';
 
 export interface JSONCredential {
   [x: string]: any;
@@ -45,7 +37,9 @@ export class Verifier {
     });
   }
 
-  async verifyJsonCredential(jsonCredential: JSONCredential): Promise<boolean> {
+  async verifyJsonCredential(
+    jsonCredential: JSONCredential | ({ proof: JSONProof } & Record<string, any>)
+  ): Promise<boolean> {
     const { proof, ...credential } = jsonCredential;
     const payload = JSON.stringify(credential, null, 2);
 
@@ -63,7 +57,6 @@ export class Verifier {
     } else {
       throw new Error("we're only supporting Ed25519VerificationKey2018 and EcdsaSecp256k1Signature2019 atm");
     }
-
     return result;
   }
 }

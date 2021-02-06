@@ -1,25 +1,79 @@
-import { Box, Button, FormControl, FormHelperText, FormLabel, Textarea } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, Textarea, VStack } from '@chakra-ui/react';
 import { useIdentity } from '@immu/frontend';
-import React from 'react';
-import { JWTVerified } from '@immu/core';
+import React, { useState } from 'react';
+import { CredentialOfferRequestAttrs, CredentialOffer, Issuer } from '@immu/core';
+import CredentialOfferCard from 'molecules/CredentialOfferCard';
+import fetch from 'cross-fetch';
+import { useCredentialStorage } from 'hooks/CredentialStorage';
 
+interface ReceivedCredential {
+  signedCredentialJwt: string;
+}
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const AcceptCredentialOffer = ({ onAccepted }: { onAccepted: (verified: JWTVerified) => void }) => {
-  const { verifier } = useIdentity();
+const AcceptCredentialOffer = () => {
+  const { verifier, resolver, did, account } = useIdentity();
+
+  const [credentialOffer, setCredentialOffer] = useState<CredentialOfferRequestAttrs & { issuer: string }>();
+
+  const { addCredential } = useCredentialStorage();
 
   const submitted = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     const target = e.target as typeof e.target & {
       credentialOffer: { value: string };
     };
-    const req = target.credentialOffer.value;
 
-    const verified = await verifier?.verifyAnyJwt(req);
+    const verified = await verifier?.verifyAnyJwt(target.credentialOffer.value);
     if (verified) {
-      onAccepted(verified);
+      console.log(verified);
+      setCredentialOffer({
+        ...verified.payload,
+        issuer: verified.issuer
+      });
     }
 
-    target.credentialOffer.value = '';
+    //    target.credentialOffer.value = '';
+  };
+
+  const acceptCredentialOffer = async (acceptedOffer: CredentialOffer) => {
+    const issuer = new Issuer(resolver!, did!.id);
+    const payload = {
+      callbackURL: credentialOffer!.callbackURL,
+      selectedCredentials: [{ type: acceptedOffer.type }]
+    };
+    const proof = await issuer.createJsonProof(payload, did!.publicKey[0], account!.privateKey);
+    const serverPayload = {
+      ...payload,
+      proof
+    };
+
+    const interactionToken = new URL(credentialOffer!.callbackURL).pathname.split('/').slice(-1)[0];
+    const eventSource = new EventSource(`${process.env.REACT_APP_COMM_SERVER}/listen/${interactionToken}`);
+
+    eventSource.addEventListener('receiveCredential', async function (event: any) {
+      await receiveCredential(JSON.parse(event.data), interactionToken);
+      eventSource.close();
+    });
+
+    const response = await fetch(payload.callbackURL, {
+      method: 'POST',
+      body: JSON.stringify(serverPayload),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      console.log(await response.json());
+    }
+  };
+
+  const receiveCredential = async (data: ReceivedCredential, interactionToken: string) => {
+    const jwt = data.signedCredentialJwt;
+    const verified = await verifier?.verifyCredential(jwt);
+    if (verified) {
+      addCredential(verified.verifiableCredential);
+    }
   };
 
   return (
@@ -34,6 +88,19 @@ const AcceptCredentialOffer = ({ onAccepted }: { onAccepted: (verified: JWTVerif
           submit
         </Button>
       </form>
+      {credentialOffer && (
+        <VStack mt={6}>
+          <Heading size="lg">Accept these Credentials?</Heading>
+          {credentialOffer.offeredCredentials.map((cred) => (
+            <CredentialOfferCard
+              acceptCredentialOffer={acceptCredentialOffer}
+              issuer={credentialOffer.issuer}
+              offer={cred}
+              key={`${cred.type}`}
+            />
+          ))}
+        </VStack>
+      )}
     </Box>
   );
 };
