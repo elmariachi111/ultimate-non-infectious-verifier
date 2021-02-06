@@ -29,7 +29,7 @@ app.set('views', __dirname + '/app/views');
 
 app.set('json spaces', 4);
 
-//app.use(express.json());
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set('trust proxy', 1); // trust first proxy
 app.use(

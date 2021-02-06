@@ -1,4 +1,4 @@
-import { SimpleSigner, createJWT as DidCreateJWT } from 'did-jwt';
+import { createJWT as DidCreateJWT, SimpleSigner } from 'did-jwt';
 import { createVerifiableCredentialJwt, createVerifiablePresentationJwt, Issuer as DidIssuer } from 'did-jwt-vc';
 import {
   CredentialPayload,

@@ -199,7 +199,32 @@ Jolocom's Rust impl samples
 https://github.com/jolocom/didcomm-rs/blob/main/README.md
 
 A good overview of supported DID-Auth schemas
-https://nbviewer.jupyter.org/github/WebOfTrustInfo/rebooting-the-web-of-trust-spring2018/blob/master/final-documents/did-auth.pdf
+https://nbviewer.jupyter.org/github/WebOfTrustInfo/rebooting-the-web-of-trust-spring2018/blob/master/final-documents/did-auth.pdf  
+or: 
+(https://github.com/WebOfTrustInfo/rwot6-santabarbara/blob/master/final-documents/did-auth.md)  
+
+### Hyperledger Aries 
+
+is a reference impl for DIDComm e.a. on top of Hyperledger Indy. Most RFCs can be considered de facto standards:
+
+The Aries RFC list  
+lots of specs that are relevant for interoperable credential exchange protocols. Supposed to be the DIDComm foundation:
+https://github.com/hyperledger/aries-rfcs/blob/master/index.md
+
+an early JS implementation:
+https://github.com/hyperledger/aries-framework-javascript
+
+
+How to start interactions with an unknown client:
+
+https://github.com/hyperledger/aries-rfcs/blob/master/features/0160-connection-protocol/README.md#0-invitation-to-connect
+
+
+https://github.com/hyperledger/aries-rfcs/blob/master/features/0067-didcomm-diddoc-conventions/README.md
+
+specific to credential exchange:  
+https://github.com/hyperledger/aries-rfcs/blob/master/features/0036-issue-credential/README.md
+
 
 ### Sovrin
 
@@ -211,8 +236,12 @@ test directly on indy: https://sovrin.org/wp-content/uploads/Token-Test-Instruct
 Qatar open data:
 https://www.data.gov.qa/explore/dataset/h4-vaccination/information/
 
-FHIR4 IMmunization JSON schema
+FHIR4 Immunization JSON schema
 https://www.hl7.org/fhir/immunization.schema.json.html
+
+The preliminary FHIR4 spec, driven by Health cards:
+http://build.fhir.org/ig/dvci/vaccine-credential-ig/branches/main/
+
 
 Using FHIR4 information in health credentials
 https://healthwallet.cards/credential-modeling/
@@ -220,6 +249,10 @@ https://github.com/microsoft-healthcare-madison/health-wallet-demo/blob/master/s
 Covid 19 sample:
 
 https://github.com/microsoft-healthcare-madison/health-wallet-demo/blob/master/src/fixtures/vc.pcr.json
+
+A ruby impl of health cards
+https://github.com/dvci/health_cards
+
 
 ### Vaccination credential initiatives
 

@@ -2,15 +2,13 @@ import { Button, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input
 import fhirTemplate from 'data/immunization.json';
 import { useForm } from 'react-hook-form';
 
-const FhirImmunizationForm: React.FC = () => {
+const FhirImmunizationForm = ({ onFhirCreated }: { onFhirCreated: (fhir: any) => void }) => {
   const { register, handleSubmit, watch, errors } = useForm();
 
   const doseNumber = watch('doseQuantity', 0);
   const doseText = `COVID-19, mRNA, LNP-S, PF, ${doseNumber} mcg/${(doseNumber / 100).toFixed(1)} mL dose`;
 
   const onSubmit = (data: any) => {
-    //const doseText = `COVID-19, mRNA, LNP-S, PF, ${data.doseNumber} mcg/${(data.doseNumber / 100).toFixed(1)} mL dose`;
-
     const fhir: any = { ...fhirTemplate };
 
     fhir.resource.vaccineCode.coding = [
@@ -26,7 +24,9 @@ const FhirImmunizationForm: React.FC = () => {
     fhir.resource.protocolApplied[0].doseNumberPositiveInt = parseInt(data.doseNumber);
     fhir.resource.doseQuantity.value = parseInt(data.doseQuantity);
 
-    console.log(fhir);
+    console.log('FHIR', fhir);
+
+    onFhirCreated(fhir);
   };
 
   return (

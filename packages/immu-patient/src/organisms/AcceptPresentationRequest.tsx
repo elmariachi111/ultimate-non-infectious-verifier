@@ -10,25 +10,25 @@ const AcceptPresentationRequest = ({ onAccepted }: { onAccepted: (verified: JWTV
   const submitted = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     const target = e.target as typeof e.target & {
-      authenticationRequest: { value: string };
+      presentationRequest: { value: string };
     };
-    const req = target.authenticationRequest.value;
+    const req = target.presentationRequest.value;
 
     const verified = await verifier?.verifyAnyJwt(req);
     if (verified) {
       onAccepted(verified);
     }
 
-    target.authenticationRequest.value = '';
+    target.presentationRequest.value = '';
   };
 
   return (
     <Box>
       <form onSubmit={submitted}>
-        <FormControl id="authenticationRequest">
-          <FormLabel>authenticationRequest</FormLabel>
-          <Textarea name="authenticationRequest"></Textarea>
-          <FormHelperText>Paste an authentication request</FormHelperText>
+        <FormControl id="presentationRequest">
+          <FormLabel>presentationRequest</FormLabel>
+          <Textarea name="presentationRequest"></Textarea>
+          <FormHelperText>Paste an presentation request</FormHelperText>
         </FormControl>
         <Button type="submit" colorScheme="teal">
           submit

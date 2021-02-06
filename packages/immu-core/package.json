@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@digitalbazaar/ed25519-verification-key-2018": "^1.1.0",
+    "@jolocom/protocol-ts": "^0.5.2",
     "@relocke/base58": "^1.0.0",
     "@stablelib/sha256": "^1.0.0",
     "@transmute/did-key-ed25519": "^0.2.1-unstable.29",
