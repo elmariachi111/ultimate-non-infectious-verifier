@@ -1,4 +1,4 @@
-import { createRequest } from '@immu/core';
+import { createPresentationRequest } from '@immu/core';
 import { Command, flags } from '@oclif/command';
 import { chooseDidFromRoles } from '../../helpers/prompts';
 
@@ -31,7 +31,7 @@ export default class PresentationRequest extends Command {
     const { args, flags } = this.parse(PresentationRequest);
 
     const verifier = await chooseDidFromRoles(flags.verifier);
-    const presentationRequest = createRequest({
+    const presentationRequest = createPresentationRequest({
       requester: verifier,
       requestedSubjects: args.credentialType.split(",")
     });

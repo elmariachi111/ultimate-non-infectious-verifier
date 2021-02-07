@@ -1,11 +1,8 @@
 import { Issuer } from '@immu/core';
 import { Command, flags } from '@oclif/command';
-import { chooseDidFromRoles, chooseSigningKey, requestAndResolvePrivateKey } from '../../helpers/prompts';
+import { chooseDidFromRoles, chooseSigningKey } from '../../helpers/prompts';
 //@ts-ignore
 import { resolver } from '../../resolver';
-import { PresentationRequest } from '@immu/core';
-import cli from 'cli-ux';
-import { readFileSync } from 'fs';
 
 export default class Authenticate extends Command {
   static description = 'creates an authentication request by some did'

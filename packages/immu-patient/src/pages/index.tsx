@@ -2,7 +2,7 @@ import { Box, Heading } from '@chakra-ui/react';
 import { JWTVerified } from '@immu/core';
 import AcceptPresentationRequest from 'organisms/AcceptPresentationRequest';
 import RespondToPresentationRequest from 'organisms/RespondToPresentationRequest';
-import AcceptCredentialOffer from 'organisms/AcceptCredentialOffer';
+
 import React, { useState } from 'react';
 
 const IndexPage: React.FC = () => {
@@ -18,10 +18,6 @@ const IndexPage: React.FC = () => {
         ) : (
           <AcceptPresentationRequest onAccepted={setPresentationRequest} />
         )}
-      </Box>
-      <Box my={3}>
-        <Heading size="lg">accept immunization credential</Heading>
-        <AcceptCredentialOffer />
       </Box>
     </div>
   );

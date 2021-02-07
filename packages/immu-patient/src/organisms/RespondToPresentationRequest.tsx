@@ -7,16 +7,13 @@ import React from 'react';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const RespondToPresentationRequest = ({ presentationRequest }: { presentationRequest: JWTVerified }) => {
   //  const { verifier } = useIdentity();
-  const { credentials } = useCredentials();
+  const { lookupCredentials } = useCredentials();
 
   console.log(presentationRequest);
-  const lookupCredentials = () => {
-    const { requestedSubjects }: { requestedSubjects: string[] } = presentationRequest.payload;
-    const foundCredentials = Object.keys(credentials).map((type) => requestedSubjects.includes(type));
-    console.log(foundCredentials);
-  };
+  const { requestedSubjects } = presentationRequest.payload;
 
-  lookupCredentials();
+  const foundCredentials = lookupCredentials(requestedSubjects);
+  console.log(foundCredentials);
 
   return (
     <Box>

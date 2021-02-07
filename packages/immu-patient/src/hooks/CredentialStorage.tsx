@@ -8,11 +8,15 @@ export interface CredentialState {
     [type: string]: CredentialPayload[];
   };
   addCredential: (credential: CredentialPayload) => void;
+  lookupCredentials: (types: string[]) => CredentialPayload[];
 }
 const initialState: CredentialState = {
   credentials: {},
   addCredential: () => {
     return;
+  },
+  lookupCredentials: () => {
+    return [];
   }
 };
 
@@ -21,7 +25,7 @@ export const CredentialContext = createContext<CredentialState>(initialState);
 const useCredentials = () => useContext(CredentialContext);
 
 const CredentialProvider = ({ children }: { children: React.ReactNode }) => {
-  const [credentials, setCredentials] = useState({});
+  const [credentials, setCredentials] = useState<{ [type: string]: CredentialPayload[] }>({});
 
   useEffect(() => {
     const regex = RegExp(/credentials\[(.+)\]/);
@@ -47,6 +51,17 @@ const CredentialProvider = ({ children }: { children: React.ReactNode }) => {
 
     const credentials = JSON.parse(_credentials) as CredentialPayload[];
     return credentials;
+  };
+
+  const lookupCredentials = (requestedSubjects: string[]): CredentialPayload[] => {
+    const weHaveTypes = Object.keys(credentials).filter((type) => requestedSubjects.includes(type));
+    const ret = [];
+    for (const type of weHaveTypes) {
+      for (const cred of credentials[type]) {
+        ret.push(cred);
+      }
+    }
+    return ret;
   };
 
   const addCredential = (credential: CredentialPayload) => {
@@ -76,7 +91,11 @@ const CredentialProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  return <CredentialContext.Provider value={{ credentials, addCredential }}>{children}</CredentialContext.Provider>;
+  return (
+    <CredentialContext.Provider value={{ credentials, addCredential, lookupCredentials }}>
+      {children}
+    </CredentialContext.Provider>
+  );
 };
 
 export { CredentialProvider, useCredentials };

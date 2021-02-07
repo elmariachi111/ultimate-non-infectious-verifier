@@ -17,7 +17,7 @@ export interface PresentationRequestCreationParams {
 /**
  * //todo this is **totally** made up
  */
-export function createRequest(params: PresentationRequestCreationParams): PresentationRequest {
+export function createPresentationRequest(params: PresentationRequestCreationParams): PresentationRequest {
   const presentationRequest = {
     type: ['VerifiablePresentationRequest'],
     requestedDate: new Date().toISOString(),

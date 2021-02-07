@@ -80,9 +80,8 @@ const AcceptCredentialOffer = () => {
     <Box>
       <form onSubmit={submitted}>
         <FormControl id="credentialOffer">
-          <FormLabel>credential offer</FormLabel>
+          <FormLabel>Paste a credential offer</FormLabel>
           <Textarea name="credentialOffer"></Textarea>
-          <FormHelperText>Paste a credential offer</FormHelperText>
         </FormControl>
         <Button type="submit" colorScheme="teal">
           submit

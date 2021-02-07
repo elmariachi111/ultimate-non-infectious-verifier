@@ -4,7 +4,7 @@ import * as crypto from 'crypto';
 import { Router } from 'express';
 import { PUBLIC_ENDPOINT } from '../../constants/endpoint';
 import { isIssuerTrusted, trustedIssuers, verifier } from '../services/verifier';
-import { JSONCredential, createRequest } from '@immu/core';
+import { JSONCredential, createPresentationRequest } from '@immu/core';
 import { account, verifierDid, issuer } from '../services/verifierAccount';
 //@ts-ignore
 import QRCode from 'qrcode';
@@ -22,9 +22,9 @@ router.get(PUBLIC_ENDPOINT + '/', async (req, res) => {
       req.session.nonce = bs58.encode(crypto.randomBytes(32));
     }
 
-    const verificationRequest = createRequest({
+    const verificationRequest = createPresentationRequest({
       requester: verifierDid,
-      requestedSubjects: ['ProofOfImmunization'],
+      requestedSubjects: ['ProofOfImmunization', 'https://smarthealth.cards#covid19'],
       challenge: req.session.nonce,
       callbackUrl: `${process.env.SERVER_HOST}/${PUBLIC_ENDPOINT}present`
     });
