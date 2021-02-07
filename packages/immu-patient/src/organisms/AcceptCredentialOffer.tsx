@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { CredentialOfferRequestAttrs, CredentialOffer, Issuer } from '@immu/core';
 import CredentialOfferCard from 'molecules/CredentialOfferCard';
 import fetch from 'cross-fetch';
-import { useCredentialStorage } from 'hooks/CredentialStorage';
+import { useCredentials } from 'hooks/CredentialStorage';
 
 interface ReceivedCredential {
   signedCredentialJwt: string;
@@ -15,7 +15,7 @@ const AcceptCredentialOffer = () => {
 
   const [credentialOffer, setCredentialOffer] = useState<CredentialOfferRequestAttrs & { issuer: string }>();
 
-  const { addCredential } = useCredentialStorage();
+  const { addCredential } = useCredentials();
 
   const submitted = async (e: React.SyntheticEvent) => {
     e.preventDefault();
