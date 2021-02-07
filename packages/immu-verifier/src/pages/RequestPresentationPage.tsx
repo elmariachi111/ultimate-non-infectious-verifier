@@ -88,10 +88,11 @@ const RequestPresentationPage: React.FC = () => {
     const occurrenceTimes = fhirResources.map(fh => new Date(fh.resource.occurrenceDateTime));
     const msDiff = Math.abs(occurrenceTimes[0].getTime() - occurrenceTimes[1].getTime());
     const dayDiff = msDiff / 1000 / 60 / 60 / 24;
-    if (dayDiff < 28)
-      throw Error(`the immunization dates are too close (${dayDiff} days)`);
+    //if (dayDiff < 28)
+      //throw Error(`the immunization dates are too close (${dayDiff} days)`);
 
     console.log(occurrenceTimes);
+    return true;
   }
   const presentationReceived = async (data: PresentationResponseAttrs) => {
     const verifiedPresentation = await verifier!.verifyPresentation(data.presentationResponse);
@@ -139,7 +140,7 @@ const RequestPresentationPage: React.FC = () => {
   }, [did, resolver])
 
   return (
-   <Box>{ presentationRequestJwt &&
+   <Box mt={6}>{ presentationRequestJwt &&
     <Box>
       <Heading>present your credentials</Heading>
       <Text>We're accepting <code>{SMARTHEALTH_CARD_CRED_TYPE}</code> at the moment</Text>

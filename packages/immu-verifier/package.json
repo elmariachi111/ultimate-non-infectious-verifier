@@ -6,15 +6,16 @@
     "@chakra-ui/react": "^1.3.2",
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.1.5",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-scripts": "4.0.2",
     "@immu/core": "workspace:*",
     "@immu/frontend": "workspace:*",
     "bs58": "^4.0.1",
     "cross-fetch": "^3.0.6",
     "framer-motion": "^3.3.0",
-    "qrcode": "^1.4.4"
+    "qrcode": "^1.4.4",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-identicons": "^1.2.5",
+    "react-scripts": "4.0.2"
   },
   "devDependencies": {
     "@types/node": "^12.0.0",

@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
+import { Box, Button, Code, Flex, Heading, Text } from '@chakra-ui/react';
 import { CredentialOffer, DID } from '@immu/core';
 import React from 'react';
 
@@ -32,6 +32,11 @@ const CredentialOfferCard = ({
       <Button colorScheme="teal" mx={2} onClick={() => acceptCredentialOffer(offer)}>
         accept
       </Button>
+      <Box align="center" w="100%" overflow="hidden" px={2}>
+        <Code colorScheme="whiteAlpha" variant="solid" fontSize="xs">
+          {issuer}
+        </Code>
+      </Box>
     </Flex>
   );
 };

@@ -86,10 +86,11 @@ const CredentialProvider = ({ children }: { children: React.ReactNode }) => {
       const credentials = oldCredentials[type] || [];
       credentials.push(credential);
       localStorage.setItem(`credentials[${type}]`, JSON.stringify(credentials));
-      return {
-        ...oldCredentials,
-        type: credentials
+      const ret = {
+        ...oldCredentials
       };
+      ret[type] = credentials;
+      return ret;
     });
   }
 

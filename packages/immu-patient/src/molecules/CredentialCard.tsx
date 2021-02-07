@@ -1,23 +1,28 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Box, Code, Flex, Heading, Text } from '@chakra-ui/react';
 import { VerifiableCredential } from '@immu/core';
 import React from 'react';
 
 const CredentialCard = ({ credential }: { credential: VerifiableCredential }) => {
   const bg = 'teal.200';
 
-  function getRelevantTypes(): string[] {
-    if (typeof credential === 'string') {
-      throw Error('noooo');
-    }
-    if (typeof credential.type === 'string') return [credential.type];
-    else {
-      return credential.type.filter((t) => t != 'VerifiableCredential');
-    }
-  }
+  if (typeof credential === 'string') throw Error('noooo');
+
+  const { fhirResource } = credential.credentialSubject;
+  const vm = {
+    types:
+      typeof credential.type === 'string'
+        ? [credential.type]
+        : credential.type.filter((t) => t != 'VerifiableCredential'),
+    issued: new Date(credential.issuanceDate).toLocaleDateString(),
+    occurred: new Date(fhirResource.resource.occurrenceDateTime).toISOString(),
+    resourceType: fhirResource.resource.resourceType,
+    issuer: credential.issuer.id
+  };
+
   return (
     <Flex
       direction="column"
-      justify="start"
+      justify="space-evenly"
       bg={bg}
       minHeight="3xs"
       minW="100%"
@@ -27,13 +32,28 @@ const CredentialCard = ({ credential }: { credential: VerifiableCredential }) =>
       border="1px"
       borderBottom="4px solid"
       borderColor="teal.500"
+      overflow="hidden"
       onClick={() => console.log(credential)}
     >
-      {getRelevantTypes().map((type: string) => (
+      {vm.types.map((type: string) => (
         <Text opacity={0.8} textAlign="center" bg="gray.200" py={4}>
           {type}
         </Text>
       ))}
+      <Box px={4}>
+        <Heading size="xs">{vm.resourceType} </Heading>
+        <Text fontSize="sm">
+          occurred on <b>{vm.occurred}</b>
+        </Text>
+        <Text fontSize="sm">
+          issued on: <b>{vm.issued}</b>{' '}
+        </Text>
+      </Box>
+      <Box align="center" w="100%" overflow="hidden" px={2}>
+        <Code colorScheme="whiteAlpha" variant="solid" fontSize="xs">
+          {vm.issuer}{' '}
+        </Code>
+      </Box>
     </Flex>
   );
 };

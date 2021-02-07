@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { CredentialOfferRequestAttrs, CredentialRenderTypes, SignedCredentialOfferResponseAttrs } from '@immu/core';
 import crypto from 'crypto';
 import bs58 from 'bs58';
-import { Box, Heading } from '@chakra-ui/react';
+import { Box, Code, Heading, useClipboard, useToast } from '@chakra-ui/react';
 
 import QRCode from 'qrcode';
 
@@ -18,8 +18,10 @@ const IndexPage: React.FC = () => {
 
   const [, setFhirDocument] = useState<FHIRDocument>();
 
-  const [offerJwt, setOfferJwt] = useState<string>();
+  const [offerJwt, setOfferJwt] = useState<string>('');
   const [offerJwtQrCode, setOfferJwtQrCode] = useState<string>();
+  const toast = useToast();
+  const { hasCopied, onCopy } = useClipboard(offerJwt);
 
   const offerResponseReceived = async (
     response: SignedCredentialOfferResponseAttrs,
@@ -58,6 +60,13 @@ const IndexPage: React.FC = () => {
       );
 
       console.log(await receiveResponse.json());
+      toast({
+        title: 'Credential accepted.',
+        description: 'the subject has accepted your credential.',
+        status: 'success',
+        duration: 5000,
+        isClosable: true
+      });
     }
   };
   const onFhirCreated = async (_fhirDocument: FHIRDocument) => {
@@ -107,7 +116,7 @@ const IndexPage: React.FC = () => {
       <FhirImmunizationForm onFhirCreated={onFhirCreated} />
       {offerJwt && (
         <Box>
-          <img src={offerJwtQrCode} alt="qr code" />
+          <img src={offerJwtQrCode} alt="qr code" onClick={onCopy} />
           <code>{offerJwt}</code>
         </Box>
       )}

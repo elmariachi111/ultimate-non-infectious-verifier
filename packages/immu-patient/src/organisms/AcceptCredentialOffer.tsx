@@ -1,4 +1,14 @@
-import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, Textarea, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Heading,
+  Textarea,
+  useToast,
+  VStack
+} from '@chakra-ui/react';
 import { useIdentity } from '@immu/frontend';
 import React, { useState } from 'react';
 import { CredentialOfferRequestAttrs, CredentialOffer, Issuer } from '@immu/core';
@@ -16,6 +26,7 @@ const AcceptCredentialOffer = () => {
   const [credentialOffer, setCredentialOffer] = useState<CredentialOfferRequestAttrs & { issuer: string }>();
 
   const { addCredential } = useCredentials();
+  const toast = useToast();
 
   const submitted = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -32,7 +43,7 @@ const AcceptCredentialOffer = () => {
       });
     }
 
-    //    target.credentialOffer.value = '';
+    target.credentialOffer.value = '';
   };
 
   const acceptCredentialOffer = async (acceptedOffer: CredentialOffer) => {
@@ -74,6 +85,14 @@ const AcceptCredentialOffer = () => {
     if (verified) {
       addCredential(verified.verifiableCredential);
     }
+    setCredentialOffer(undefined);
+    toast({
+      title: 'Credential accepted.',
+      description: 'the issuer has created a credential for you.',
+      status: 'success',
+      duration: 5000,
+      isClosable: true
+    });
   };
 
   return (
