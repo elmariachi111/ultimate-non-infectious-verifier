@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { CredentialOfferRequestAttrs, CredentialRenderTypes, SignedCredentialOfferResponseAttrs } from '@immu/core';
 import crypto from 'crypto';
 import bs58 from 'bs58';
-import { Box } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
 
 import QRCode from 'qrcode';
 
@@ -101,6 +101,9 @@ const IndexPage: React.FC = () => {
 
   return (
     <>
+      <Heading size="md" mt={8}>
+        issue an immunization credential
+      </Heading>
       <FhirImmunizationForm onFhirCreated={onFhirCreated} />
       {offerJwt && (
         <Box>

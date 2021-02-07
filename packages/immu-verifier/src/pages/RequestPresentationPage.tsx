@@ -14,7 +14,7 @@ interface PresentationResponseAttrs {
 
 const SMARTHEALTH_CARD_CRED_TYPE = 'https://smarthealth.cards#covid19';
 
-type FHIRDocument = any;
+type FHIRResource = any;
 
 const RequestPresentationPage: React.FC = () => {
   const [presentationRequestJwt, setPresentationRequestJwt] = useState<string>("");
@@ -22,6 +22,7 @@ const RequestPresentationPage: React.FC = () => {
   const [isValid, setIsValid] = useState<boolean | null>(null);
   const { hasCopied, onCopy } = useClipboard(presentationRequestJwt)
   const [eventSource, setEventSource] = useState<EventSource>();
+  const [errorMessage, setErrorMessage] = useState<string>();
 
   const { account, resolver, did, verifier } = useIdentity();
 
@@ -31,39 +32,79 @@ const RequestPresentationPage: React.FC = () => {
       setEventSource(undefined);
     }
     setIsValid(null);
+    setErrorMessage("");
     presentRequest(did!.id, resolver!);
   }
 
-  const isAcceptedType = (vc: W3CCredential) => {
-    return vc.type.includes(SMARTHEALTH_CARD_CRED_TYPE)
-  }
 
-  const containsValidImmunizationProof = (fhirDoc: any) => {
+  const isKnownIssuer = (did: string) => {
 
   }
 
-  const getImmunizationDate = (fhirDoc: any) => {
-
-  }
-
-  const checkIfCredentialsAreSufficient = (credentials: VerifiableCredential[]) => {
-    const credentialValidity = credentials.map( (credential: VerifiableCredential) => {
+  const checkIfCredentialsAreValid = async (credentials: VerifiableCredential[]): Promise<FHIRResource[]> => {
+    const fhirResources = await Promise.all(
+    credentials.map( async (credential: VerifiableCredential): Promise<FHIRResource> => {
       if (typeof(credential) === "string") {
-        return false;
+        throw Error("we dont accept unresolved credential presentations")
       }
-      let credentialValid = true;
-      credentialValid = credentialValid && (isAcceptedType(credential))
-      return credentialValid;
-    })
-    return credentialValidity.reduce((prv, cur) => prv && cur, true)
+      if (!credential.type.includes(SMARTHEALTH_CARD_CRED_TYPE)) {
+        throw Error(`atm we're only accepting ${SMARTHEALTH_CARD_CRED_TYPE} credentials`);
+      }
+      const {fhirResource} = credential.credentialSubject;
+      if (!fhirResource) {
+        throw Error("credential doesn't contain a FHIR resource")
+      }
+      
+      const issuerDid = await resolver!.resolve(credential.issuer.id);
+      //todo: check on chain if this is a trusted issuer
+      if (!(typeof(issuerDid.id) === 'string' ))
+        throw Error("we don't trust the issuer :( ");
+
+      //todo: check if the credential has been revoked
+
+      //todo: check the resource content | FHIR related
+      if (fhirResource.resource.resourceType !== 'Immunization')
+        return null; //skip this one.
+      
+      const {coding} = fhirResource.resource.vaccineCode
+      const sidCvxCode = coding.filter( (coding: any) => coding.system === 'http://hl7.org/fhir/sid/cvx');
+      if (!sidCvxCode) {
+        throw Error("we cannot recognize the immunization coding system")
+      }
+
+      if (!["207", "208"].includes(sidCvxCode[0].code)) {
+        throw Error("we don't know the immunization type you received");
+      }
+
+      return fhirResource;
+    }))
+    if (fhirResources.filter(fh => fh !== null).length !== 2) {
+      throw Error("sorry, we don't support bundled resources yet")
+    }
+    return fhirResources;
   }
 
+  function checkIfImmunizationIsCorrect(fhirResources: FHIRResource[]) {
+    const occurrenceTimes = fhirResources.map(fh => new Date(fh.resource.occurrenceDateTime));
+    const msDiff = Math.abs(occurrenceTimes[0].getTime() - occurrenceTimes[1].getTime());
+    const dayDiff = msDiff / 1000 / 60 / 60 / 24;
+    if (dayDiff < 28)
+      throw Error(`the immunization dates are too close (${dayDiff} days)`);
+
+    console.log(occurrenceTimes);
+  }
   const presentationReceived = async (data: PresentationResponseAttrs) => {
     const verifiedPresentation = await verifier!.verifyPresentation(data.presentationResponse);
     const credentials = verifiedPresentation.verifiablePresentation.verifiableCredential;
     console.log(credentials);
-    const result = checkIfCredentialsAreSufficient(credentials);
-    setIsValid(result);
+    try {
+      const fhirResources = await checkIfCredentialsAreValid(credentials);
+      checkIfImmunizationIsCorrect(fhirResources);
+      setIsValid(true);
+    } catch(e) {
+      setIsValid(false);
+      setErrorMessage(e.message);
+    }
   }
 
   const presentRequest = async (did: string, resolver: Resolver) => {
@@ -117,7 +158,7 @@ const RequestPresentationPage: React.FC = () => {
           <Alert status={isValid ? 'success' : 'error'} variant="solid">
           <AlertIcon />
           
-          {isValid ? "immunization has been proven": "the credentials weren't sufficient" }
+          {isValid ? "immunization has been proven": errorMessage }
           </Alert>
         </ModalBody>
 

@@ -48,6 +48,8 @@ const FhirImmunizationForm = ({ onFhirCreated }: { onFhirCreated: (fhir: any) =>
         <Select name="vaccineCode" placeholder="Select the vaccine administered" ref={register}>
           <option value="207">Moderna (CVX#207)</option>
           <option value="208">Pfizer-BioNTech (CVX#208)</option>
+          <option value="35">tetanus toxoid (CVX#35)</option>
+          <option value="07">mumps (CVX#07)</option>
         </Select>
       </FormControl>
 
