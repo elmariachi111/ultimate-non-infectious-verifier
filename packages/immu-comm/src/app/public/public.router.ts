@@ -2,7 +2,7 @@ import { driver as didKeyDriver, Ed25519KeyPair } from '@transmute/did-key-ed255
 import bs58 from 'bs58';
 import * as crypto from 'crypto';
 import { Router } from 'express';
-import { PUBLIC_ENDPOINT } from '../../constants/endpoint';
+import { COMM_ENDPOINT, PUBLIC_ENDPOINT } from '../../constants/endpoint';
 import { isIssuerTrusted, trustedIssuers, verifier } from '../services/verifier';
 import { JSONCredential, createPresentationRequest } from '@immu/core';
 import { account, verifierDid, issuer } from '../services/verifierAccount';
@@ -26,7 +26,7 @@ router.get(PUBLIC_ENDPOINT + '/', async (req, res) => {
       requester: verifierDid,
       requestedSubjects: ['ProofOfImmunization', 'https://smarthealth.cards#covid19'],
       challenge: req.session.nonce,
-      callbackUrl: `${process.env.SERVER_HOST}/${PUBLIC_ENDPOINT}present`
+      callbackUrl: `${process.env.SERVER_HOST}${PUBLIC_ENDPOINT}/present`
     });
 
     const presentationRequestJwt = await issuer.createAnyJwt(verificationRequest, account.privateKey);
