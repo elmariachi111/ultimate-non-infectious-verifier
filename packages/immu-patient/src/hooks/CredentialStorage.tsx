@@ -1,14 +1,14 @@
 import React, { useContext, createContext, useEffect } from 'react';
-import { CredentialPayload } from '@immu/core';
+import { VerifiableCredential } from '@immu/core';
 
 import { useState } from 'react';
 
 export interface CredentialState {
   credentials: {
-    [type: string]: CredentialPayload[];
+    [type: string]: VerifiableCredential[];
   };
-  addCredential: (credential: CredentialPayload) => void;
-  lookupCredentials: (types: string[]) => CredentialPayload[];
+  addCredential: (credential: VerifiableCredential) => void;
+  lookupCredentials: (types: string[]) => VerifiableCredential[];
 }
 const initialState: CredentialState = {
   credentials: {},
@@ -25,7 +25,7 @@ export const CredentialContext = createContext<CredentialState>(initialState);
 const useCredentials = () => useContext(CredentialContext);
 
 const CredentialProvider = ({ children }: { children: React.ReactNode }) => {
-  const [credentials, setCredentials] = useState<{ [type: string]: CredentialPayload[] }>({});
+  const [credentials, setCredentials] = useState<{ [type: string]: VerifiableCredential[] }>({});
 
   useEffect(() => {
     const regex = RegExp(/credentials\[(.+)\]/);
@@ -37,7 +37,7 @@ const CredentialProvider = ({ children }: { children: React.ReactNode }) => {
       })
       .filter((t) => t);
 
-    const cred: { [type: string]: CredentialPayload[] } = {};
+    const cred: { [type: string]: VerifiableCredential[] } = {};
     for (const type of types) {
       cred[type] = findCredential(type);
     }
@@ -45,15 +45,15 @@ const CredentialProvider = ({ children }: { children: React.ReactNode }) => {
     setCredentials(cred);
   }, []);
 
-  const findCredential = (type: string): CredentialPayload[] => {
+  const findCredential = (type: string): VerifiableCredential[] => {
     const _credentials = localStorage.getItem(`credentials[${type}]`);
     if (!_credentials) return [];
 
-    const credentials = JSON.parse(_credentials) as CredentialPayload[];
+    const credentials = JSON.parse(_credentials) as VerifiableCredential[];
     return credentials;
   };
 
-  const lookupCredentials = (requestedSubjects: string[]): CredentialPayload[] => {
+  const lookupCredentials = (requestedSubjects: string[]): VerifiableCredential[] => {
     const weHaveTypes = Object.keys(credentials).filter((type) => requestedSubjects.includes(type));
     const ret = [];
     for (const type of weHaveTypes) {
@@ -64,8 +64,10 @@ const CredentialProvider = ({ children }: { children: React.ReactNode }) => {
     return ret;
   };
 
-  const addCredential = (credential: CredentialPayload) => {
+  function addCredential(credential: VerifiableCredential) {
     let type: string;
+    if (typeof credential === 'string') throw Error('nooo');
+
     if (typeof credential.type === 'string') {
       type = credential.type;
     } else {
@@ -80,7 +82,7 @@ const CredentialProvider = ({ children }: { children: React.ReactNode }) => {
       }
     }
 
-    setCredentials((oldCredentials: { [type: string]: CredentialPayload[] }) => {
+    setCredentials((oldCredentials: { [type: string]: VerifiableCredential[] }) => {
       const credentials = oldCredentials[type] || [];
       credentials.push(credential);
       localStorage.setItem(`credentials[${type}]`, JSON.stringify(credentials));
@@ -89,7 +91,7 @@ const CredentialProvider = ({ children }: { children: React.ReactNode }) => {
         type: credentials
       };
     });
-  };
+  }
 
   return (
     <CredentialContext.Provider value={{ credentials, addCredential, lookupCredentials }}>

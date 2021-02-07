@@ -1,11 +1,14 @@
 import { Flex, Text } from '@chakra-ui/react';
-import { CredentialPayload } from '@immu/core';
+import { VerifiableCredential } from '@immu/core';
 import React from 'react';
 
-const CredentialCard = ({ credential }: { credential: CredentialPayload }) => {
+const CredentialCard = ({ credential }: { credential: VerifiableCredential }) => {
   const bg = 'teal.200';
 
   function getRelevantTypes(): string[] {
+    if (typeof credential === 'string') {
+      throw Error('noooo');
+    }
     if (typeof credential.type === 'string') return [credential.type];
     else {
       return credential.type.filter((t) => t != 'VerifiableCredential');

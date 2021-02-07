@@ -1,5 +1,5 @@
 import { Box, Divider, Heading, VStack } from '@chakra-ui/react';
-import { CredentialPayload } from '@immu/core';
+import { VerifiableCredential } from '@immu/core';
 import { useCredentials } from 'hooks/CredentialStorage';
 import CredentialCard from 'molecules/CredentialCard';
 import AcceptCredentialOffer from 'organisms/AcceptCredentialOffer';
@@ -17,7 +17,7 @@ const CredentialsPage = () => {
       <Divider orientation="horizontal" my={8} />
       <VStack mt={6}>
         {Object.keys(credentials).map((k: string) => {
-          return credentials[k].map((credential: CredentialPayload) => {
+          return credentials[k].map((credential: VerifiableCredential) => {
             return <CredentialCard credential={credential} />;
           });
         })}

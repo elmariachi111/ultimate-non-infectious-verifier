@@ -7,7 +7,7 @@ export * as Secp256k1Signing from './Secp256k1Signing';
 export * from './Request';
 export * from './displayCredential';
 
-export { VerifiedCredential } from 'did-jwt-vc';
+export { VerifiedCredential, VerifiableCredential, W3CCredential } from 'did-jwt-vc';
 export { JWTVerified } from 'did-jwt';
 
 export { PublicKey, Authentication, DIDDocument } from 'did-resolver';
@@ -15,8 +15,7 @@ export { PublicKey, Authentication, DIDDocument } from 'did-resolver';
 export {
   CredentialPayload,
   JwtCredentialSubject,
-  PresentationPayload,
-  VerifiableCredential
+  PresentationPayload //VerifiableCredential
 } from 'did-jwt-vc/lib/types';
 
 export { DID, BufferLike, JSONProof } from './@types';

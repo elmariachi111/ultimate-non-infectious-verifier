@@ -2,17 +2,14 @@ import Web3 from 'web3';
 import { DID } from './@types';
 
 export interface PresentationRequest {
-  requestedDate: string;
-  requester: DID;
+  requestedDate?: string;
+  requester?: DID;
   requestedSubjects: string[];
   challenge: string;
 }
 
-export interface PresentationRequestCreationParams {
-  requester: DID;
-  requestedSubjects: string[];
-  challenge?: string;
-  callbackUrl?: string;
+export interface PresentationRequestCreationParams extends PresentationRequest {
+  callbackUrl: string;
 }
 /**
  * //todo this is **totally** made up
@@ -20,7 +17,6 @@ export interface PresentationRequestCreationParams {
 export function createPresentationRequest(params: PresentationRequestCreationParams): PresentationRequest {
   const presentationRequest = {
     type: ['VerifiablePresentationRequest'],
-    requestedDate: new Date().toISOString(),
     ...params,
     challenge: params.challenge || Web3.utils.randomHex(32)
 

@@ -9977,16 +9977,16 @@ packages:
       integrity: sha512-k0pYUfT9ivn8yBBayuSeHm0tRG7pRGRnYwrCSVWciFcxnfQK94QUoax9g7HQtvgyxqAWP0DQUTDK75zp1/wZ0g==
   /did-jwt/4.8.1:
     dependencies:
-      '@babel/runtime': 7.12.5
+      '@babel/runtime': 7.12.13
       '@stablelib/ed25519': 1.0.1
       '@stablelib/random': 1.0.0
       '@stablelib/sha256': 1.0.0
       '@stablelib/x25519': 1.0.0
       '@stablelib/xchacha20poly1305': 1.0.0
       did-resolver: 2.1.2
-      elliptic: 6.5.3
+      elliptic: 6.5.4
       js-sha3: 0.8.0
-      uint8arrays: 2.0.5
+      uint8arrays: 2.1.2
     dev: false
     resolution:
       integrity: sha512-TRfk6He4MSUe3mN+YBqX4wC8N4ns3jan0Ckwal6fPsexKYRwo20ns8w0IGt7J4oHOF3IxXNAkH07OBdEpMnEdA==
@@ -15159,7 +15159,7 @@ packages:
       npm: '>=6.0.0'
     resolution:
       integrity: sha512-MRU5WpnSg81/vYO977MweoeUAxBdXl7+F5Af2Es+X6Vcgfk/g/EjIqXTgm3kb+xO3m1Kzr+aIV14oRX7nv5Z9w==
-  /multibase/3.1.0:
+  /multibase/3.1.1:
     dependencies:
       '@multiformats/base-x': 4.0.1
       web-encoding: 1.0.6
@@ -15168,7 +15168,7 @@ packages:
       node: '>=10.0.0'
       npm: '>=6.0.0'
     resolution:
-      integrity: sha512-Z+pThrpbS7ckQ2DwW5mPiwCGe1a94f8DWi/OxmbyeRednVOyUKmLSE+60kL/WHFYwWnaD1OakXGk3PYI1NkMFw==
+      integrity: sha512-kkSd8jWGznDNEC2eDwtnvSGlZeTeEt0+oHieNWUhv8rIi8JU3voIUo02HpJBNOtgmtxT2CPwkElub7Y9kz3nrw==
   /multicast-dns-service-types/1.1.0:
     dev: false
     resolution:
@@ -19978,13 +19978,13 @@ packages:
     dev: false
     resolution:
       integrity: sha512-cLdlZ6jnFczsKf5IH1gPHTtcHtPGho5r4CvctohmQjw8K7Q3gFdfIGHxSTdTaCKrL4w09SsPRJTqRS0drYeszA==
-  /uint8arrays/2.0.5:
+  /uint8arrays/2.1.2:
     dependencies:
-      multibase: 3.1.0
+      multibase: 3.1.1
       web-encoding: 1.0.6
     dev: false
     resolution:
-      integrity: sha512-1HSktgwqtYIwVn1mg3GcnqKhHH9oC4kVgdD/43cxMWwhP8rihKcFPmToDzS1XtbvVvlR8XxTk/DUBf0C83qNIg==
+      integrity: sha512-/VcLZbPMs/dk23u22IZlPWycfBxntpwrvISHQs93/OdRlUTnQw9Uzmzaoq7DgJAZl1SlP/kw+NhbjFAEED42rQ==
   /ultron/1.1.1:
     resolution:
       integrity: sha512-UIEXBNeYmKptWH6z8ZnqTeS8fV74zG0/eRU9VGkpzz+LIJNs8W/zM/L+7ctCkRrgbNnnR0xxw4bKOr0cW0N0Og==

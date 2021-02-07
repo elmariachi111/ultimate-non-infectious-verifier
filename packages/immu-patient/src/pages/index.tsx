@@ -14,7 +14,10 @@ const IndexPage: React.FC = () => {
         <Heading size="lg">prove that you're immune</Heading>
 
         {presentationRequest ? (
-          <RespondToPresentationRequest presentationRequest={presentationRequest} />
+          <RespondToPresentationRequest
+            cancel={() => setPresentationRequest(undefined)}
+            presentationRequest={presentationRequest}
+          />
         ) : (
           <AcceptPresentationRequest onAccepted={setPresentationRequest} />
         )}
