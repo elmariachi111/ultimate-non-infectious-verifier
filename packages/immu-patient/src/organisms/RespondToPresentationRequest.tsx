@@ -1,9 +1,8 @@
 import { Box, Button, Code, Flex, Text, VStack } from '@chakra-ui/react';
-import { Issuer, JWTVerified, VerifiableCredential } from '@immu/core';
+import { JWTVerified, VerifiableCredential } from '@immu/core';
 import { useIdentity } from '@immu/frontend';
 import { useCredentials } from 'hooks/CredentialStorage';
 import CredentialCard from 'molecules/CredentialCard';
-//import { useIdentity } from 'context/IdentityContext';
 import React from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -14,7 +13,7 @@ const RespondToPresentationRequest = ({
   presentationRequest: JWTVerified;
   cancel: () => void;
 }) => {
-  const { account, resolver, did, verifier } = useIdentity();
+  const { account, resolver, issuer } = useIdentity();
   const { lookupCredentials } = useCredentials();
 
   console.log(presentationRequest);
@@ -24,14 +23,9 @@ const RespondToPresentationRequest = ({
   console.log(foundCredentials);
 
   async function presentCredentials(credentialSelection: VerifiableCredential[]) {
-    if (!(verifier && resolver && did && account)) {
-      return;
-    }
-
     const requesterDid = await resolver.resolve(presentationRequest.issuer);
     //todo: check that the presentation signature is valid.
 
-    const issuer = new Issuer(resolver, did.id);
     const presentation = await issuer.createPresentation(credentialSelection);
     const presentationJwt = await issuer.createPresentationJwt(presentation, account.privateKey);
 

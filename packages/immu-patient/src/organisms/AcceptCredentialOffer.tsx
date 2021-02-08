@@ -1,17 +1,7 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  Heading,
-  Textarea,
-  useToast,
-  VStack
-} from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Heading, Textarea, useToast, VStack } from '@chakra-ui/react';
 import { useIdentity } from '@immu/frontend';
 import React, { useState } from 'react';
-import { CredentialOfferRequestAttrs, CredentialOffer, Issuer } from '@immu/core';
+import { CredentialOfferRequestAttrs, CredentialOffer } from '@immu/core';
 import CredentialOfferCard from 'molecules/CredentialOfferCard';
 import fetch from 'cross-fetch';
 import { useCredentials } from 'hooks/CredentialStorage';
@@ -19,9 +9,9 @@ import { useCredentials } from 'hooks/CredentialStorage';
 interface ReceivedCredential {
   signedCredentialJwt: string;
 }
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 const AcceptCredentialOffer = () => {
-  const { verifier, resolver, did, account } = useIdentity();
+  const { verifier, issuer, account } = useIdentity();
 
   const [credentialOffer, setCredentialOffer] = useState<CredentialOfferRequestAttrs & { issuer: string }>();
 
@@ -47,12 +37,13 @@ const AcceptCredentialOffer = () => {
   };
 
   const acceptCredentialOffer = async (acceptedOffer: CredentialOffer) => {
-    const issuer = new Issuer(resolver!, did!.id);
     const payload = {
       callbackURL: credentialOffer!.callbackURL,
       selectedCredentials: [{ type: acceptedOffer.type }]
     };
-    const proof = await issuer.createJsonProof(payload, did!.publicKey[0], account!.privateKey);
+
+    const issuerDid = await issuer.resolveIssuerDid();
+    const proof = await issuer.createJsonProof(payload, issuerDid.publicKey[0], account.privateKey);
     const serverPayload = {
       ...payload,
       proof
@@ -62,7 +53,7 @@ const AcceptCredentialOffer = () => {
     const eventSource = new EventSource(`${process.env.REACT_APP_COMM_SERVER}/listen/${interactionToken}`);
 
     eventSource.addEventListener('receiveCredential', async function (event: any) {
-      await receiveCredential(JSON.parse(event.data), interactionToken);
+      await receiveCredential(JSON.parse(event.data));
       eventSource.close();
     });
 
@@ -79,7 +70,7 @@ const AcceptCredentialOffer = () => {
     }
   };
 
-  const receiveCredential = async (data: ReceivedCredential, interactionToken: string) => {
+  const receiveCredential = async (data: ReceivedCredential) => {
     const jwt = data.signedCredentialJwt;
     const verified = await verifier?.verifyCredential(jwt);
     if (verified) {

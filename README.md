@@ -275,6 +275,19 @@ Digital Immunization Passport
 - https://dapsi.ngi.eu/hall-of-fame/dip/
 - https://www.youtube.com/watch?v=fFKeMfYrK8M
 
+Meta.me Hlth.id
+https://metame.com/
+https://hlthid.com/
+
+
+David Janes / Consensas
+opinion: https://www.yogitatrainingcenter.com/w3c-verifiable-credentials-the-fairly-odd-blueprints-by-david-janes-consensas-feb-2021/
+
+collection / survey of all initiatives:
+https://docs.google.com/document/d/1MQfZzlkYkXCXvnUXd7Cd6Y5g0RRXrKxGGqVcbBnSk1k/edit
+
+
+
 ### OT: Linting TS
 
 https://khalilstemmler.com/blogs/tooling/prettier/

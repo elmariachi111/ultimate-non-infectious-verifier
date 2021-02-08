@@ -1,16 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { Account } from 'web3-core';
-import { useWeb3 } from './Web3Context';
-import { DIDDocument, Resolver, Verifier } from '@immu/core';
+import Web3 from 'web3';
+import { DID, Issuer, Resolver, Verifier } from '@immu/core';
 
 const PRIVATE_KEY = 'private-key';
-
-interface IAccountContext {
-  account?: Account | undefined;
-  resolver?: Resolver | undefined;
-  verifier?: Verifier | undefined;
-  did?: DIDDocument | undefined;
-}
 
 const ETH_NETWORKS: { [networkId: string]: string } = {
   '1': '',
@@ -19,64 +12,72 @@ const ETH_NETWORKS: { [networkId: string]: string } = {
   '42': 'goerli',
   '1337': 'development'
 };
-const IdentityContext = React.createContext<IAccountContext>({});
+
+interface IAccountContext {
+  account: Account;
+  resolver: Resolver;
+  verifier: Verifier;
+  issuer: Issuer,
+  did: DID;
+  chainId: string;
+}
+
+const web3 = new Web3();
+
+const loadAccount = (): Account | null => {
+  const pk = localStorage.getItem(PRIVATE_KEY);
+  return pk ? web3.eth.accounts.privateKeyToAccount(pk) : null;
+};
+
+const createAccount = (): Account => {
+  // that's discouraged: https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues
+  const entropy = new TextDecoder('utf-8').decode(crypto.getRandomValues(new Uint8Array(32)));
+  const account = web3.eth.accounts.create(entropy);
+  localStorage.setItem(PRIVATE_KEY, account.privateKey);
+  return account;
+};
+
+const didByChainId = (account: Account, chainId?: string): DID => {
+  const address = account.address.toLowerCase();
+  return (chainId && Object.keys(ETH_NETWORKS).includes(chainId))
+    ? `did:ethr:${ETH_NETWORKS[chainId]}:${address}`
+    : `did:ethr:${address}`;
+}
+
+const resolver = new Resolver([
+  ...Resolver.ethProviderConfig(process.env.REACT_APP_INFURA_ID!),
+  {
+    name: 'development',
+    rpcUrl: process.env.REACT_APP_WEB3_RPC_URL!,
+    registry: process.env.REACT_APP_REGISTRY!
+  }
+]);
+const account = loadAccount() || createAccount();
+const did = didByChainId(account);
+const verifier = new Verifier(resolver);
+const issuer = new Issuer(resolver, did);
+
+const IdentityContext = React.createContext<IAccountContext>({
+  account,
+  resolver,
+  verifier,
+  issuer,
+  did,
+  chainId: '',
+});
 
 const useIdentity = () => useContext(IdentityContext);
 
-const IdentityProvider = ({ children }: { children: React.ReactNode }) => {
-  const { web3, chainId } = useWeb3();
-
-  const [did, setDid] = useState<DIDDocument>();
-
-  const loadAccount = (): Account | null => {
-    const pk = localStorage.getItem(PRIVATE_KEY);
-    return pk ? web3.eth.accounts.privateKeyToAccount(pk) : null;
-  };
-
-  const createAccount = (): Account => {
-    // that's discouraged: https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues
-    const entropy = new TextDecoder('utf-8').decode(crypto.getRandomValues(new Uint8Array(32)));
-    const account = web3.eth.accounts.create(entropy);
-    localStorage.setItem(PRIVATE_KEY, account.privateKey);
-    return account;
-  };
-
-  const account = loadAccount() || createAccount();
-
-  const config = [
-    ...Resolver.ethProviderConfig(process.env.REACT_APP_INFURA_ID!),
-    {
-      name: 'development',
-      rpcUrl: process.env.REACT_APP_WEB3_RPC_URL!,
-      registry: process.env.REACT_APP_REGISTRY!
-    }
-  ];
-
-  const resolver = new Resolver(config);
-
-  const verifier = new Verifier(resolver);
-
-  useEffect(() => {
-    (async () => {
-      if (chainId) {
-        const address = account.address.toLowerCase();
-
-        const _did = Object.keys(ETH_NETWORKS).includes(chainId)
-          ? `did:ethr:${ETH_NETWORKS[chainId]}:${address}`
-          : `did:ethr:${address}`;
-
-        setDid(await resolver.resolve(_did));
-      }
-    })();
-  }, [chainId]);
-
+const IdentityProvider = ({ children, chainId = '' }: { children: React.ReactNode, chainId?: string }) => {
   return (
     <IdentityContext.Provider
       value={{
         account,
         resolver,
         verifier,
-        did
+        issuer,
+        did: didByChainId(account, chainId),
+        chainId
       }}
     >
       {children}
