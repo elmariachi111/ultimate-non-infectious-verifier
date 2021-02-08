@@ -44,14 +44,16 @@ const didByChainId = (account: Account, chainId?: string): DID => {
     : `did:ethr:${address}`;
 }
 
-const resolver = new Resolver([
-  ...Resolver.ethProviderConfig(process.env.REACT_APP_INFURA_ID!),
-  {
+const resolverConfig = Resolver.ethProviderConfig(process.env.REACT_APP_INFURA_ID!);
+if (process.env.REACT_APP_WEB3_RPC_URL) {
+  resolverConfig.push({
     name: 'development',
     rpcUrl: process.env.REACT_APP_WEB3_RPC_URL!,
     registry: process.env.REACT_APP_REGISTRY!
-  }
-]);
+  })
+}
+
+const resolver = new Resolver(resolverConfig);
 const account = loadAccount() || createAccount();
 const did = didByChainId(account);
 const verifier = new Verifier(resolver);
