@@ -20,7 +20,7 @@
   },
   "scripts": {
     "clean": "rm -rf ./lib",
-    "build": "tsc --build \"./tsconfig.json\"",
+    "build": "tsc -p .",
     "dev": "tsc --watch --inlineSourceMap --inlineSources ",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
