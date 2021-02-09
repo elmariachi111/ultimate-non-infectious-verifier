@@ -17,18 +17,24 @@ contract Daoctor is Ownable, AccessControl {
   struct Voting {
     address candidate;
     VotingActions action;
-    uint32[] votes;
+    address[] votes;
   }
 
   mapping(uint32 => Voting) suggestions;
+  uint32 latest_suggestion = 0;
 
   //   constructor() public {
   //     grantRole(ROLE_VOTER, msg.sender);
   //   }
 
-  function proposeVoterAction(address candidate, VotingActions action) public {
+  function proposeVoterAdopt(address candidate) public {
     require(hasRole(ROLE_VOTER, msg.sender));
-    suggestions.push(Voting(candidate, Adopt));
+
+    suggestions[latest_suggestion].candidate = candidate;
+    suggestions[latest_suggestion].action = VotingActions.Adopt;
+    suggestions[latest_suggestion].votes = [msg.sender];
+
+    latest_suggestion++;
   }
 
   function proposeDismissVoter(address candidate) public {}
