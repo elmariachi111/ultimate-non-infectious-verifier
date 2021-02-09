@@ -8,6 +8,7 @@
     "@emotion/styled": "^11.0.0",
     "@immu/core": "workspace:*",
     "@immu/frontend": "workspace:*",
+    "@sandstreamdev/react-swipeable-list": "^1.0.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",

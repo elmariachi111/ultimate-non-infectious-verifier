@@ -33,7 +33,6 @@ const CredentialCard = ({ credential }: { credential: VerifiableCredential }) =>
       borderBottom="4px solid"
       borderColor="teal.500"
       overflow="hidden"
-      onClick={() => console.log(credential)}
     >
       {vm.types.map((type: string) => (
         <Text opacity={0.8} textAlign="center" bg="gray.200" py={4}>

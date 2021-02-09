@@ -106,7 +106,7 @@ const IndexPage: React.FC = () => {
 
   return (
     <>
-      <Heading size="md" mt={8}>
+      <Heading size="lg" mt={8}>
         issue an immunization credential
       </Heading>
       <FhirImmunizationForm onFhirCreated={onFhirCreated} />

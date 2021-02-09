@@ -257,6 +257,7 @@ importers:
       '@emotion/styled': 11.0.0_7da319e037882f853627304f59db77fa
       '@immu/core': link:../immu-core
       '@immu/frontend': link:../immu-frontend
+      '@sandstreamdev/react-swipeable-list': 1.0.0_react-dom@17.0.1+react@17.0.1
       '@testing-library/jest-dom': 5.11.8
       '@testing-library/react': 11.2.2_react-dom@17.0.1+react@17.0.1
       '@testing-library/user-event': 12.6.0
@@ -284,6 +285,7 @@ importers:
       '@emotion/styled': ^11.0.0
       '@immu/core': workspace:*
       '@immu/frontend': workspace:*
+      '@sandstreamdev/react-swipeable-list': ^1.0.0
       '@testing-library/jest-dom': ^5.11.4
       '@testing-library/react': ^11.1.0
       '@testing-library/user-event': ^12.1.10
@@ -5707,6 +5709,17 @@ packages:
       rollup: ^1.20.0||^2.0.0
     resolution:
       integrity: sha512-GksZ6pr6TpIjHm8h9lSQ8pi8BE9VeubNT0OMJ3B5uZJ8pz73NPiqOtCog/x2/QzM1ENChPKxMDhiQuRHsqc+lg==
+  /@sandstreamdev/react-swipeable-list/1.0.0_react-dom@17.0.1+react@17.0.1:
+    dependencies:
+      react: 17.0.1
+      react-dom: 17.0.1_react@17.0.1
+    dev: false
+    peerDependencies:
+      prop-types: ^15.7.2
+      react: ^16.12.0
+      react-dom: ^16.12.0
+    resolution:
+      integrity: sha512-QUD4mMegv8sHtvJZqH6pQ7WgpBqPXhWdUrzzIH9vGYktlJZ8sTaamGNwAS3NffwlM/V2N2Ut81ESHWk2IzXe0g==
   /@sindresorhus/is/0.14.0:
     engines:
       node: '>=6'
