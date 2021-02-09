@@ -2,7 +2,14 @@ import { Box, Code, Flex, Heading, Text } from '@chakra-ui/react';
 import { VerifiableCredential } from '@immu/core';
 import React from 'react';
 
-const CredentialCard = ({ credential }: { credential: VerifiableCredential }) => {
+const CredentialCard = ({
+  credential,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  onSelect = () => {}
+}: {
+  credential: VerifiableCredential;
+  onSelect?: (credential: VerifiableCredential) => unknown;
+}) => {
   const bg = 'teal.200';
 
   if (typeof credential === 'string') throw Error('noooo');
@@ -33,6 +40,7 @@ const CredentialCard = ({ credential }: { credential: VerifiableCredential }) =>
       borderBottom="4px solid"
       borderColor="teal.500"
       overflow="hidden"
+      onClick={() => onSelect(credential)}
     >
       {vm.types.map((type: string) => (
         <Text opacity={0.8} textAlign="center" bg="gray.200" py={4}>

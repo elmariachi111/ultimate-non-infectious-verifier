@@ -266,6 +266,7 @@ importers:
       react: 17.0.1
       react-dom: 17.0.1_react@17.0.1
       react-identicons: 1.2.5_react-dom@17.0.1+react@17.0.1
+      react-qr-reader: 2.2.1_react-dom@17.0.1+react@17.0.1
       react-router-dom: 5.2.0_react@17.0.1
       react-scripts: 4.0.2_react@17.0.1+typescript@4.1.3
       web3: 1.3.1
@@ -275,6 +276,7 @@ importers:
       '@types/node': 12.19.12
       '@types/react': 17.0.1
       '@types/react-dom': 17.0.0
+      '@types/react-qr-reader': 2.1.3
       '@types/react-router-dom': 5.1.7
       jest: 26.6.0
       react-refresh: 0.9.0
@@ -293,6 +295,7 @@ importers:
       '@types/node': ^12.0.0
       '@types/react': ^17.0.1
       '@types/react-dom': ^17.0.0
+      '@types/react-qr-reader': ^2.1.3
       '@types/react-router-dom': ^5.1.7
       cross-fetch: ^3.0.6
       framer-motion: ^3.1.4
@@ -300,6 +303,7 @@ importers:
       react: ^17.0.1
       react-dom: ^17.0.1
       react-identicons: ^1.2.5
+      react-qr-reader: ^2.2.1
       react-refresh: ^0.9.0
       react-router-dom: ^5.2.0
       react-scripts: ^4.0.1
@@ -6601,6 +6605,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-lUqY7OlkF/RbNtD5nIq7ot8NquXrdFrjSOR6+w9a9RFQevGi1oZO1dcJbXMeONAPKtZ2UrZOEJ5UOCVsxbLk/g==
+  /@types/react-qr-reader/2.1.3:
+    dependencies:
+      '@types/react': 17.0.1
+    dev: true
+    resolution:
+      integrity: sha512-quTZl76whDvR+Xp87jh2roDbL6SC8Pzi8Ef59EP5RheobKZWQBbcDM33r7/Ndi63NBOz89MEDtkiHDkAvXxPhg==
   /@types/react-router-dom/5.1.7:
     dependencies:
       '@types/history': 4.7.8
@@ -13932,6 +13942,10 @@ packages:
       '0': node >=0.6.0
     resolution:
       integrity: sha1-MT5mvB5cwG5Di8G3SZwuXFastqI=
+  /jsqr/1.3.1:
+    dev: false
+    resolution:
+      integrity: sha512-zCTP6Qd/WwjrpuHFkJuXc5opRdKprUr7eI7+JCCtcetThJt45qptu82MWQ+eET+FtDrMo7+BYjo3iD0XIq1L9Q==
   /jsx-ast-utils/3.2.0:
     dependencies:
       array-includes: 3.1.2
@@ -17013,6 +17027,19 @@ packages:
   /react-is/17.0.1:
     resolution:
       integrity: sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
+  /react-qr-reader/2.2.1_react-dom@17.0.1+react@17.0.1:
+    dependencies:
+      jsqr: 1.3.1
+      prop-types: 15.7.2
+      react: 17.0.1
+      react-dom: 17.0.1_react@17.0.1
+      webrtc-adapter: 7.7.0
+    dev: false
+    peerDependencies:
+      react: ~16
+      react-dom: ~16
+    resolution:
+      integrity: sha512-EL5JEj53u2yAOgtpAKAVBzD/SiKWn0Bl7AZy6ZrSf1lub7xHwtaXe6XSx36Wbhl1VMGmvmrwYMRwO1aSCT2fwA==
   /react-refresh/0.8.3:
     dev: false
     engines:
@@ -17762,6 +17789,15 @@ packages:
       node: 6.* || >= 7.*
     resolution:
       integrity: sha512-nfMOlASu9OnRJo1mbEk2cz0D56a1MBNrJ7orjRZQG10XDyuvwksKbuXNp6qa+kbn839HwjwhBzhFmdsaEAfauA==
+  /rtcpeerconnection-shim/1.2.15:
+    dependencies:
+      sdp: 2.12.0
+    dev: false
+    engines:
+      node: '>=6.0.0'
+      npm: '>=3.10.0'
+    resolution:
+      integrity: sha512-C6DxhXt7bssQ1nHb154lqeL0SXz5Dx4RczXZu2Aa/L1NJFnEVDxFwCBo3fqtuljhHIGceg5JKBV4XJ0gW5JKyw==
   /run-async/2.4.1:
     engines:
       node: '>=0.12.0'
@@ -17908,6 +17944,10 @@ packages:
   /scrypt-js/3.0.1:
     resolution:
       integrity: sha512-cdwTTnqPu0Hyvf5in5asVdZocVDTNRmR7XEcJuIzMjJeSHybHl7vpB66AzwTaIg6CLSbtjcxc8fqcySfnTkccA==
+  /sdp/2.12.0:
+    dev: false
+    resolution:
+      integrity: sha512-jhXqQAQVM+8Xj5EjJGVweuEzgtGWb3tmEEpl3CLP3cStInSbVHSg0QWOGQzNq8pSID4JkpeV2mPqlMDLrm0/Vw==
   /secp256k1/4.0.2:
     dependencies:
       elliptic: 6.5.4
@@ -20906,6 +20946,16 @@ packages:
         optional: true
     resolution:
       integrity: sha512-6KJVGlCxYdISyurpQ0IPTklv+DULv05rs2hseIXer6D7KrUicRDLFb4IUM1S6LUAKypPM/nSiVSuv8jHu1m3/Q==
+  /webrtc-adapter/7.7.0:
+    dependencies:
+      rtcpeerconnection-shim: 1.2.15
+      sdp: 2.12.0
+    dev: false
+    engines:
+      node: '>=6.0.0'
+      npm: '>=3.10.0'
+    resolution:
+      integrity: sha512-7Bp9OBnx642oJRkom1tNAbeJjUadAq2rh5xLL9YXPw5hVyt2h4hHr5bcoPYDs1stp/mZHSPSQA34YISdnr0DBQ==
   /websocket-driver/0.6.5:
     dependencies:
       websocket-extensions: 0.1.4
