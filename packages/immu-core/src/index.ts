@@ -9,6 +9,7 @@ export * from './displayCredential';
 
 export { VerifiedCredential, VerifiableCredential, W3CCredential } from 'did-jwt-vc';
 export { JWTVerified } from 'did-jwt';
+export { makeCredentialVerifier, VaccinationCredentialVerifier } from './semantic/VaccinationCredentialVerifier';
 
 export { PublicKey, Authentication, DIDDocument } from 'did-resolver';
 
