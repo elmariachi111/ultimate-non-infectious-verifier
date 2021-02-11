@@ -1,5 +1,7 @@
 importers:
   .:
+    dependencies:
+      env-cmd: 10.1.0
     devDependencies:
       '@types/jest': 26.0.19
       '@types/node': 12.19.12
@@ -19,6 +21,7 @@ importers:
       '@types/react-dom': ^17.0.0
       '@typescript-eslint/eslint-plugin': ^4.12.0
       '@typescript-eslint/parser': ^4.12.0
+      env-cmd: ^10.1.0
       eslint: ^7.17.0
       eslint-config-prettier: ^7.1.0
       eslint-plugin-prettier: ^3.3.0
@@ -122,6 +125,7 @@ importers:
     dependencies:
       '@digitalbazaar/ed25519-verification-key-2018': 1.1.0
       '@jolocom/protocol-ts': 0.5.2
+      '@openzeppelin/contracts': 3.4.0
       '@relocke/base58': 1.0.0
       '@stablelib/sha256': 1.0.0
       '@transmute/did-key-ed25519': 0.2.1-unstable.29
@@ -174,6 +178,7 @@ importers:
       '@babel/preset-typescript': ^7.12.7
       '@digitalbazaar/ed25519-verification-key-2018': ^1.1.0
       '@jolocom/protocol-ts': ^0.5.2
+      '@openzeppelin/contracts': ^3.4.0
       '@relocke/base58': ^1.0.0
       '@stablelib/sha256': ^1.0.0
       '@transmute/did-key-ed25519': ^0.2.1-unstable.29
@@ -5426,6 +5431,10 @@ packages:
       node: '>=8.0.0'
     resolution:
       integrity: sha512-60CHpq+eqnTxLZQ4PGHYNwUX572hgpMHGPtTWMjdTMsAvlm69lZV/4ly6O3sAYkomo4NggGcomrDpBe34rxUqw==
+  /@openzeppelin/contracts/3.4.0:
+    dev: false
+    resolution:
+      integrity: sha512-qh+EiHWzfY/9CORr+eRUkeEUP1WiFUcq3974bLHwyYzLBUtK6HPaMkIUHi74S1rDTZ0sNz42DwPc5A4IJvN3rg==
   /@peculiar/asn1-schema/2.0.27:
     dependencies:
       '@types/asn1js': 2.0.0
@@ -10028,7 +10037,7 @@ packages:
       bn.js: 2.0.4
       brorand: 1.1.0
       hash.js: 1.1.7
-      inherits: 2.0.4
+      inherits: 2.0.1
     dev: false
     resolution:
       integrity: sha1-hlybQgv75VAGuflp+XoNLESWZZU=
@@ -10118,6 +10127,16 @@ packages:
   /entities/2.1.0:
     resolution:
       integrity: sha512-hCx1oky9PFrJ611mf0ifBLBRW8lUUVRlFolb5gWRfIELabBlbp9xZvrqZLZAs+NxFnbfQoeGd8wDkygjg7U85w==
+  /env-cmd/10.1.0:
+    dependencies:
+      commander: 4.1.1
+      cross-spawn: 7.0.3
+    dev: false
+    engines:
+      node: '>=8.0.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-mMdWTT9XKN7yNth/6N6g2GuKuJTsKMDHlQFUDacb/heQRRWOTIZ42t1rMHnQu4jYxU1ajdTeJM+9eEETlqToMA==
   /errno/0.1.8:
     dependencies:
       prr: 1.0.1
