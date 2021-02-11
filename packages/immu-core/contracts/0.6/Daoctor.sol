@@ -4,6 +4,7 @@ pragma experimental ABIEncoderV2;
 
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/access/AccessControl.sol';
+import '@openzeppelin/contracts/utils/EnumerableSet.sol';
 
 contract Daoctor is Ownable, AccessControl {
   enum VotingActions { Adopt, Dismiss }
@@ -16,12 +17,19 @@ contract Daoctor is Ownable, AccessControl {
     VotingActions action;
     address[] upvotes;
     address[] downvotes;
+    uint256 openUntil;
     bool settled;
   }
 
-  mapping(address => bool) ongoingVotings;
-  mapping(uint32 => Voting) suggestions;
-  uint32 latest_suggestion = 0;
+  //a list of candidate addresses we're voting about
+  EnumerableSet.AddressSet private ongoingVotings;
+  mapping(address => Voting) votings;
+
+  event VotingOpened(address indexed voter, address indexed candidate, VotingActions action);
+
+  event Voted(address indexed voter, address indexed candidate, bool opinion);
+
+  event VotingSettled(address indexed settler, address indexed candidate, VotingActions action, bool outcome);
 
   constructor() public Ownable() AccessControl() {
     _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -37,16 +45,18 @@ contract Daoctor is Ownable, AccessControl {
     if (action == VotingActions.Dismiss) {
       require(hasRole(ROLE_VOTER, candidate), 'candidate is not a voter');
     }
-    if (ongoingVotings[candidate] == true) {
+    if (ongoingVotings.contains(candidate)) {
       revert('a voting on this candidate is already ongoing.');
     }
-    suggestions[latest_suggestion].action = action;
-    suggestions[latest_suggestion].candidate = candidate;
-    suggestions[latest_suggestion].upvotes = [msg.sender];
-    suggestions[latest_suggestion].settled = false;
+    votings[candidate].action = action;
+    votings[candidate].candidate = candidate;
+    votings[candidate].upvotes = [msg.sender];
+    votings[candidate].settled = false;
+    votings[candidate].openUntil = block.timestamp + 2 minutes;
 
-    ongoingVotings[candidate] = true;
-    latest_suggestion++;
+    ongoingVotings.add(candidate);
+
+    emit VotingOpened(msg.sender, candidate, action);
   }
 
   function alreadyVoted(Voting memory voting, address voter) internal pure returns (bool) {
@@ -64,49 +74,63 @@ contract Daoctor is Ownable, AccessControl {
     return false;
   }
 
-  function vote(uint32 voting, bool opinion) public {
+  function closeVoting(Voting storage voting, bool outcome) internal {
+    voting.settled = true;
+    ongoingVotings.remove(voting.candidate);
+    emit VotingSettled(msg.sender, voting.candidate, voting.action, outcome);
+  }
+
+  function vote(address candidate, bool opinion) public {
     require(hasRole(ROLE_VOTER, msg.sender), 'youre not a voter');
-    require(suggestions[voting].settled == false, 'the voting is closed');
-    if (alreadyVoted(suggestions[voting], msg.sender)) {
+    require(ongoingVotings.contains(candidate), 'no voting going on about that candidate');
+    require(votings[candidate].settled == false, 'the voting is closed');
+    if (alreadyVoted(votings[candidate], msg.sender)) {
       revert('you already voted for this suggestion');
     }
 
     if (opinion) {
-      suggestions[voting].upvotes.push(msg.sender);
+      votings[candidate].upvotes.push(msg.sender);
     } else {
-      suggestions[voting].downvotes.push(msg.sender);
+      votings[candidate].downvotes.push(msg.sender);
     }
   }
 
-  function getSuggestion(uint32 voting) public view returns (Voting memory suggestion) {
-    return suggestions[voting];
+  function getVoting(address candidate) public view returns (Voting memory voting) {
+    return votings[candidate];
   }
 
-  function settleVoting(uint32 votingId) public {
-    require(hasRole(ROLE_VOTER, msg.sender));
-    Voting storage voting = suggestions[votingId];
+  function allOngoingVotings() public view returns (Voting[] memory) {
+    Voting[] memory ret = new Voting[](ongoingVotings.length());
+    for (uint256 i = 0; i < ongoingVotings.length(); i++) {
+      ret[i] = votings[ongoingVotings.at(i)];
+    }
+    return ret;
+  }
 
-    require(voting.settled == false, 'this voting has settled already');
-    //todo: check if timelock is expired
+  function settleVoting(address candidate) public {
+    require(ongoingVotings.contains(candidate), 'no voting going on about that candidate');
+    require(msg.sender == candidate || hasRole(ROLE_VOTER, msg.sender), 'youre not a voter or the candidate');
 
-    //check whether we reached a quorum
-    //check the quorum's outcome
+    Voting storage voting = votings[candidate];
+    require(voting.settled == false, 'the voting is closed');
+
+    // check if timelock is expired
+    require(voting.openUntil < block.timestamp, 'the voting time lock has not expired yet');
+
+    // check whether we reached a quorum
+    // check the quorum's outcome
     uint256 allVotersCount = getRoleMemberCount(ROLE_VOTER);
     if (100 * voting.upvotes.length < ((100 * allVotersCount) / 2)) {
-      voting.settled = true;
+      closeVoting(voting, false);
       return;
-      //revert('the majority has not been reached');
     }
 
     //execute the quorum's will
     if (voting.action == VotingActions.Adopt) {
-      _setupRole(ROLE_VOTER, voting.candidate);
+      this.grantRole(ROLE_VOTER, voting.candidate);
     } else if (voting.action == VotingActions.Dismiss) {
-      //won't work since msg.sender isn't ROLE_VOTER_ADMIN
-      //todo: https://forum.openzeppelin.com/t/accesscontrol-using-a-quorum-to-let-a-smart-contract-grant-revoke-roles/5747
-      revokeRole(ROLE_VOTER, voting.candidate);
+      this.revokeRole(ROLE_VOTER, voting.candidate);
     }
-    ongoingVotings[voting.candidate] = false;
-    voting.settled = true;
+    closeVoting(voting, true);
   }
 }
