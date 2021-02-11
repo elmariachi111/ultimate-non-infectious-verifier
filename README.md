@@ -24,23 +24,24 @@ There are three main packages relevant at the moment:
 
 ### `immu-core`
 
-comes with foundational classes and no interactivity or environmental assumptions. For signing and credential creation is relies on the @transmute crypto libraries and makes use of did-jwt and did-jwt-vc which ar primarily supposed to interact with EcDsa256 keypairs. The library also supports EdDSA25519 signatures and contains code to add and verify ed25519 public keys to a did:ethr identity. The resolver is configured to resolve did:ethr:development and did:key
+comes with foundational classes and no interactivity or environmental assumptions. For signing and credential creation is relies on the @transmute crypto libraries and makes use of did-jwt and did-jwt-vc which ar primarily supposed to interact with EcDsa256 keypairs. The library also supports EdDSA25519 signatures and contains code to add and verify ed25519 public keys to a did:ethr identity. The resolver is configured to resolve did:ethr and did:key
 
 ### `immu`
 
 is a mostly isolated cli wrapper around immu-core and contains interactive cli tools to interact with the code found in immu-core. Most noteably, we're _not_ really building a cli wallet but for convenience we're relying on the `aliases.json` file that keeps track of public and private keys (based on ganache's public seed `myth like bonus scare over problem client lizard pioneer submit female collect`). Make triple sure to never put any real secret in there! It's going to be removed from VCS when someone adds a little agent / wallet functionality that makes it obsolete. The CLI foundation is `oclif` which ist somewhat proposed by the official Typescript website.
 
-### `immu-patient`
+### `immu-frontend`
 
-doesn't do anything special right now besides showing that we can mix and mangle a React application that uses immo-core.
+shared components for frontends, particularly an identity context that yields resolver, issuer and verifier services and creates a randomized local did:ethr 
 
 ### `immu-provider`
+a provider demo that lets an user provide generic immunization related values. Issues credential offers and reacts to their responses by issuing and transferring credentials to patients.
 
-yet another React scaffold without any functionality
+### `immu-patient`
+a patient wallet that allows accepting and presenting credentials.
 
-### `some-website`
-
-is an express based demonstration service that should feel familiar to many "backend developers". All rendering happens server side (using the modern twig engine twing, so PHP devs will know what they're looking at). The whole purpose is to demonstrate how to trust, verify and validate credentials on a backend and transform them to session secrets once accepted. The idea is to show how you can exchange email/password pairs with DID auths and credential presentations.
+### `immu-verifier`
+a verifier that displays presentiation requests for validateable credential types and validates presented credentials according to all known verification strategies.
 
 ## fork of uport's ethr-did-resolver to support base58 verification keys
 
@@ -312,22 +313,18 @@ https://khalilstemmler.com/blogs/typescript/eslint-for-typescript/
 
 # Questions
 
-- is the proof part of the vc?
-- what's the difference of `vp` and `verfifiablePresentation`? (JWT vs JSON-LD)
 - are ethr-did-registry key definitions compat to json-ld-signatures?
 - do we need the "assumption" types?
 - shall we spike IDX / Keri to setup a chain independent controller resolver?
 - when do we need universal resolution?
-- What's a DID service, actually?
 
 # Todos
 
-- let immu-core only operate on signer `({data}) => Uint8Array` interfaces and add private key converters for the different key types accordingly (get rid of Signer)
+- let immu-core only operate on *signer* `({data}) => Uint8Array` interfaces and add private key converters for the different key types accordingly (get rid of Signer)
 
-- create a presentation request and inline a challenge
 - test against generic did/vc wallets
-- create a JSON-LD scheme for an immunization proof
+- add a verifier for Consensa JSON-LD schemes for an immunization proof
 - what's that Segment 4 spec of the CCI working group?
-- use a VC revocation tool like ERC780 /
+- use a VC revocation registry like ERC780 
 - revoke Credentials using their hash (see: are ld proofs part of that hash?? )
 - store a remote picture on ipfs that's resolveable by the verifier / part of the credential (or another credential?)
