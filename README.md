@@ -193,24 +193,29 @@ Evernym Connectme: https://www.evernym.com/products/?#ConnectMe general DID / VC
 
 ### DID Comm
 
-General Specification for connection interactions: https://didcomm.org/, currently mostly managed by Aries people https://github.com/decentralized-identity/didcomm-messaging
+Defines a transport agnostic, encrypted, eventually signed, routable, fully async protocol to transfer messages between DIDs. 
+
+General Specification for connection interactions: https://didcomm.org/,
+https://github.com/decentralized-identity/didcomm-messaging
 
 Specs: https://identity.foundation/didcomm-messaging/spec/
 
-Jolocom's Rust impl samples
-(TODO: reimpl in Typescript ;) )
+Jolocom's /(DIF) Rust impl
 https://github.com/jolocom/didcomm-rs/blob/main/README.md
+https://github.com/decentralized-identity/didcomm-rs
+(and an earlier js implementation: https://github.com/decentralized-identity/DIDComm-js)
 
 A good overview of supported DID-Auth schemas
 https://nbviewer.jupyter.org/github/WebOfTrustInfo/rebooting-the-web-of-trust-spring2018/blob/master/final-documents/did-auth.pdf  
 or: 
 (https://github.com/WebOfTrustInfo/rwot6-santabarbara/blob/master/final-documents/did-auth.md)  
 
+
 ### Hyperledger Aries 
 
-is a reference impl for DIDComm e.a. on top of Hyperledger Indy. Most RFCs can be considered de facto standards:
+is a reference impl for DIDComm + information exchange on top of Hyperledger Indy. Most RFCs can be considered de facto standards:
 
-The Aries RFC list  
+#### The Aries RFC list  
 lots of specs that are relevant for interoperable credential exchange protocols. Supposed to be the DIDComm foundation:
 https://github.com/hyperledger/aries-rfcs/blob/master/index.md
 
@@ -218,16 +223,28 @@ an early JS implementation:
 https://github.com/hyperledger/aries-framework-javascript
 
 
-How to start interactions with an unknown client:
+#### How to start interactions with an unknown client:
 
-https://github.com/hyperledger/aries-rfcs/blob/master/features/0160-connection-protocol/README.md#0-invitation-to-connect
+https://github.com/hyperledger/aries-rfcs/blob/master/features/0160-connection-protocol/README.md#0-invitation-to-connect (superseded by: https://github.com/hyperledger/aries-rfcs/blob/master/features/0023-did-exchange/README.md)
 
-
+ideas of communication, multi clients / keys, encapsulated in a DID doc conventions:
 https://github.com/hyperledger/aries-rfcs/blob/master/features/0067-didcomm-diddoc-conventions/README.md
 
-specific to credential exchange:  
-https://github.com/hyperledger/aries-rfcs/blob/master/features/0036-issue-credential/README.md
+#### exchange 
 
+credentials (1 -> 2):  
+old: https://github.com/hyperledger/aries-rfcs/blob/master/features/0036-issue-credential/README.md
+https://github.com/hyperledger/aries-rfcs/blob/master/features/0453-issue-credential-v2/README.md
+
+present proof protocol (1 -> 2):
+old: https://github.com/hyperledger/aries-rfcs/blob/master/features/0037-present-proof/README.md
+https://github.com/hyperledger/aries-rfcs/blob/master/features/0454-present-proof-v2/README.md
+
+message spec: 
+https://github.com/hyperledger/aries-rfcs/blob/master/features/0510-dif-pres-exch-attach/README.md
+(also see DIF presentation-exchange, above)
+
+out of band protocols (QR Codes): https://github.com/hyperledger/aries-rfcs/blob/master/features/0434-outofband/README.md
 
 ### Sovrin
 
@@ -274,6 +291,19 @@ IATA Travel Pass Initiative
 Digital Immunization Passport  
 - https://dapsi.ngi.eu/hall-of-fame/dip/
 - https://www.youtube.com/watch?v=fFKeMfYrK8M
+
+Meta.me Hlth.id
+https://metame.com/
+https://hlthid.com/
+
+
+David Janes / Consensas
+opinion: https://www.yogitatrainingcenter.com/w3c-verifiable-credentials-the-fairly-odd-blueprints-by-david-janes-consensas-feb-2021/
+
+collection / survey of all initiatives:
+https://docs.google.com/document/d/1MQfZzlkYkXCXvnUXd7Cd6Y5g0RRXrKxGGqVcbBnSk1k/edit
+
+
 
 ### OT: Linting TS
 

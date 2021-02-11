@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "lib",
+    "outDir": "./lib",
     "jsx": "react-jsx",
     "declaration": true,
     "declarationMap": true,
@@ -14,16 +14,15 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
+    "noEmit": false,
     "noFallthroughCasesInSwitch": true,
   },
   "include": [
-    "src"
+    "./src/**/*"
   ],
   "exclude": [
     "node_modules",
+    "lib",
     "tsconfig.json"
   ],
-  "files": [
-    "./src/index.ts"
-  ]
 }

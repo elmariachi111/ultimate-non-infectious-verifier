@@ -18,7 +18,7 @@ export class Resolver {
     });
   }
 
-  static ethProviderConfig(infuraId: string) {
+  static ethProviderConfig(infuraId: string): EthProviderConfig[] {
     return [
       { name: 'mainnet', rpcUrl: `https://mainnet.infura.io/v3/${infuraId}` },
       { name: 'rinkeby', rpcUrl: `https://rinkeby.infura.io/v3/${infuraId}` },

@@ -1,12 +1,14 @@
-import { Box, Divider, Heading, VStack } from '@chakra-ui/react';
+import { Box, Button, Divider, Flex, Heading, Text, VStack } from '@chakra-ui/react';
 import { VerifiableCredential } from '@immu/core';
 import { useCredentials } from 'hooks/CredentialStorage';
 import CredentialCard from 'molecules/CredentialCard';
 import AcceptCredentialOffer from 'organisms/AcceptCredentialOffer';
 import React from 'react';
+import { SwipeableList, SwipeableListItem } from '@sandstreamdev/react-swipeable-list';
+import '@sandstreamdev/react-swipeable-list/dist/styles.css';
 
 const CredentialsPage = () => {
-  const { credentials } = useCredentials();
+  const { credentials, removeCredential } = useCredentials();
 
   return (
     <>
@@ -15,11 +17,31 @@ const CredentialsPage = () => {
         <AcceptCredentialOffer />
       </Box>
       <Divider orientation="horizontal" my={8} />
-      <VStack mt={6}>
+      <Heading size="lg">Your Credentials</Heading>
+      <VStack spacing={4} mt={6} align="start">
         {Object.keys(credentials).map((k: string) => {
-          return credentials[k].map((credential: VerifiableCredential) => {
-            return <CredentialCard credential={credential} />;
-          });
+          return (
+            <>
+              <Heading size="sm">{k}</Heading>
+              {credentials[k].map((credential: VerifiableCredential) => (
+                <SwipeableListItem
+                  swipeLeft={{
+                    content: (
+                      <Flex background="red.400" h="100%" w="100%" align="center" justify="flex-end">
+                        <Text p={8} fontSize="xl" color="white">
+                          remove
+                        </Text>
+                      </Flex>
+                    ),
+
+                    action: () => removeCredential(credential)
+                  }}
+                >
+                  <CredentialCard credential={credential} />
+                </SwipeableListItem>
+              ))}
+            </>
+          );
         })}
       </VStack>
     </>

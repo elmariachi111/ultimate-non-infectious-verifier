@@ -1,4 +1,4 @@
-import { Box, Button, Code, Flex, Heading, Text } from '@chakra-ui/react';
+import { Box, Button, Code, Flex, Text } from '@chakra-ui/react';
 import { CredentialOffer, DID } from '@immu/core';
 import React from 'react';
 
