@@ -1,16 +1,25 @@
 import { VerifiableCredential } from 'did-jwt-vc';
 import { Resolver } from '../Resolver';
-import { FhirVaccinationCredentialVerifier, SMARTHEALTH_CARD_CRED_TYPE } from './FhirVaccinationCredential';
-import { ICheckCredentials } from './ICheckCredentials';
+import { Verifier } from '../Verifier';
+import { FhirHL7VaccinationCredential, TYPE as SMARTHEALTH_CARD_CRED_TYPE } from './FhirHL7VaccinationCredential';
+import ICheckCredentials from './ICheckCredentials';
 
 /**
- * verifies credentials depending on their type
+ * verifies credentials using pluggable validation strategies
  */
-export class VaccinationCredentialVerifier {
+export default class VaccinationCredentialVerifier {
   private strategies: Record<string, ICheckCredentials> = {};
 
-  initialize(resolver: Resolver) {
-    this.strategies[SMARTHEALTH_CARD_CRED_TYPE] = new FhirVaccinationCredentialVerifier(resolver);
+  private resolver: Resolver;
+  private verifier: Verifier;
+
+  constructor(resolver: Resolver) {
+    this.resolver = resolver;
+    this.verifier = new Verifier(resolver);
+  }
+  //isKnownIssuer = (did: string) => {};
+  initialize() {
+    this.strategies[SMARTHEALTH_CARD_CRED_TYPE] = new FhirHL7VaccinationCredential(this.resolver);
   }
 
   get supportedStrategies(): string[] {
@@ -18,22 +27,31 @@ export class VaccinationCredentialVerifier {
   }
 
   async verify(presentedCredentials: VerifiableCredential[]) {
-    for await (const strategy of Object.values(this.strategies)) {
+    const appliedStrategies: Set<ICheckCredentials> = new Set();
+    const verifiedClaims: Record<string, any>[] = [];
+
+    for await (const credential of presentedCredentials) {
+      const verifiedCredential = await this.verifier.verifyCredential(credential);
       try {
-        const result = await strategy.checkCredentials(presentedCredentials);
-        if (result) {
-          return result;
+        const strategyType = this.supportedStrategies.find((t) => verifiedCredential.type.includes(t));
+        if (!strategyType) {
+          throw Error('dont have a verification strategy for this credential type');
         }
+
+        const iCheckCredentials = this.strategies[strategyType];
+        appliedStrategies.add(iCheckCredentials);
+
+        const verifiedClaim = await iCheckCredentials.checkCredential(verifiedCredential);
+        verifiedClaims.push(verifiedClaim);
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     }
-  }
-  isKnownIssuer = (did: string) => {};
-}
 
-export function makeCredentialVerifier(resolver: Resolver) {
-  const ret = new VaccinationCredentialVerifier();
-  ret.initialize(resolver);
-  return ret;
+    for (const strategy of appliedStrategies) {
+      strategy.checkClaimCombination(verifiedClaims);
+    }
+
+    return true;
+  }
 }
