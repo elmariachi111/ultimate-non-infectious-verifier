@@ -1,5 +1,5 @@
 import { useIdentity } from "../context/IdentityContext";
-import { VaccinationCredentialVerifier, makeCredentialVerifier } from '@immu/core';
+import { VaccinationCredentialVerifier } from '@immu/core';
 
 const useCredentialVerifier = () : {
     credentialVerifier: VaccinationCredentialVerifier
@@ -7,8 +7,8 @@ const useCredentialVerifier = () : {
 
     const { resolver } = useIdentity();
     
-    const credentialVerifier = makeCredentialVerifier(resolver);
-
+    const credentialVerifier = new VaccinationCredentialVerifier(resolver);
+    credentialVerifier.initialize();
     return { credentialVerifier };
 } 
 

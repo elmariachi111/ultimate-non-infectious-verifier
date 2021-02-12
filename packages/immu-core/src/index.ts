@@ -10,7 +10,10 @@ export * from './displayCredential';
 export { VerifiedCredential, VerifiableCredential, W3CCredential } from 'did-jwt-vc';
 export { JWTVerified } from 'did-jwt';
 export { default as VaccinationCredentialVerifier } from './semantic/VaccinationCredentialVerifier';
-
+export {
+  Create as CreateFhirHL7VaccinationCredential,
+  TYPE as SMARTHEALTH_CARD_CRED_TYPE
+} from './semantic/FhirHL7VaccinationCredential';
 export { PublicKey, Authentication, DIDDocument } from 'did-resolver';
 
 export {

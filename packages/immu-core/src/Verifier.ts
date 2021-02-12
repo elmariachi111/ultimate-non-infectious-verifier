@@ -45,7 +45,7 @@ export class Verifier {
     });
   }
 
-  async verifyJsonCredential(jsonCredential: Verifiable<W3CCredential>): Promise<boolean> {
+  async verifyJsonCredential(jsonCredential: Verifiable<W3CCredential | Record<string, any>>): Promise<boolean> {
     const { proof, ...credential } = jsonCredential;
     const payload = JSON.stringify(credential, null, 2);
 

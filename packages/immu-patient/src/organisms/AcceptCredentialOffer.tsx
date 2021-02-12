@@ -57,9 +57,9 @@ const AcceptCredentialOffer = () => {
 
   const receiveCredential = async (data: ReceivedCredential) => {
     const jwt = data.signedCredentialJwt;
-    const verified = await verifier?.verifyCredential(jwt);
-    if (verified) {
-      addCredential(verified.verifiableCredential);
+    const verifiedCredential = await verifier.verifyCredential(jwt);
+    if (verifiedCredential) {
+      addCredential(verifiedCredential);
     }
     setCredentialOffer(undefined);
     toast({

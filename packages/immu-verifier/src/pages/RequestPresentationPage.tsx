@@ -33,11 +33,11 @@ const RequestPresentationPage: React.FC = () => {
   }
 
   const presentationReceived = async (data: PresentationResponseAttrs) => {
-    const verifiedPresentation = await verifier!.verifyPresentation(data.presentationResponse);
-    const credentials = verifiedPresentation.verifiablePresentation.verifiableCredential;
+    const verifiedPresentation = await verifier.verifyPresentation(data.presentationResponse);
+    const credentials = verifiedPresentation.payload.vp.verifiableCredential;
     console.log(credentials);
     try {
-      credentialVerifier.verify(credentials);
+      await credentialVerifier.verify(credentials);
       setIsValid(true);
     } catch (e) {
       setIsValid(false);
