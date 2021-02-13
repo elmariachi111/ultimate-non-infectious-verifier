@@ -254,28 +254,37 @@ test directly on indy: https://sovrin.org/wp-content/uploads/Token-Test-Instruct
 
 ### Immunization related schemas
 
+#### The CDC recommendation for Vaccination codes
+https://www.cdc.gov/vaccines/programs/iis/downloads/business-rules.pdf  
+pointing to detailed vaccination code sources (CVX / MVX):
+
+CVX (Vacc codes): https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?rpt=cvx
+MVX (Vacc manufacturer codes): https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?rpt=mvx
+CPT (Snomed?) -> CVXmappings:  https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?rpt=cpt
+
+#### FHIR4 Immunization JSON schema
+https://www.hl7.org/fhir/immunization.schema.json.html
+
+The preliminary FHIR4 spec, driven by M$ Smart Health Cards project:
+http://build.fhir.org/ig/dvci/vaccine-credential-ig/branches/main/
+
+M$ Smart Health Cards initiative bundles FHIR/HL7 information into health credentials
+https://github.com/microsoft-healthcare-madison/health-wallet-demo/blob/master/src/fixtures/vc.json
+Covid 19 sample:
+https://github.com/microsoft-healthcare-madison/health-wallet-demo/blob/master/src/fixtures/vc.pcr.json
+(in action: https://smarthealth.cards/credential-modeling/)
+
 Qatar open data:
 https://www.data.gov.qa/explore/dataset/h4-vaccination/information/
 
-FHIR4 Immunization JSON schema
-https://www.hl7.org/fhir/immunization.schema.json.html
-
-The preliminary FHIR4 spec, driven by Health cards:
-http://build.fhir.org/ig/dvci/vaccine-credential-ig/branches/main/
-
-
-Using FHIR4 information in health credentials
-https://healthwallet.cards/credential-modeling/
-https://github.com/microsoft-healthcare-madison/health-wallet-demo/blob/master/src/fixtures/vc.json
-Covid 19 sample:
-
-https://github.com/microsoft-healthcare-madison/health-wallet-demo/blob/master/src/fixtures/vc.pcr.json
-
-A ruby impl of health cards
+A ruby impl of health cards (DVCI)
 https://github.com/dvci/health_cards
 
 
 ### Vaccination credential initiatives
+
+An umbrella initiative for VCI / CCI and others is the Good Health Collaborative:
+https://www.goodhealthpass.org/ and its [whitepaper](https://www.goodhealthpass.org/wp-content/uploads/2021/02/Good-Health-Pass-Collaborative-Principles-Paper.pdf) 
 
 Linux Foundation Public Health Covid Credential Initiative (LFPH CCI)  
 - https://www.covidcreds.org/  
@@ -296,7 +305,6 @@ Digital Immunization Passport
 Meta.me Hlth.id
 https://metame.com/
 https://hlthid.com/
-
 
 David Janes / Consensas
 opinion: https://www.yogitatrainingcenter.com/w3c-verifiable-credentials-the-fairly-odd-blueprints-by-david-janes-consensas-feb-2021/
