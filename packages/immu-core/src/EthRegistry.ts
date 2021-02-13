@@ -26,9 +26,8 @@ export class EthRegistry {
     });
   }
 
-  async checkOwner(ethAddress: EthereumAddress, network: string) {
-    const owner = await this.didRegistries[network].contract.methods.identityOwner(ethAddress).call();
-    console.log(owner);
+  async checkOwner(ethAddress: EthereumAddress, network: string): Promise<string> {
+    return this.didRegistries[network].contract.methods.identityOwner(ethAddress).call();
   }
 
   /**
@@ -56,6 +55,22 @@ export class EthRegistry {
         newPublicKey.publicKeyBuffer,
         duration
       )
+      .send({
+        from: address
+      });
+    return tx;
+  }
+
+  async addRepositoryService(type: string, endpoint: string, address: EthereumAddress, network = 'development') {
+    if (type.length > 25) {
+      throw Error('the service type name length is restricted to 25 characters');
+    }
+    const { contract } = this.didRegistries[network];
+    const duration = 60 * 60 * 24 * 365 * 2;
+
+    const endpointBuffer = Buffer.from(endpoint, 'utf-8');
+    const tx = contract.methods
+      .setAttribute(address.toLowerCase(), stringToBytes32(`did/svc/${type}`), endpointBuffer, duration)
       .send({
         from: address
       });
