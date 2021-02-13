@@ -35,7 +35,7 @@ describe('JwtCredentials', () => {
       'EmployedCredential'
     ]);
 
-    expect(payload.issuer).toBe(didIssuer);
+    expect(payload.issuer.id).toBe(didIssuer);
     expect(payload.credentialSubject.id).toBe(didSubject);
     expect(payload.type).toContain('EmployedCredential');
   });

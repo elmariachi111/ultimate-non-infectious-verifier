@@ -131,7 +131,7 @@ importers:
       '@transmute/did-key-ed25519': 0.2.1-unstable.29
       '@transmute/did-key-secp256k1': 0.2.1-unstable.31
       '@transmute/did-key-web-crypto': 0.2.1-unstable.29
-      '@transmute/json-web-signature-2020': 1.1.0
+      '@transmute/json-web-signature-2020': 1.1.0_jsonld@4.0.1
       '@transmute/lds-ecdsa-secp256k1-2019': 0.1.3
       base64url: 3.0.1
       bn.js: 5.1.3
@@ -144,6 +144,7 @@ importers:
       ethereumjs-util: 7.0.7
       ethr-did-registry: 0.0.3
       ethr-did-resolver: github.com/cod1ng-earth/ethr-did-resolver/1857c9761f2a3a750165055133b43910322e6cef
+      jsonld: 4.0.1
       key-did-resolver: 0.2.4
       secp256k1: 4.0.2
       vc-js: 0.6.4
@@ -159,6 +160,7 @@ importers:
       '@truffle/contract': 4.3.5
       '@types/dotenv-flow': 3.1.0
       '@types/jest': 26.0.20
+      '@types/jsonld': 1.5.2
       '@types/node': 12.19.12
       '@typescript-eslint/eslint-plugin': 4.12.0_343306961d6b60bcf6bd09d193a54461
       '@typescript-eslint/parser': 4.12.0_eslint@7.17.0+typescript@4.1.3
@@ -189,6 +191,7 @@ importers:
       '@truffle/contract': ^4.3.5
       '@types/dotenv-flow': ^3.1.0
       '@types/jest': ^26.0.20
+      '@types/jsonld': ^1.5.2
       '@types/node': ^12.0.0
       '@typescript-eslint/eslint-plugin': ^4.12.0
       '@typescript-eslint/parser': ^4.12.0
@@ -209,6 +212,7 @@ importers:
       ethr-did-resolver: git@github.com:cod1ng-earth/ethr-did-resolver.git
       ganache-cli: ^6.12.2
       jest: ^26.6.3
+      jsonld: ^4.0.1
       key-did-resolver: ^0.2.4
       microbundle: ^0.13.0
       prettier: ^2.2.1
@@ -6201,13 +6205,14 @@ packages:
       tslib: '>=1.9.0'
     resolution:
       integrity: sha512-ok0ZbjSDlL68/rnDPZclN4IoE5ytT6JjLXAzW+hR3kTHuIVwR9sLRu5tL5dB0izuEX2iIxwyJYJX7lV2b+sFnQ==
-  /@transmute/json-web-signature-2020/1.1.0:
+  /@transmute/json-web-signature-2020/1.1.0_jsonld@4.0.1:
     dependencies:
       '@transmute/did-key-common': 0.2.1-unstable.29
       '@transmute/did-key-ed25519': 0.2.1-unstable.29
       '@transmute/did-key-p384': 0.2.1-unstable.20
       '@transmute/did-key-secp256k1': 0.2.1-unstable.29
       '@transmute/did-key-web-crypto': 0.2.1-unstable.29
+      jsonld: 4.0.1
       security-context: 4.0.0
     dev: false
     engines:
@@ -6523,6 +6528,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
+  /@types/jsonld/1.5.2:
+    dev: true
+    resolution:
+      integrity: sha512-e6mgulD3RB3lrjGN6Vvu3ixpRSZ2Qwvsm0oSQIuHsAQUvRklrqnmvKNNyXcQTh/PbB+TrHVVmdLHeYFCH52QnA==
   /@types/lodash.mergewith/4.6.6:
     dependencies:
       '@types/lodash': 4.14.168
@@ -13951,6 +13960,19 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-/TQzRe75/3h2khu57IUojha5oat+M82bm8RYw0jLhlmmPrW/kTWAZ9nGzKPfZWnPYnVVJJMQVc/pU8HCmpv9xg==
+  /jsonld/4.0.1:
+    dependencies:
+      canonicalize: 1.0.5
+      lru-cache: 5.1.1
+      object.fromentries: 2.0.3
+      rdf-canonize: 2.0.1
+      request: 2.88.2
+      semver: 6.3.0
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-ltEqMQB37ZxZnsgmI+9rqHYkz1M6PqUykuS1t2aQNuH1oiLrUDYz5nyVkHQDgjFd7CFKTIWeLiNhwdwFrH5o5A==
   /jsprim/1.4.1:
     dependencies:
       assert-plus: 1.0.0
@@ -16934,6 +16956,15 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-MQdcRDz4+82nUrEb3hNQangBDpmep15uMmnWclGi/1KS0bNVc8oHpoNI0PFLHZsvwgwRzH31bO1JAScqUAstvw==
+  /rdf-canonize/2.0.1:
+    dependencies:
+      semver: 6.3.0
+      setimmediate: 1.0.5
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-/GVELjrfW8G/wS4QfDZ5Kq68cS1belVNJqZlcwiErerexeBUsgOINCROnP7UumWIBNdeCwTVLE9NVXMnRYK0lA==
   /react-app-polyfill/2.0.0:
     dependencies:
       core-js: 3.8.2

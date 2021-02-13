@@ -5,7 +5,8 @@ import {
   JwtCredentialSubject,
   PresentationPayload,
   Proof,
-  VerifiableCredential
+  VerifiableCredential,
+  W3CCredential
 } from 'did-jwt-vc/lib/types';
 import { DIDDocument, PublicKey } from 'did-resolver';
 import { Ed25519Signing, Secp256k1Signing } from '.';
@@ -32,17 +33,19 @@ export class Issuer {
     subjectDid: DID,
     claim: JwtCredentialSubject,
     credentialType: string[] = []
-  ): Promise<CredentialPayload> {
+  ): Promise<W3CCredential> {
     const issuerDid = await this.resolveIssuerDid();
     //const nbf = Math.floor( / 1000);
-    const vcPayload: CredentialPayload = {
+    const vcPayload: W3CCredential = {
       '@context': ['https://www.w3.org/2018/credentials/v1'],
       issuanceDate: new Date().toISOString(),
       credentialSubject: {
         id: subjectDid,
         ...claim
       },
-      issuer: issuerDid.id,
+      issuer: {
+        id: issuerDid.id
+      },
       type: ['VerifiableCredential', ...credentialType]
     };
     return vcPayload;

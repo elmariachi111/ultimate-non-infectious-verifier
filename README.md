@@ -262,7 +262,9 @@ CVX (Vacc codes): https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?r
 MVX (Vacc manufacturer codes): https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?rpt=mvx
 CPT (Snomed?) -> CVXmappings:  https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?rpt=cpt
 
-#### FHIR4 Immunization JSON schema
+#### Immunization JSON schemas
+
+FHIR4 immunization general
 https://www.hl7.org/fhir/immunization.schema.json.html
 
 The preliminary FHIR4 spec, driven by M$ Smart Health Cards project:
@@ -277,8 +279,15 @@ https://github.com/microsoft-healthcare-madison/health-wallet-demo/blob/master/s
 Qatar open data:
 https://www.data.gov.qa/explore/dataset/h4-vaccination/information/
 
+Schema.org can be utilized for that:
+https://schema.org/docs/meddocs.html
+https://schema.org/docs/health-lifesci.home.html
+https://schema.org/MedicalTherapy
+impl and extended by Consensas: https://github.com/Consensas/information-passport/blob/main/docs/Vaccination.md
+
 A ruby impl of health cards (DVCI)
 https://github.com/dvci/health_cards
+
 
 
 ### Vaccination credential initiatives
