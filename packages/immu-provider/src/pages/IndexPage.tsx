@@ -1,4 +1,4 @@
-import { Issuer } from '@immu/core';
+import { Issuer, SMARTHEALTH_CARD_CRED_TYPE } from '@immu/core';
 import { useIdentity } from '@immu/frontend';
 import FhirImmunizationForm from 'organisms/FhirImmunizationForm';
 import { useState } from 'react';
@@ -8,8 +8,6 @@ import bs58 from 'bs58';
 import { Box, Heading, useClipboard, useToast } from '@chakra-ui/react';
 
 import QRCode from 'qrcode';
-
-const SMARTHEALTH_CARD_CRED_TYPE = 'https://smarthealth.cards#covid19';
 
 type FHIRDocument = Record<string, any>;
 

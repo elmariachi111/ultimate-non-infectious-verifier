@@ -1,28 +1,21 @@
 import { Button, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Select } from '@chakra-ui/react';
-import fhirTemplate from 'data/immunization.json';
+import { CreateFhirHL7VaccinationCredential } from '@immu/core';
 import { useForm } from 'react-hook-form';
 
 const FhirImmunizationForm = ({ onFhirCreated }: { onFhirCreated: (fhir: any) => void }) => {
   const { register, handleSubmit, watch, errors } = useForm();
 
-  const doseNumber = watch('doseQuantity', 0);
-  const doseText = `COVID-19, mRNA, LNP-S, PF, ${doseNumber} mcg/${(doseNumber / 100).toFixed(1)} mL dose`;
+  const qty = watch('doseQuantity', 0);
+  const doseText = `COVID-19, mRNA, LNP-S, PF, ${qty} mcg/${(qty / 100).toFixed(1)} mL dose`;
 
   const onSubmit = (data: any) => {
-    const fhir: any = { ...fhirTemplate };
-
-    fhir.resource.vaccineCode.coding = [
-      {
-        code: data.vaccineCode,
-        display: doseText,
-        system: 'http://hl7.org/fhir/sid/cvx'
-      }
-    ];
-
-    fhir.resource.occurrenceDateTime = new Date().toISOString();
-    fhir.resource.lotNumber = data.lotNumber;
-    fhir.resource.protocolApplied[0].doseNumberPositiveInt = parseInt(data.doseNumber);
-    fhir.resource.doseQuantity.value = parseInt(data.doseQuantity);
+    const fhir = CreateFhirHL7VaccinationCredential({
+      doseNumber: parseInt(data.doseNumber),
+      doseQuantity: parseInt(data.doseQuantity),
+      lotNumber: data.lotNumber,
+      occurrenceDateTime: new Date(),
+      vaccineCode: data.vaccineCode
+    });
 
     console.log('FHIR', fhir);
 

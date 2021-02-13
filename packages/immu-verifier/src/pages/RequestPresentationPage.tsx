@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import crypto from 'crypto';
 import bs58 from 'bs58';
 import QRCode from 'qrcode';
-import { Alert, AlertIcon, Box, Button, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useClipboard } from '@chakra-ui/react';
+import { Alert, AlertIcon, Box, Button, Code, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useClipboard } from '@chakra-ui/react';
 
 interface PresentationResponseAttrs {
   presentationResponse: string;
@@ -33,11 +33,11 @@ const RequestPresentationPage: React.FC = () => {
   }
 
   const presentationReceived = async (data: PresentationResponseAttrs) => {
-    const verifiedPresentation = await verifier!.verifyPresentation(data.presentationResponse);
-    const credentials = verifiedPresentation.verifiablePresentation.verifiableCredential;
+    const verifiedPresentation = await verifier.verifyPresentation(data.presentationResponse);
+    const credentials = verifiedPresentation.payload.vp.verifiableCredential;
     console.log(credentials);
     try {
-      credentialVerifier.verify(credentials);
+      await credentialVerifier.verify(credentials);
       setIsValid(true);
     } catch (e) {
       setIsValid(false);
@@ -79,11 +79,15 @@ const RequestPresentationPage: React.FC = () => {
     <Box mt={6}>{presentationRequestJwt &&
       <Box>
         <Heading>present your credentials</Heading>
-        <Text>We're accepting <ul>
+        <Box>
+          <Text>We're accepting </Text>
+          <Box>
           {credentialVerifier.supportedStrategies.map(strategy => (
-            <li>{strategy}</li>
+            <Code key={`strategy-${strategy}`}>{strategy}</Code>
           ))}
-        </ul> at the moment</Text>
+          </Box>
+          <Text>at the moment</Text>
+        </Box>
         <img src={presentationJwtQrCode} alt="qr code" onClick={onCopy} />
         <code >{presentationRequestJwt}</code>
       </Box>

@@ -50,11 +50,8 @@ describe('JwtCredentials', () => {
 
     const verified = await verifier.verifyCredential(jwt);
 
-    //console.log(verified);
-    expect(verified.payload.iss).toBe(didIssuer);
-    expect(verified.issuer).toBe(didIssuer);
-
-    expect(verified.payload.sub).toBe(didSubject);
-    expect(verified.verifiableCredential.credentialSubject.id).toBe(didSubject);
+    expect(verified.issuer.id).toBe(didIssuer);
+    expect(verified.credentialSubject.id).toBe(didSubject);
+    expect(verified.credentialSubject.worksAt).toStrictEqual({ company: 'Acme company' });
   });
 });

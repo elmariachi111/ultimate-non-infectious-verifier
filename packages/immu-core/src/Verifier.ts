@@ -1,14 +1,16 @@
 import {
-  VerifiedCredential,
+  Verifiable,
+  VerifiableCredential,
   VerifiedPresentation,
   verifyCredential as jwtVerifyCredential,
-  verifyPresentation as jwtVerifyPresentation
+  verifyPresentation as jwtVerifyPresentation,
+  W3CCredential
 } from 'did-jwt-vc';
 import { Ed25519Signing } from '.';
 import { Secp256k1Signing } from '.';
 
 import { Resolver } from './Resolver';
-import { JWTVerified, verifyJWT as DidCVerifyJWT } from 'did-jwt';
+import { JWTVerified, verifyJWT as DidVerifyJWT } from 'did-jwt';
 import { JSONProof } from './@types';
 
 export interface JSONCredential {
@@ -23,8 +25,14 @@ export class Verifier {
     this.resolver = resolver;
   }
 
-  async verifyCredential(claimJwt: string): Promise<VerifiedCredential> {
-    return jwtVerifyCredential(claimJwt, this.resolver);
+  async verifyCredential(credential: VerifiableCredential): Promise<Verifiable<W3CCredential>> {
+    if (typeof credential === 'string') {
+      const verified = await jwtVerifyCredential(credential, this.resolver);
+      return verified.verifiableCredential;
+    } else {
+      const verified = await this.verifyJsonCredential(credential);
+      return credential;
+    }
   }
 
   async verifyPresentation(presentationJwt: string): Promise<VerifiedPresentation> {
@@ -32,21 +40,17 @@ export class Verifier {
   }
 
   async verifyAnyJwt(jwt: string): Promise<JWTVerified> {
-    return DidCVerifyJWT(jwt, {
+    return DidVerifyJWT(jwt, {
       resolver: this.resolver
     });
   }
 
-  async verifyJsonCredential(
-    jsonCredential: JSONCredential | ({ proof: JSONProof } & Record<string, any>)
-  ): Promise<boolean> {
+  async verifyJsonCredential(jsonCredential: Verifiable<W3CCredential | Record<string, any>>): Promise<boolean> {
     const { proof, ...credential } = jsonCredential;
     const payload = JSON.stringify(credential, null, 2);
 
     const did = await this.resolver.resolve(proof.verificationMethod);
     const [veriKey] = did.publicKey.filter((key) => key.id == proof.verificationMethod);
-
-    console.log('veriKey', veriKey);
 
     let result;
     if (veriKey.type == 'Ed25519VerificationKey2018') {
@@ -57,6 +61,7 @@ export class Verifier {
     } else {
       throw new Error("we're only supporting Ed25519VerificationKey2018 and EcdsaSecp256k1Signature2019 atm");
     }
+    if (!result) throw Error('signature proof is invalid');
     return result;
   }
 }
