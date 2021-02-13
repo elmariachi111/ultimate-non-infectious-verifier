@@ -4,6 +4,9 @@ import fhirTemplate from './templates/hl7_immunization.json';
 
 export const TYPE = 'https://smarthealth.cards#covid19';
 
+//https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?rpt=cvx
+const knownCovid19CvxCodes = ['207', '208', '210', '212'];
+
 export class FhirHL7VaccinationCredential extends ICheckCredentials {
   protected checkForSchematicCorrectness(claim: Record<string, any>): void {
     if (!claim.fhirResource) {
@@ -26,7 +29,7 @@ export class FhirHL7VaccinationCredential extends ICheckCredentials {
     }
 
     const vaccCode = sidCvxCode[0].code;
-    if (!['207', '208'].includes(vaccCode)) {
+    if (!knownCovid19CvxCodes.includes(vaccCode)) {
       throw Error(`we don't recognize the vaccination code you received (${vaccCode})`);
     }
   }
@@ -52,6 +55,7 @@ export const Create = (params: FHIRImmunizationInputParams): FHIRResource => {
   const fhir: FHIRResource = JSON.parse(JSON.stringify(fhirTemplate));
 
   const qty = params.doseQuantity;
+  //todo: this must be corrected and depends on the vaccine code ;)
   const doseText = `COVID-19, mRNA, LNP-S, PF, ${qty} mcg/${(qty / 100).toFixed(1)} mL dose`;
 
   fhir.resource.vaccineCode.coding = [

@@ -39,11 +39,27 @@ const FhirImmunizationForm = ({ onFhirCreated }: { onFhirCreated: (fhir: any) =>
       <FormControl id="vaccineCode" my={4}>
         <FormLabel>vaccineCode</FormLabel>
         <Select name="vaccineCode" placeholder="Select the vaccine administered" ref={register}>
-          <option value="207">Moderna (CVX#207)</option>
-          <option value="208">Pfizer-BioNTech (CVX#208)</option>
+          <option value="207">CVX#207 Moderna (2 dose)</option>
+          <option value="208">CVX#208 Pfizer-BioNTech (2 dose)</option>
+          <option value="210" disabled>
+            CVX#210 rS-ChAdOx1 (2 dose)
+          </option>
+          <option value="212" disabled>
+            CVX#212 rS-Ad26 (1 dose)
+          </option>
           <option value="35">tetanus toxoid (CVX#35)</option>
           <option value="07">mumps (CVX#07)</option>
         </Select>
+        <FormHelperText>
+          See{' '}
+          <a
+            rel="noreferrer"
+            href="https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?rpt=cvx"
+            target="_blank"
+          >
+            cdc.gov's vaccine codes
+          </a>
+        </FormHelperText>
       </FormControl>
 
       <FormControl id="doseNumber" my={4}>
