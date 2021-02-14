@@ -53,22 +53,8 @@ describe('Vaccination Credentials', () => {
       vaccineCode: '208'
     });
 
-    const credential1 = await issuer.issueCredential(
-      didSubject,
-      {
-        fhirVersion: '4.0.1',
-        fhirResource: immunization1
-      },
-      [SMARTHEALTH_CARD_CRED_TYPE]
-    );
-    const credential2 = await issuer.issueCredential(
-      didSubject,
-      {
-        fhirVersion: '4.0.1',
-        fhirResource: immunization2
-      },
-      [SMARTHEALTH_CARD_CRED_TYPE]
-    );
+    const credential1 = await issuer.issueCredential(didSubject, immunization1, [SMARTHEALTH_CARD_CRED_TYPE]);
+    const credential2 = await issuer.issueCredential(didSubject, immunization2, [SMARTHEALTH_CARD_CRED_TYPE]);
 
     const credential1Jwt = await issuer.createJwt(credential1, issuerAccount.privateKey);
     const credential2Jwt = await issuer.createJwt(credential2, issuerAccount.privateKey);

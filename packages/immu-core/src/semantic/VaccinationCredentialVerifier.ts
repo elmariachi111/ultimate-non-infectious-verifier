@@ -2,6 +2,7 @@ import { VerifiableCredential } from 'did-jwt-vc';
 import { Resolver } from '../Resolver';
 import { Verifier } from '../Verifier';
 import { FhirHL7VaccinationCredential, TYPE as SMARTHEALTH_CARD_CRED_TYPE } from './FhirHL7VaccinationCredential';
+import { SchemaOrgVaccinationCredential, TYPE as SCHEMAORG_CRED_TYPE } from './SchemaOrgCredential';
 import ICheckCredentials from './ICheckCredentials';
 
 /**
@@ -20,6 +21,7 @@ export default class VaccinationCredentialVerifier {
   //isKnownIssuer = (did: string) => {};
   initialize() {
     this.strategies[SMARTHEALTH_CARD_CRED_TYPE] = new FhirHL7VaccinationCredential(this.resolver);
+    this.strategies[SCHEMAORG_CRED_TYPE] = new SchemaOrgVaccinationCredential(this.resolver);
   }
 
   get supportedStrategies(): string[] {

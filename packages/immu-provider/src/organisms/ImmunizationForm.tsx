@@ -1,25 +1,26 @@
 import { Button, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Select } from '@chakra-ui/react';
-import { CreateFhirHL7VaccinationCredential } from '@immu/core';
+import { ImmunizationInputParams, SCHEMAORG_CARD_CRED_TYPE, SMARTHEALTH_CARD_CRED_TYPE } from '@immu/core';
 import { useForm } from 'react-hook-form';
 
-const FhirImmunizationForm = ({ onFhirCreated }: { onFhirCreated: (fhir: any) => void }) => {
+const ImmunizationForm = ({
+  onImmunizationCreated
+}: {
+  onImmunizationCreated: (params: ImmunizationInputParams, type: string) => void;
+}) => {
   const { register, handleSubmit, watch, errors } = useForm();
 
   const qty = watch('doseQuantity', 0);
   const doseText = `COVID-19, mRNA, LNP-S, PF, ${qty} mcg/${(qty / 100).toFixed(1)} mL dose`;
 
   const onSubmit = (data: any) => {
-    const fhir = CreateFhirHL7VaccinationCredential({
+    const credentialParams: ImmunizationInputParams = {
       doseNumber: parseInt(data.doseNumber),
       doseQuantity: parseInt(data.doseQuantity),
       lotNumber: data.lotNumber,
       occurrenceDateTime: new Date(),
       vaccineCode: data.vaccineCode
-    });
-
-    console.log('FHIR', fhir);
-
-    onFhirCreated(fhir);
+    };
+    onImmunizationCreated(credentialParams, data.credentialType);
   };
 
   return (
@@ -76,9 +77,19 @@ const FhirImmunizationForm = ({ onFhirCreated }: { onFhirCreated: (fhir: any) =>
         <FormHelperText>{doseText}</FormHelperText>
       </FormControl>
 
-      <Button type="submit">submit</Button>
+      <FormControl id="credentialType" my={4}>
+        <FormLabel>Credential type</FormLabel>
+        <Select name="credentialType" placeholder="select credential type to issue" ref={register}>
+          <option value={SMARTHEALTH_CARD_CRED_TYPE}>{SMARTHEALTH_CARD_CRED_TYPE}</option>
+          <option value={SCHEMAORG_CARD_CRED_TYPE}>{SCHEMAORG_CARD_CRED_TYPE}</option>
+        </Select>
+      </FormControl>
+
+      <Button type="submit" colorScheme="teal">
+        submit
+      </Button>
     </form>
   );
 };
 
-export default FhirImmunizationForm;
+export default ImmunizationForm;

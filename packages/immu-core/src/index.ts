@@ -14,7 +14,14 @@ export {
   Create as CreateFhirHL7VaccinationCredential,
   TYPE as SMARTHEALTH_CARD_CRED_TYPE
 } from './semantic/FhirHL7VaccinationCredential';
+
+export {
+  Create as CreateSchemaOrgVaccinationCredential,
+  TYPE as SCHEMAORG_CARD_CRED_TYPE
+} from './semantic/SchemaOrgCredential';
+
 export { PublicKey, Authentication, DIDDocument } from 'did-resolver';
+export { ImmunizationInputParams } from './@types/Fhir';
 
 export {
   CredentialPayload,

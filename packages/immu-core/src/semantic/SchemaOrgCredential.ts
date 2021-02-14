@@ -1,10 +1,10 @@
-import { FHIRImmunizationInputParams } from '../@types/Fhir';
+import { ImmunizationInputParams } from '../@types/Fhir';
 import ICheckCredentials from './ICheckCredentials';
 import template from './templates/schemaorg_immunization.json';
 
 export const TYPE = 'https://schema.org#MedicalRecord-Vaccination';
 
-export class SchemaOrgVaccincationCredential extends ICheckCredentials {
+export class SchemaOrgVaccinationCredential extends ICheckCredentials {
   protected checkForSchematicCorrectness(claim: Record<string, any>): void {}
 
   protected checkForContentCorrectness(claim: Record<string, any>): void {}
@@ -12,7 +12,7 @@ export class SchemaOrgVaccincationCredential extends ICheckCredentials {
   public checkClaimCombination(claims: Record<string, any>[]): void {}
 }
 
-export const Create = (params: FHIRImmunizationInputParams): any => {
+export const Create = (params: ImmunizationInputParams): any => {
   //poor man's structured cloning
   //https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript/10916838#10916838
   const doc: any = JSON.parse(JSON.stringify(template));

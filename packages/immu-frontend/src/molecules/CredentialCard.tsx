@@ -1,6 +1,7 @@
 import { Box, Code, Flex, Heading, Text } from '@chakra-ui/react';
 import { VerifiableCredential } from '@immu/core';
 import React from 'react';
+import { SCHEMAORG_CARD_CRED_TYPE, SMARTHEALTH_CARD_CRED_TYPE } from '@immu/core';
 
 const CredentialCard = ({
   credential,
@@ -15,20 +16,26 @@ const CredentialCard = ({
 
   if (typeof credential === 'string') throw Error('noooo');
 
-  const { fhirResource } = credential.credentialSubject;
   const vm: Record<string, any> = {
     types:
       typeof credential.type === 'string'
         ? [credential.type]
         : credential.type.filter((t) => t !== 'VerifiableCredential'),
     issued: new Date(credential.issuanceDate).toLocaleDateString(),
-    resourceType: fhirResource.resource.resourceType,
     issuer: credential.issuer.id
   };
-
-  if (fhirResource.resource.occurrenceDateTime) {
-    vm.occurred = new Date(fhirResource.resource.occurrenceDateTime).toISOString()
+  if (credential.type.includes(SMARTHEALTH_CARD_CRED_TYPE)) {
+    const { fhirResource } = credential.credentialSubject;
+    vm.resourceType = fhirResource.resource.resourceType;
+    if (fhirResource.resource.occurrenceDateTime) {
+      vm.occurred = new Date(fhirResource.resource.occurrenceDateTime).toISOString()
+    }
+  } else if (credential.type.includes(SCHEMAORG_CARD_CRED_TYPE)) {
+    const doc = credential.credentialSubject;
+    vm.resourceType = doc['schema:name'];
+    vm.occurred = new Date(doc['schema:treatmentDate']).toISOString()
   }
+  
 
   return (
     <Flex

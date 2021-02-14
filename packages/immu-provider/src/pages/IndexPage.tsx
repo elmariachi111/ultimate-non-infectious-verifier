@@ -1,6 +1,13 @@
-import { Issuer, SMARTHEALTH_CARD_CRED_TYPE } from '@immu/core';
+import {
+  Issuer,
+  CreateFhirHL7VaccinationCredential,
+  CreateSchemaOrgVaccinationCredential,
+  SMARTHEALTH_CARD_CRED_TYPE,
+  SCHEMAORG_CARD_CRED_TYPE,
+  ImmunizationInputParams
+} from '@immu/core';
 import { useIdentity } from '@immu/frontend';
-import FhirImmunizationForm from 'organisms/FhirImmunizationForm';
+import ImmunizationForm from 'organisms/ImmunizationForm';
 import { useState } from 'react';
 import { CredentialOfferRequestAttrs, CredentialRenderTypes, SignedCredentialOfferResponseAttrs } from '@immu/core';
 import crypto from 'crypto';
@@ -9,12 +16,8 @@ import { Box, Heading, useClipboard, useToast } from '@chakra-ui/react';
 
 import QRCode from 'qrcode';
 
-type FHIRDocument = Record<string, any>;
-
 const IndexPage: React.FC = () => {
   const { account, resolver, did, verifier, issuer } = useIdentity();
-
-  const [, setFhirDocument] = useState<FHIRDocument>();
 
   const [offerJwt, setOfferJwt] = useState<string>('');
   const [offerJwtQrCode, setOfferJwtQrCode] = useState<string>();
@@ -23,7 +26,7 @@ const IndexPage: React.FC = () => {
 
   const offerResponseReceived = async (
     response: SignedCredentialOfferResponseAttrs,
-    _fhirDocument: FHIRDocument,
+    credentialSubject: Record<string, any>,
     _interactionToken: string
   ) => {
     const proven = await verifier.verifyJsonCredential(response);
@@ -34,15 +37,12 @@ const IndexPage: React.FC = () => {
 
     const credential = await issuer.issueCredential(
       receiverDid.id,
-      {
-        fhirVersion: '4.0.1',
-        fhirResource: _fhirDocument
-      },
+      credentialSubject,
       response.selectedCredentials.map((selected) => selected.type)
     );
 
     const credentialJwt = await issuer.createJwt(credential, account.privateKey);
-    console.log(credentialJwt);
+    console.debug(credentialJwt);
 
     const dispatchCredential = await fetch(
       `${process.env.REACT_APP_COMM_SERVER}/${_interactionToken}?flow=receiveCredential`,
@@ -64,15 +64,21 @@ const IndexPage: React.FC = () => {
       isClosable: true
     });
   };
-  const onFhirCreated = async (_fhirDocument: FHIRDocument) => {
-    setFhirDocument(_fhirDocument);
+
+  const Creators: Record<string, (params: ImmunizationInputParams) => any> = {
+    [SMARTHEALTH_CARD_CRED_TYPE]: CreateFhirHL7VaccinationCredential,
+    [SCHEMAORG_CARD_CRED_TYPE]: CreateSchemaOrgVaccinationCredential
+  };
+
+  const onImmunizationCreated = async (credentialParams: ImmunizationInputParams, credentialType: string) => {
+    const credentialSubject = Creators[credentialType](credentialParams);
     const interactionToken = bs58.encode(crypto.randomBytes(32));
 
     const offerRequest: CredentialOfferRequestAttrs = {
       callbackURL: `${process.env.REACT_APP_COMM_SERVER}/${interactionToken}?flow=credentialOfferResponse`,
       offeredCredentials: [
         {
-          type: SMARTHEALTH_CARD_CRED_TYPE,
+          type: credentialType,
           renderInfo: {
             renderAs: CredentialRenderTypes.claim,
             background: {
@@ -97,7 +103,7 @@ const IndexPage: React.FC = () => {
 
     eventSource.addEventListener('credentialOfferResponse', async function (event: any) {
       const data: SignedCredentialOfferResponseAttrs = JSON.parse(event.data);
-      await offerResponseReceived(data, _fhirDocument, interactionToken);
+      await offerResponseReceived(data, credentialSubject, interactionToken);
       eventSource.close();
     });
   };
@@ -107,7 +113,7 @@ const IndexPage: React.FC = () => {
       <Heading size="lg" mt={8}>
         issue an immunization credential
       </Heading>
-      <FhirImmunizationForm onFhirCreated={onFhirCreated} />
+      <ImmunizationForm onImmunizationCreated={onImmunizationCreated} />
       {offerJwt && (
         <Box>
           <img src={offerJwtQrCode} alt="qr code" onClick={onCopy} />

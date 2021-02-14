@@ -1,4 +1,4 @@
-import { FHIRImmunizationInputParams, FHIRResource } from '../@types/Fhir';
+import { FHIRBundle, ImmunizationInputParams, FHIRResource } from '../@types/Fhir';
 import ICheckCredentials from './ICheckCredentials';
 import fhirTemplate from './templates/hl7_immunization.json';
 
@@ -49,7 +49,7 @@ export class FhirHL7VaccinationCredential extends ICheckCredentials {
   }
 }
 
-export const Create = (params: FHIRImmunizationInputParams): FHIRResource => {
+export const Create = (params: ImmunizationInputParams): FHIRBundle => {
   //poor man's structured cloning
   //https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript/10916838#10916838
   const fhir: FHIRResource = JSON.parse(JSON.stringify(fhirTemplate));
@@ -71,5 +71,8 @@ export const Create = (params: FHIRImmunizationInputParams): FHIRResource => {
   fhir.resource.protocolApplied[0].doseNumberPositiveInt = params.doseNumber;
   fhir.resource.doseQuantity.value = params.doseQuantity;
 
-  return fhir;
+  return {
+    fhirVersion: '4.0.1',
+    fhirResource: fhir
+  };
 };
