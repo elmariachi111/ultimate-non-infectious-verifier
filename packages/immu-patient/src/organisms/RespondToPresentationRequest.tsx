@@ -72,7 +72,7 @@ const RespondToPresentationRequest = ({
         </VStack>
       </Box>
       <Flex mt={6} justify="space-between">
-        <Button colorScheme="green" onClick={() => presentCredentials(foundCredentials)}>
+        <Button colorScheme="green" onClick={() => presentCredentials(selectedCredentials)}>
           Present these
         </Button>
         <Button colorScheme="red" onClick={cancel}>
