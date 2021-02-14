@@ -65,6 +65,8 @@ export class EthRegistry {
     if (type.length > 25) {
       throw Error('the service type name length is restricted to 25 characters');
     }
+
+    //todo: check if the endpoint responds so we can't add bullshit ;)
     const { contract } = this.didRegistries[network];
     const duration = 60 * 60 * 24 * 365 * 2;
 

@@ -97,8 +97,8 @@ https://medium.com/uport/erc1056-erc780-an-open-identity-and-claims-protocol-for
 Lightweight Identity:
 https://eips.ethereum.org/EIPS/eip-1056
 
-Claims Registry:
-https://github.com/ethereum/EIPs/issues/780
+On Chain Credentials Registry:
+https://github.com/ethereum/EIPs/issues/780 (not really recommended)
 
 followed by:
 
@@ -132,10 +132,12 @@ A nonfinal vc http api interface spec
 https://github.com/w3c-ccg/vc-http-api
 
 https://w3c-ccg.github.io/vc-extension-registry/#proof-methods
-(-> `Ed25519Signature2018` )
 
 DIF specs
 https://github.com/decentralized-identity/claims-credentials
+
+Credential Status Registry
+https://w3c-ccg.github.io/vc-csl2017/#introduction
 
 #### Verifiable Presentation Requests
 

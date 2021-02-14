@@ -3,6 +3,7 @@ import express, { Express } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { router as CommRouter } from './app/comm';
+import { router as VCRouter } from './app/vc';
 
 const app: Express = express();
 
@@ -27,6 +28,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.use('/', CommRouter);
+app.use('/', VCRouter);
 
 /************************************************************************************
  *                               Express Error Handling

@@ -7,7 +7,7 @@ export * as Secp256k1Signing from './Secp256k1Signing';
 export * from './Request';
 export * from './displayCredential';
 
-export { VerifiedCredential, VerifiableCredential, W3CCredential } from 'did-jwt-vc';
+export { VerifiedCredential, VerifiableCredential, Verifiable, W3CCredential } from 'did-jwt-vc';
 export { JWTVerified } from 'did-jwt';
 export { default as VaccinationCredentialVerifier } from './semantic/VaccinationCredentialVerifier';
 export {
