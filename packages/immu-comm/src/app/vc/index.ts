@@ -29,15 +29,23 @@ router.get(VC_ENDPOINT + '/:did', async (req, res) => {
   const type = req.query.vctype as string;
   const did = req.params.did;
   const key = `[${did}][${type}]`;
-  const credentials = await credStore.get(key);
-  res.status(200).json(credentials);
+  try {
+    const credentials = await credStore.get(key);
+    res.status(200).json(credentials);
+  } catch (e) {
+    console.error(e);
+    res.status(404).json({ reason: 'not found' });
+  }
 });
 
-//todo: poster must sign a self chosen nonce and present a bearer jwt to be allowed to do this.
+//todo: poster must be issuer or holder and
+// sign a self chosen nonce and present a bearer jwt to be allowed to do this.
 router.post(VC_ENDPOINT, async (req, res) => {
   const credential = req.body as Verifiable<W3CCredential>;
 
-  const did: string = credential.issuer.id;
+  if (!credential.credentialSubject.id) throw Error('we only support credentials with unique subjects');
+
+  const did: string = credential.credentialSubject.id;
   const types: string[] = credential.type;
 
   const type = types.find((t) => t != 'VerifiableCredential');

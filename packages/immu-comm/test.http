@@ -5,16 +5,32 @@ Content-Type: application/json
   "@context": [
     "https://www.w3.org/2018/credentials/v1"
   ],
-  "issuanceDate": "2021-02-14T09:24:11.638Z",
+  "issuanceDate": "2021-02-14T18:42:24.755Z",
   "credentialSubject": {
-    "id": "did:ethr:development:0x22d491bde2303f2f43325b2108d26f1eaba1e32b",
-    "provider": {
-      "type": "ImmunizationProvider",
-      "name": "John Doe"
+    "id": "did:ethr:development:0x23270bf93e1d6cba4a844107e1be58200a1ee804",
+    "resource": {
+      "resourceType": "Practitioner",
+      "id": "did:ethr:development:0x23270bf93e1d6cba4a844107e1be58200a1ee804",
+      "identifier": [
+        {
+          "use": "official",
+          "system": "did",
+          "value": "did:ethr:development:0x23270bf93e1d6cba4a844107e1be58200a1ee804"
+        }
+      ],
+      "name": [
+        {
+          "use": "official",
+          "family": "Adolf",
+          "given": [
+            "Stefan"
+          ]
+        }
+      ]
     }
   },
   "issuer": {
-    "id": "did:ethr:development:0xffcf8fdee72ac11b5c542428b35eef5769c409f0"
+    "id": "did:ethr:development:0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1"
   },
   "type": [
     "VerifiableCredential",
@@ -22,10 +38,10 @@ Content-Type: application/json
   ],
   "proof": {
     "type": "EcdsaSecp256k1Signature2019",
-    "verificationMethod": "did:ethr:development:0xffcf8fdee72ac11b5c542428b35eef5769c409f0#controller",
-    "created": "2021-02-14T09:24:17.372Z",
+    "verificationMethod": "did:ethr:development:0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1#controller",
+    "created": "2021-02-14T18:42:32.291Z",
     "proofPurpose": "assertionMethod",
-    "jws": "eyJhbGciOiJFUzI1NksifQ..jBpaKqZovU27XzdQmk04QvmfKo2GBtJNUcSBKdkar-A7d-pBq7eHhpb5qaKDc6VUelLQe6TVXZgaLybWY-tPvw"
+    "jws": "eyJhbGciOiJFUzI1NksifQ..IoYJzSW4JGVoK2zCJurOg_T_Kpe1XmCSz0xRazAX1F-HVZFacrxRO40awJdaQZMma0M6pK2Jfbw9P8s_vfBKeg"
   }
 }
 

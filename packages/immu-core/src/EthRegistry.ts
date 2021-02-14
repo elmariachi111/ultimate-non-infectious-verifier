@@ -16,14 +16,18 @@ export class EthRegistry {
     };
   } = {};
 
-  constructor(providerConfig: EthProviderConfig[]) {
+  constructor(providerConfig: EthProviderConfig[], web3?: Web3) {
     providerConfig.map((cfg: EthProviderConfig) => {
-      const web3 = new Web3(cfg.provider || cfg.rpcUrl!);
+      const _web3 = web3 || new Web3(cfg.provider || cfg.rpcUrl!);
       this.didRegistries[cfg.name] = {
-        web3,
-        contract: new web3.eth.Contract(DidRegistryContract.abi as AbiItem[], cfg.registry || defaultRegistryAddress)
+        web3: _web3,
+        contract: new _web3.eth.Contract(DidRegistryContract.abi as AbiItem[], cfg.registry || defaultRegistryAddress)
       };
     });
+  }
+
+  public getDidRegistry(name: string) {
+    return this.didRegistries[name];
   }
 
   async checkOwner(ethAddress: EthereumAddress, network: string): Promise<string> {
@@ -61,7 +65,7 @@ export class EthRegistry {
     return tx;
   }
 
-  async addRepositoryService(type: string, endpoint: string, address: EthereumAddress, network = 'development') {
+  async addService(type: string, endpoint: string, address: EthereumAddress, network = 'development') {
     if (type.length > 25) {
       throw Error('the service type name length is restricted to 25 characters');
     }
@@ -79,6 +83,25 @@ export class EthRegistry {
     return tx;
   }
 
+  async addServiceTransaction(
+    type: string,
+    endpoint: string,
+    address: EthereumAddress,
+    network = 'development'
+  ): Promise<string> {
+    if (type.length > 25) {
+      throw Error('the service type name length is restricted to 25 characters');
+    }
+
+    //todo: check if the endpoint responds so we can't add bullshit ;)
+    const { contract } = this.didRegistries[network];
+    const duration = 60 * 60 * 24 * 365 * 2;
+
+    const endpointBuffer = Buffer.from(endpoint, 'utf-8');
+    return contract.methods
+      .setAttribute(address.toLowerCase(), stringToBytes32(`did/svc/${type}`), endpointBuffer, duration)
+      .encodeABI();
+  }
   // only used for debugging, does the same thing as ethr-did-resolver under the hood
   async listEvents(network: string, address?: EthereumAddress): Promise<any[]> {
     const filter: any = {};

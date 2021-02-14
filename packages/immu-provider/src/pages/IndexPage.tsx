@@ -44,7 +44,7 @@ const IndexPage: React.FC = () => {
     const credentialJwt = await issuer.createJwt(credential, account.privateKey);
     console.log(credentialJwt);
 
-    const receiveResponse = await fetch(
+    const dispatchCredential = await fetch(
       `${process.env.REACT_APP_COMM_SERVER}/${_interactionToken}?flow=receiveCredential`,
       {
         method: 'POST',
@@ -55,7 +55,7 @@ const IndexPage: React.FC = () => {
       }
     );
 
-    console.log(await receiveResponse.json());
+    console.log(await dispatchCredential.json());
     toast({
       title: 'Credential accepted.',
       description: 'the subject has accepted your credential.',

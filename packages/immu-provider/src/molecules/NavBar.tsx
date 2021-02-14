@@ -1,9 +1,10 @@
-import { Box, Flex, Heading, Spacer, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, Heading, HStack, Link, Spacer, Tooltip } from '@chakra-ui/react';
 import { useIdentity } from '@immu/frontend';
 import React from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 import Identicon from 'react-identicons';
+import { Link as RLink, NavLink } from 'react-router-dom';
 
 const Navbar = () => {
   const { did } = useIdentity();
@@ -23,6 +24,15 @@ const Navbar = () => {
       </Tooltip>
 
       <Spacer />
+
+      <HStack>
+        <Link as={NavLink} to="/credentials">
+          You
+        </Link>
+        <Link as={NavLink} to="/">
+          Issue
+        </Link>
+      </HStack>
     </Flex>
   );
 };

@@ -58,7 +58,7 @@ describe('EthRegistry', () => {
   });
 
   it('can register service urls to the did', async () => {
-    const tx = await ethRegistry.addRepositoryService(
+    const tx = await ethRegistry.addService(
       'CredentialRepository',
       'http://localhost:8080/vc/and-a-long-tail/afterwards#withCuriousChars',
       someAccount,
