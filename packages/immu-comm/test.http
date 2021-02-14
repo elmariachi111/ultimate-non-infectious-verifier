@@ -5,28 +5,31 @@ Content-Type: application/json
   "@context": [
     "https://www.w3.org/2018/credentials/v1"
   ],
-  "issuanceDate": "2021-02-14T18:42:24.755Z",
+  "issuanceDate": "2021-02-14T19:53:55.506Z",
   "credentialSubject": {
     "id": "did:ethr:development:0x23270bf93e1d6cba4a844107e1be58200a1ee804",
-    "resource": {
-      "resourceType": "Practitioner",
-      "id": "did:ethr:development:0x23270bf93e1d6cba4a844107e1be58200a1ee804",
-      "identifier": [
-        {
-          "use": "official",
-          "system": "did",
-          "value": "did:ethr:development:0x23270bf93e1d6cba4a844107e1be58200a1ee804"
-        }
-      ],
-      "name": [
-        {
-          "use": "official",
-          "family": "Adolf",
-          "given": [
-            "Stefan"
-          ]
-        }
-      ]
+    "fhirVersion": "4.0.1",
+    "fhirResource": {
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "did:ethr:development:0x23270bf93e1d6cba4a844107e1be58200a1ee804",
+        "identifier": [
+          {
+            "use": "official",
+            "system": "did",
+            "value": "did:ethr:development:0x23270bf93e1d6cba4a844107e1be58200a1ee804"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Adolf",
+            "given": [
+              "Stefan"
+            ]
+          }
+        ]
+      }
     }
   },
   "issuer": {
@@ -39,9 +42,9 @@ Content-Type: application/json
   "proof": {
     "type": "EcdsaSecp256k1Signature2019",
     "verificationMethod": "did:ethr:development:0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1#controller",
-    "created": "2021-02-14T18:42:32.291Z",
+    "created": "2021-02-14T19:54:01.875Z",
     "proofPurpose": "assertionMethod",
-    "jws": "eyJhbGciOiJFUzI1NksifQ..IoYJzSW4JGVoK2zCJurOg_T_Kpe1XmCSz0xRazAX1F-HVZFacrxRO40awJdaQZMma0M6pK2Jfbw9P8s_vfBKeg"
+    "jws": "eyJhbGciOiJFUzI1NksifQ..ZeCzIKGvNGd5vuERIFHJbnDdHBDjUXDucyvjCyBFBO7j8IKBCXBpOvWUADo66emABB0TFiG5F1Cqrbel67iR_A"
   }
 }
 

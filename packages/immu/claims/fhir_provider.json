@@ -1,22 +1,25 @@
 {
-  "resource": {
-    "resourceType": "Practitioner",
-    "id": "did:ethr:development:0x23270bf93e1d6cba4a844107e1be58200a1ee804",
-    "identifier": [
-      {
-        "use": "official",
-        "system": "did",
-        "value": "did:ethr:development:0x23270bf93e1d6cba4a844107e1be58200a1ee804"
-      }
-    ],
-    "name": [
-      {
-        "use": "official",
-        "family": "Adolf",
-        "given": [
-          "Stefan"
-        ]
-      }
-    ]
+  "fhirVersion": "4.0.1",
+  "fhirResource": {
+    "resource": {
+      "resourceType": "Practitioner",
+      "id": "did:ethr:development:0x23270bf93e1d6cba4a844107e1be58200a1ee804",
+      "identifier": [
+        {
+          "use": "official",
+          "system": "did",
+          "value": "did:ethr:development:0x23270bf93e1d6cba4a844107e1be58200a1ee804"
+        }
+      ],
+      "name": [
+        {
+          "use": "official",
+          "family": "Adolf",
+          "given": [
+            "Stefan"
+          ]
+        }
+      ]
+    }
   }
 }

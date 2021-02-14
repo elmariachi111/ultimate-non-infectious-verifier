@@ -1,7 +1,7 @@
-import { Box, Text, Button, Code } from '@chakra-ui/react';
-import { useIdentity } from '@immu/frontend';
+import { Box, Button, Code, Text } from '@chakra-ui/react';
+import { Verifiable, W3CCredential } from '@immu/core';
+import { useIdentity, CredentialCard } from '@immu/frontend';
 import React, { useEffect, useState } from 'react';
-import Web3 from 'web3';
 
 const CredentialPage: React.FC = () => {
   const { did, resolver, registry, account, chainId } = useIdentity();
@@ -10,6 +10,7 @@ const CredentialPage: React.FC = () => {
 
   const [balance, setBalance] = useState<string>();
   const [didDoc, setDidDoc] = useState<any>();
+  const [credentials, setCredentials] = useState<Verifiable<W3CCredential>[]>();
 
   const serviceEntry = didDoc?.service?.find((svc: any) => svc.type === 'CredentialService');
 
@@ -53,8 +54,8 @@ const CredentialPage: React.FC = () => {
         'Content-Type': 'application/json'
       }
     });
-    const credential = await credentialQuery.json();
-    console.log(credential);
+    const credentials = await credentialQuery.json();
+    setCredentials(credentials);
   };
 
   return (
@@ -62,10 +63,14 @@ const CredentialPage: React.FC = () => {
       <Text>Hello {did}</Text>
 
       {serviceEntry ? (
-        <Text>
-          Credentials about you can be retrieved from <Code>{serviceEntry.serviceEndpoint}</Code>
-          <Button onClick={lookupPractitionerCredential}>Find your Practitioner Credential</Button>
-        </Text>
+        credentials ? (
+          credentials.map((c) => <CredentialCard credential={c} />)
+        ) : (
+          <Text>
+            Credentials about you can be retrieved from <Code>{serviceEntry.serviceEndpoint}</Code>
+            <Button onClick={lookupPractitionerCredential}>Find your Practitioner Credential</Button>
+          </Text>
+        )
       ) : (
         <Button onClick={addService}>add service entry</Button>
       )}

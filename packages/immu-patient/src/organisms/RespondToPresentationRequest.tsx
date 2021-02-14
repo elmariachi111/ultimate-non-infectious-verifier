@@ -1,8 +1,8 @@
 import { Box, Button, Checkbox, Code, Flex, Radio, Text, VStack } from '@chakra-ui/react';
 import { JWTVerified, VerifiableCredential } from '@immu/core';
-import { useIdentity } from '@immu/frontend';
+import { CredentialCard, useIdentity } from '@immu/frontend';
 import { useCredentials } from 'hooks/CredentialStorage';
-import CredentialCard from 'molecules/CredentialCard';
+
 import React, { useState } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
