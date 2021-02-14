@@ -1,9 +1,9 @@
 import { VerifiableCredential } from 'did-jwt-vc';
 import { Resolver } from '../Resolver';
 import { Verifier } from '../Verifier';
+import ICheckCredentials, { VerifierFlags } from './ICheckCredentials';
 import { FhirHL7VaccinationCredential, TYPE as SMARTHEALTH_CARD_CRED_TYPE } from './FhirHL7VaccinationCredential';
 import { SchemaOrgVaccinationCredential, TYPE as SCHEMAORG_CRED_TYPE } from './SchemaOrgCredential';
-import ICheckCredentials from './ICheckCredentials';
 
 /**
  * verifies credentials using pluggable validation strategies
@@ -30,7 +30,7 @@ export default class VaccinationCredentialVerifier {
     return Object.keys(this.strategies);
   }
 
-  async verify(presentedCredentials: VerifiableCredential[]) {
+  async verify(presentedCredentials: VerifiableCredential[], flags?: VerifierFlags) {
     const appliedStrategies: Set<ICheckCredentials> = new Set();
     const verifiedClaims: Record<string, any>[] = [];
 
@@ -45,7 +45,7 @@ export default class VaccinationCredentialVerifier {
         const iCheckCredentials = this.strategies[strategyType];
         appliedStrategies.add(iCheckCredentials);
 
-        const verifiedClaim = await iCheckCredentials.checkCredential(verifiedCredential);
+        const verifiedClaim = await iCheckCredentials.checkCredential(verifiedCredential, flags);
         verifiedClaims.push(verifiedClaim);
       } catch (e) {
         console.error(e);

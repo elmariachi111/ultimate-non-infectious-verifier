@@ -1,5 +1,5 @@
-import { FHIRBundle, ImmunizationInputParams, FHIRResource } from '../@types/Fhir';
 import ICheckCredentials from './ICheckCredentials';
+import { FHIRBundle, ImmunizationInputParams, FHIRResource } from '../@types/Fhir';
 import fhirTemplate from './templates/hl7_immunization.json';
 
 export const TYPE = 'https://smarthealth.cards#covid19';

@@ -49,7 +49,7 @@ const RequestPresentationPage: React.FC = () => {
 
     const interactionToken = bs58.encode(crypto.randomBytes(32));
     const request = createPresentationRequest({
-      requestedSubjects: ['ProofOfImmunization', ...credentialVerifier.supportedStrategies],
+      requestedSubjects: [...credentialVerifier.supportedStrategies],
       challenge: interactionToken,
       callbackUrl: `${process.env.REACT_APP_COMM_SERVER}/${interactionToken}?flow=presentationResponse`
     });

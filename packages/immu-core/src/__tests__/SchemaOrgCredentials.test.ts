@@ -89,7 +89,7 @@ describe('Vaccination Credentials', () => {
     const vaccVerifier = new VaccinationCredentialVerifier(resolver);
     vaccVerifier.initialize();
 
-    const verificationResult = await vaccVerifier.verify(credentials);
+    const verificationResult = await vaccVerifier.verify(credentials, { skipIssuerCheck: true });
     expect(verificationResult).toBeTruthy();
   });
 });

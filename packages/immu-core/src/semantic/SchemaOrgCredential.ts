@@ -1,5 +1,5 @@
-import { ImmunizationInputParams } from '../@types/Fhir';
 import ICheckCredentials from './ICheckCredentials';
+import { ImmunizationInputParams } from '../@types/Fhir';
 import template from './templates/schemaorg_immunization.json';
 
 export const TYPE = 'https://schema.org#MedicalRecord-Vaccination';
