@@ -45,7 +45,7 @@ const IndexPage: React.FC = () => {
     console.debug(credentialJwt);
 
     const dispatchCredential = await fetch(
-      `${process.env.REACT_APP_COMM_SERVER}/${_interactionToken}?flow=receiveCredential`,
+      `${process.env.REACT_APP_COMM_SERVER}/comm/${_interactionToken}?flow=receiveCredential`,
       {
         method: 'POST',
         body: JSON.stringify({ signedCredentialJwt: credentialJwt }),
@@ -75,7 +75,7 @@ const IndexPage: React.FC = () => {
     const interactionToken = bs58.encode(crypto.randomBytes(32));
 
     const offerRequest: CredentialOfferRequestAttrs = {
-      callbackURL: `${process.env.REACT_APP_COMM_SERVER}/${interactionToken}?flow=credentialOfferResponse`,
+      callbackURL: `${process.env.REACT_APP_COMM_SERVER}/comm/${interactionToken}?flow=credentialOfferResponse`,
       offeredCredentials: [
         {
           type: credentialType,
@@ -99,7 +99,7 @@ const IndexPage: React.FC = () => {
     setOfferJwt(jwt);
     setOfferJwtQrCode(qrCode);
 
-    const eventSource = new EventSource(`${process.env.REACT_APP_COMM_SERVER}/listen/${interactionToken}`);
+    const eventSource = new EventSource(`${process.env.REACT_APP_COMM_SERVER}/comm/listen/${interactionToken}`);
 
     eventSource.addEventListener('credentialOfferResponse', async function (event: any) {
       const data: SignedCredentialOfferResponseAttrs = JSON.parse(event.data);

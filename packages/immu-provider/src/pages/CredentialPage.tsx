@@ -34,7 +34,7 @@ const CredentialPage: React.FC = () => {
   const addService = async () => {
     const abi = await registry.addServiceTransaction(
       'CredentialService',
-      'http://localhost:8080/vc',
+      `${process.env.REACT_APP_COMM_SERVER}/vc`,
       account.address,
       chainId
     );

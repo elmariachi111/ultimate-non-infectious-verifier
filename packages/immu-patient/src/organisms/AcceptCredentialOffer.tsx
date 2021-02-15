@@ -34,7 +34,7 @@ const AcceptCredentialOffer = () => {
     };
 
     const interactionToken = new URL(credentialOffer!.callbackURL).pathname.split('/').slice(-1)[0];
-    const eventSource = new EventSource(`${process.env.REACT_APP_COMM_SERVER}/listen/${interactionToken}`);
+    const eventSource = new EventSource(`${process.env.REACT_APP_COMM_SERVER}/comm/listen/${interactionToken}`);
 
     eventSource.addEventListener('receiveCredential', async function (event: any) {
       console.log(event);
