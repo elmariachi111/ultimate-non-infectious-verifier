@@ -68,3 +68,15 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.1/src/commands/help.ts)_
 <!-- commandsstop -->
+
+```
+
+  "root": {
+    "privateKey": "0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d",
+    "did": "did:ethr:development:0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1"
+  },
+
+  
+bin/run issue -i did:ethr:development:0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1 -s . -t ProofOfProvider -o credentials/provider.jws.json -p jws claims/fhir_provider.json
+
+```

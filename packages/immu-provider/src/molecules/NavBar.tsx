@@ -26,11 +26,12 @@ const Navbar = () => {
       <Spacer />
 
       <HStack>
-        <Link as={NavLink} to="/credentials">
-          You
-        </Link>
         <Link as={NavLink} to="/">
           Issue
+        </Link>
+        <Spacer />
+        <Link as={NavLink} to="/credentials">
+          You
         </Link>
       </HStack>
     </Flex>
