@@ -80,3 +80,5 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.1
 bin/run issue -i did:ethr:development:0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1 -s . -t ProofOfProvider -o credentials/provider.jws.json -p jws claims/fhir_provider.json
 
 ```
+
+bin/run issue -i did:ethr:goerli:0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1 -s did:ethr:goerli:0xb17251023f45ca29c1d89747a37f0da703fdd717 -t ProofOfProvider -o credentials/provider.jws.json -p jws claims/fhir_provider.json

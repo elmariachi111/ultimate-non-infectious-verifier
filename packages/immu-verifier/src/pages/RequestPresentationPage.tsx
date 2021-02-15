@@ -51,7 +51,7 @@ const RequestPresentationPage: React.FC = () => {
     const request = createPresentationRequest({
       requestedSubjects: [...credentialVerifier.supportedStrategies],
       challenge: interactionToken,
-      callbackUrl: `${process.env.REACT_APP_COMM_SERVER}/${interactionToken}?flow=presentationResponse`
+      callbackUrl: `${process.env.REACT_APP_COMM_SERVER}/comm/${interactionToken}?flow=presentationResponse`
     });
 
     const presentationRequestJwt = await issuer.createAnyJwt(request, account.privateKey);
@@ -60,7 +60,7 @@ const RequestPresentationPage: React.FC = () => {
     const qrCode = await QRCode.toDataURL(presentationRequestJwt);
     setPresentationJwtQrCode(qrCode);
 
-    const _eventSource = new EventSource(`${process.env.REACT_APP_COMM_SERVER}/listen/${interactionToken}`);
+    const _eventSource = new EventSource(`${process.env.REACT_APP_COMM_SERVER}/comm/listen/${interactionToken}`);
     setEventSource(_eventSource);
 
     _eventSource.addEventListener('presentationResponse', async function (event: any) {

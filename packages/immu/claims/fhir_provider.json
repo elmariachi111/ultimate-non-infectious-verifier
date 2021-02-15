@@ -3,12 +3,12 @@
   "fhirResource": {
     "resource": {
       "resourceType": "Practitioner",
-      "id": "did:ethr:development:0xd0a663f0b88cef4d02f62d0135961434ab636e48",
+      "id": "did:ethr:goerli:0xb17251023f45ca29c1d89747a37f0da703fdd717",
       "identifier": [
         {
           "use": "official",
           "system": "did",
-          "value": "did:ethr:development:0xd0a663f0b88cef4d02f62d0135961434ab636e48"
+          "value": "did:ethr:goerli:0xb17251023f45ca29c1d89747a37f0da703fdd717"
         }
       ],
       "name": [

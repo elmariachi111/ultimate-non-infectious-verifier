@@ -32,8 +32,10 @@ export class SchemaOrgVaccinationCredential extends ICheckCredentials {
     const treatmentDates = claims.map((claim) => new Date(claim['schema:treatmentDate']).getTime());
     const msDiff = Math.abs(treatmentDates[0] - treatmentDates[1]);
     const dayDiff = msDiff / 1000 / 60 / 60 / 24;
+
     if (dayDiff < 21) {
-      throw Error(`the immunization dates are too close (${dayDiff})`);
+      console.error(`the immunization dates are too close (${dayDiff})`);
+      //throw Error(`the immunization dates are too close (${dayDiff})`);
     }
   }
 }

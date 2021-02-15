@@ -44,7 +44,8 @@ export class FhirHL7VaccinationCredential extends ICheckCredentials {
     const msDiff = Math.abs(occurrenceTimes[0] - occurrenceTimes[1]);
     const dayDiff = msDiff / 1000 / 60 / 60 / 24;
     if (dayDiff < 21) {
-      throw Error(`the immunization dates are too close (${dayDiff})`);
+      console.error(`the immunization dates are too close (${dayDiff})`);
+      //throw Error(`the immunization dates are too close (${dayDiff})`);
     }
   }
 }
