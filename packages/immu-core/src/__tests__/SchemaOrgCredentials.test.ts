@@ -1,13 +1,15 @@
-import { Create, TYPE as SCHEMAORG_CRED_TYPE } from '../semantic/SchemaOrgCredential';
-import { Issuer, Resolver, VaccinationCredentialVerifier, Verifier } from '..';
+import { Create, TYPE as SCHEMAORG_CRED_TYPE } from '../semantic/SchemaOrgVaccinationCredential';
+import { Issuer, Resolver, VaccinationCredentialVerifier, Verifier, VerifiableCredential } from '..';
 import { DID } from '../@types';
 
 import newRegistry from './common/newRegistry';
 import web3 from './common/web3Provider';
+import { Account } from 'web3-core';
 
-describe('Vaccination Credentials', () => {
+describe('Schema.org Vaccination Credentials', () => {
   let resolver: Resolver;
-  let issuerAccount, subjectAccount;
+  let issuerAccount: Account;
+  let subjectAccount: Account;
   let didIssuer: DID;
   let didSubject: DID;
   let issuer: Issuer;
@@ -33,23 +35,38 @@ describe('Vaccination Credentials', () => {
     verifier = new Verifier(resolver);
   });
 
-  let credentials = [];
+  let credentials: VerifiableCredential[] = [];
+  let vaccination1: any;
 
-  it('can create a schema.org credential', async () => {
-    const vaccination1 = Create({
-      doseNumber: 1,
+  it('can create a schema.org claim', async () => {
+    vaccination1 = Create({
+      doseSequence: 1,
       doseQuantity: 50,
       lotNumber: 'ABCDE',
       occurrenceDateTime: new Date('2021-01-01T11:45:33+11:00'),
-      vaccineCode: '210'
+      drug: {
+        name: 'Moderna COVID-19 Vaccine',
+        code: {
+          codeValue: 'MVX-MOD.CVX-207',
+          codingSystem: 'CDC-MVX.CVX'
+        }
+      }
     });
+  });
 
+  it('can create a verifiable set of schema.org credential', async () => {
     const vaccination2 = Create({
-      doseNumber: 2,
+      doseSequence: 2,
       doseQuantity: 50,
       lotNumber: 'EDCBA',
       occurrenceDateTime: new Date('2021-01-30T11:45:33+11:00'),
-      vaccineCode: '210'
+      drug: {
+        name: 'Moderna COVID-19 Vaccine',
+        code: {
+          codeValue: 'MVX-MOD.CVX-207',
+          codingSystem: 'CDC-MVX.CVX'
+        }
+      }
     });
 
     const credentialPayload1 = await issuer.issueCredential(didSubject, vaccination1, [SCHEMAORG_CRED_TYPE]);

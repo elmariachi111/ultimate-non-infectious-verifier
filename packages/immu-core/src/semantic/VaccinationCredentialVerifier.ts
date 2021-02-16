@@ -1,9 +1,10 @@
 import { VerifiableCredential } from 'did-jwt-vc';
+import { ImmunizationInputParams } from '../@types/Fhir';
 import { Resolver } from '../Resolver';
 import { Verifier } from '../Verifier';
 import ICheckCredentials, { VerifierFlags } from './ICheckCredentials';
-import { FhirHL7VaccinationCredential, TYPE as SMARTHEALTH_CARD_CRED_TYPE } from './FhirHL7VaccinationCredential';
-import { SchemaOrgVaccinationCredential, TYPE as SCHEMAORG_CRED_TYPE } from './SchemaOrgCredential';
+//import { FhirHL7VaccinationCredential, TYPE as SMARTHEALTH_CARD_CRED_TYPE } from ../../../../bak/FhirHL7VaccinationCredentiall';
+import { SchemaOrgVaccinationCredential, TYPE as SCHEMAORG_CRED_TYPE } from './SchemaOrgVaccinationCredential';
 
 /**
  * verifies credentials using pluggable validation strategies
@@ -21,7 +22,7 @@ export default class VaccinationCredentialVerifier {
   //isKnownIssuer = (did: string) => {};
   initialize() {
     this.strategies = {
-      [SMARTHEALTH_CARD_CRED_TYPE]: new FhirHL7VaccinationCredential(this.resolver),
+      //[SMARTHEALTH_CARD_CRED_TYPE]: new FhirHL7VaccinationCredential(this.resolver),
       [SCHEMAORG_CRED_TYPE]: new SchemaOrgVaccinationCredential(this.resolver)
     };
   }
@@ -31,8 +32,7 @@ export default class VaccinationCredentialVerifier {
   }
 
   async verify(presentedCredentials: VerifiableCredential[], flags?: VerifierFlags) {
-    const appliedStrategies: Set<ICheckCredentials> = new Set();
-    const verifiedClaims: Record<string, any>[] = [];
+    const normalizedClaims: ImmunizationInputParams[] = [];
 
     for await (const credential of presentedCredentials) {
       const verifiedCredential = await this.verifier.verifyCredential(credential);
@@ -43,18 +43,17 @@ export default class VaccinationCredentialVerifier {
         }
 
         const iCheckCredentials = this.strategies[strategyType];
-        appliedStrategies.add(iCheckCredentials);
 
-        const verifiedClaim = await iCheckCredentials.checkCredential(verifiedCredential, flags);
-        verifiedClaims.push(verifiedClaim);
+        const normalizedClaim = await iCheckCredentials.checkCredential(verifiedCredential, flags);
+        if (normalizedClaim) {
+          normalizedClaims.push(normalizedClaim);
+        }
       } catch (e) {
         console.error(e);
       }
     }
 
-    for (const strategy of appliedStrategies) {
-      strategy.checkClaimCombination(verifiedClaims);
-    }
+    ICheckCredentials.checkClaimCombination(normalizedClaims);
 
     return true;
   }

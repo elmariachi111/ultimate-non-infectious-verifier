@@ -1,3 +1,8 @@
+import HBS from 'handlebars';
+
+HBS.registerHelper('date', (date: Date) => date.toISOString());
+
+const Template = HBS.compile(`
 {
     "@context": {
         "schema:": "https://schema.org",
@@ -11,20 +16,20 @@
         "@type": "ImmunizationRecommendation",
         "drug": {
             "@type": "Drug",
-            "name": "{{ params.drug.drugName }}",
+            "name": "{{ drug.name }}",
             "code": {
                 "@type": "MedicalCode",
-                "codingSystem": "{{ params.drug.code.codingSystem }}",
-                "codeValue": "{{ params.drug.code.codeValue }}"
+                "codingSystem": "{{ drug.code.codingSystem }}",
+                "codeValue": "{{ drug.code.codeValue }}"
             },
-            {{#params.drug.manufacturer}}
+            {{#drug.manufacturer}}
             "manufacturer": {
                 "@type": "Organization-CDC-MVX",
-                "identifier": "{{ params.drug.manufacturer.identifier }}",
-                "name": "{{ params.drug.manufacturer.name }}"
+                "identifier": "{{ drug.manufacturer.identifier }}",
+                "name": "{{ drug.manufacturer.name }}"
             },
-            {{/params.drug.manufacturer}}
-            "description": "{{params.description}}",
+            {{/drug.manufacturer}}
+            "description": "{{ description }}"
         },
         "healthCondition": {
             "@type": "MedicalCondition",
@@ -35,7 +40,9 @@
             }
         }
     },
-    "doseSequence": {{params.doseSequence}},
-    "lotNumber": "{{params.lotNumber}}",
-    "immunizationDate": "{{params.occurrenceDateTime.toISOString}}"
-}
+    "doseSequence": {{ doseSequence }},
+    "lotNumber": "{{ lotNumber }}",
+    "immunizationDate": "{{date occurrenceDateTime}}"
+}`);
+
+export default Template;

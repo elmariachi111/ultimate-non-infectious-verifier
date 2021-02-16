@@ -1,6 +1,14 @@
 import { Verifiable, W3CCredential } from 'did-jwt-vc';
+import { ImmunizationInputParams } from '../@types/Fhir';
 import { Resolver } from '../Resolver';
 import { Verifier } from '../Verifier';
+
+const knownCovid19CvxCodes = ['CVX-207', 'CVX-208', 'CVX-210', 'CVX-212'];
+const knownFhirSidCvxCodes = ['207', '208', '210', '212'];
+
+export interface VerifierFlags {
+  skipIssuerCheck?: boolean;
+}
 
 export default abstract class ICheckCredentials {
   protected resolver: Resolver;
@@ -11,14 +19,12 @@ export default abstract class ICheckCredentials {
     this.verifier = new Verifier(resolver);
   }
 
-  protected abstract checkForSchematicCorrectness(claim: Record<string, any>): void;
-  protected abstract checkForContentCorrectness(claim: Record<string, any>): void;
-  public abstract checkClaimCombination(claims: Record<string, any>[]): void;
+  protected abstract normalize(claim: Record<string, any>): ImmunizationInputParams | undefined;
 
   public async checkCredential(
     credential: Verifiable<W3CCredential>,
     flags?: VerifierFlags
-  ): Promise<Record<string, any>> {
+  ): Promise<ImmunizationInputParams | null> {
     if (!flags?.skipIssuerCheck) {
       await this.verifyIssuer(credential);
     }
@@ -26,10 +32,50 @@ export default abstract class ICheckCredentials {
     const { credentialSubject } = credential;
     //todo: check if the credential has been revoked
 
-    this.checkForSchematicCorrectness(credentialSubject);
-    this.checkForContentCorrectness(credentialSubject);
+    const normalized = this.normalize(credentialSubject);
 
-    return credentialSubject;
+    if (normalized) {
+      this.checkForContentCorrectness(normalized);
+      return normalized;
+    }
+    return null;
+  }
+
+  protected checkForContentCorrectness(immunization: ImmunizationInputParams): void {
+    let immunizationRecognized = false;
+    let codeValue = '';
+
+    switch (immunization.drug.code.codingSystem) {
+      case 'http://hl7.org/fhir/sid/cvx':
+        codeValue = immunization.drug.code.codeValue;
+        immunizationRecognized = knownFhirSidCvxCodes.includes(codeValue);
+        break;
+      case 'CDC-MVX.CVX':
+        codeValue = immunization.drug.code.codeValue.split('.')[1];
+        immunizationRecognized = knownCovid19CvxCodes.includes(codeValue);
+        break;
+    }
+
+    if (!immunizationRecognized) {
+      throw Error(
+        `we don't recognize the vaccination code you received (${immunization.drug.code.codeValue}/${codeValue})`
+      );
+    }
+  }
+
+  public static checkClaimCombination(normalizedClaims: ImmunizationInputParams[]): void {
+    if (normalizedClaims.length !== 2) {
+      throw Error('you must present exactly 2 resources');
+    }
+
+    const treatmentDates = normalizedClaims.map((claim) => new Date(claim.occurrenceDateTime).getTime());
+    const msDiff = Math.abs(treatmentDates[0] - treatmentDates[1]);
+    const dayDiff = msDiff / 1000 / 60 / 60 / 24;
+
+    if (dayDiff < 21) {
+      console.error(`the immunization dates are too close (${dayDiff})`);
+      //throw Error(`the immunization dates are too close (${dayDiff})`);
+    }
   }
 
   private async lookupPractitionerCredential(
@@ -69,8 +115,4 @@ export default abstract class ICheckCredentials {
       }
     }
   }
-}
-
-export interface VerifierFlags {
-  skipIssuerCheck?: boolean;
 }
