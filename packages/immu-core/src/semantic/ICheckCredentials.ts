@@ -3,6 +3,7 @@ import { ImmunizationInputParams } from '../@types/Fhir';
 import { Resolver } from '../Resolver';
 import { Verifier } from '../Verifier';
 
+//https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?rpt=cvx
 const knownCovid19CvxCodes = ['CVX-207', 'CVX-208', 'CVX-210', 'CVX-212'];
 const knownFhirSidCvxCodes = ['207', '208', '210', '212'];
 

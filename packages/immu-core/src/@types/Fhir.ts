@@ -13,7 +13,7 @@ export interface ImmunizationInputParams {
   doseQuantity: number;
   description?: string;
   drug: {
-    name: string;
+    name?: string;
     code: {
       codingSystem: string;
       codeValue: string;

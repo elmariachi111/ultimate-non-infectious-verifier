@@ -1,5 +1,12 @@
-import { Create, TYPE as SCHEMAORG_CRED_TYPE } from '../semantic/SchemaOrgVaccinationCredential';
-import { Issuer, Resolver, VaccinationCredentialVerifier, Verifier, VerifiableCredential } from '..';
+import {
+  Issuer,
+  Resolver,
+  VaccinationCredentialVerifier,
+  Verifier,
+  VerifiableCredential,
+  CreateSchemaOrgVaccinationCredential,
+  SCHEMAORG_CARD_CRED_TYPE
+} from '..';
 import { DID } from '../@types';
 
 import newRegistry from './common/newRegistry';
@@ -39,7 +46,7 @@ describe('Schema.org Vaccination Credentials', () => {
   let vaccination1: any;
 
   it('can create a schema.org claim', async () => {
-    vaccination1 = Create({
+    vaccination1 = CreateSchemaOrgVaccinationCredential({
       doseSequence: 1,
       doseQuantity: 50,
       lotNumber: 'ABCDE',
@@ -55,7 +62,7 @@ describe('Schema.org Vaccination Credentials', () => {
   });
 
   it('can create a verifiable set of schema.org credential', async () => {
-    const vaccination2 = Create({
+    const vaccination2 = CreateSchemaOrgVaccinationCredential({
       doseSequence: 2,
       doseQuantity: 50,
       lotNumber: 'EDCBA',
@@ -69,8 +76,8 @@ describe('Schema.org Vaccination Credentials', () => {
       }
     });
 
-    const credentialPayload1 = await issuer.issueCredential(didSubject, vaccination1, [SCHEMAORG_CRED_TYPE]);
-    const credentialPayload2 = await issuer.issueCredential(didSubject, vaccination2, [SCHEMAORG_CRED_TYPE]);
+    const credentialPayload1 = await issuer.issueCredential(didSubject, vaccination1, [SCHEMAORG_CARD_CRED_TYPE]);
+    const credentialPayload2 = await issuer.issueCredential(didSubject, vaccination2, [SCHEMAORG_CARD_CRED_TYPE]);
 
     const signingKey = await resolver.resolve(didIssuer);
 

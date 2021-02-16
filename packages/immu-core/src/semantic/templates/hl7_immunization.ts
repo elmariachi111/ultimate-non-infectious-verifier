@@ -1,3 +1,8 @@
+import HBS from 'handlebars';
+
+HBS.registerHelper('date', (date: Date) => date.toISOString());
+
+const Template = HBS.compile(`
 {
     "resource": {
         "resourceType": "Immunization",
@@ -8,11 +13,17 @@
             ]
         },
         "vaccineCode": {
-            "coding": []
+            "coding": [
+                {
+                    "system": "{{ drug.code.codingSystem }}",
+                    "code": "{{ drug.code.codeValue }}",
+                    "display": "{{ drug.code.description }}"
+                }
+            ]
         },
-        "occurrenceDateTime": "",
+        "occurrenceDateTime": "{{date occurrenceDateTime}}",
         "primarySource": true,
-        "lotNumber": "",
+        "lotNumber": "{{ lotNumber }}",
         "protocolApplied": [
             {
                 "targetDisease": [
@@ -26,14 +37,16 @@
                         ]
                     }
                 ],
-                "doseNumberPositiveInt": 0,
+                "doseNumberPositiveInt": {{ doseSequence }},
                 "seriesDosesPositiveInt": 2
             }
         ],
         "doseQuantity": {
             "system": "http://unitsofmeasure.org",
-            "value": 0,
+            "value": {{ doseQuantity }},
             "code": "ml"
         }
     }
-}
+}`);
+
+export default Template;

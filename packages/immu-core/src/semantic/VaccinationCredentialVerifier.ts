@@ -3,7 +3,7 @@ import { ImmunizationInputParams } from '../@types/Fhir';
 import { Resolver } from '../Resolver';
 import { Verifier } from '../Verifier';
 import ICheckCredentials, { VerifierFlags } from './ICheckCredentials';
-//import { FhirHL7VaccinationCredential, TYPE as SMARTHEALTH_CARD_CRED_TYPE } from ../../../../bak/FhirHL7VaccinationCredentiall';
+import { FhirHL7VaccinationCredential, TYPE as SMARTHEALTH_CARD_CRED_TYPE } from './FhirHL7VaccinationCredential';
 import { SchemaOrgVaccinationCredential, TYPE as SCHEMAORG_CRED_TYPE } from './SchemaOrgVaccinationCredential';
 
 /**
@@ -19,10 +19,10 @@ export default class VaccinationCredentialVerifier {
     this.resolver = resolver;
     this.verifier = new Verifier(resolver);
   }
-  //isKnownIssuer = (did: string) => {};
+
   initialize() {
     this.strategies = {
-      //[SMARTHEALTH_CARD_CRED_TYPE]: new FhirHL7VaccinationCredential(this.resolver),
+      [SMARTHEALTH_CARD_CRED_TYPE]: new FhirHL7VaccinationCredential(this.resolver),
       [SCHEMAORG_CRED_TYPE]: new SchemaOrgVaccinationCredential(this.resolver)
     };
   }

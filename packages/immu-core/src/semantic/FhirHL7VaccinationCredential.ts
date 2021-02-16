@@ -1,79 +1,45 @@
 import ICheckCredentials from './ICheckCredentials';
-import { FHIRBundle, ImmunizationInputParams, FHIRResource } from '../@types/Fhir';
-import fhirTemplate from './templates/hl7_immunization.json';
+import { FHIRBundle, ImmunizationInputParams } from '../@types/Fhir';
+import Template from './templates/hl7_immunization';
 
 export const TYPE = 'https://smarthealth.cards#covid19';
 
-//https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?rpt=cvx
-const knownCovid19CvxCodes = ['207', '208', '210', '212'];
-
 export class FhirHL7VaccinationCredential extends ICheckCredentials {
-  protected checkForSchematicCorrectness(claim: Record<string, any>): void {
-    if (!claim.fhirResource) {
+  protected normalize(claim: Record<string, any>): ImmunizationInputParams | undefined {
+    const normalized: Record<string, any> = {};
+    const { fhirResource } = claim;
+    if (!fhirResource) {
       throw Error("credential doesn't contain a FHIR resource");
     }
-  }
-
-  protected checkForContentCorrectness(claim: Record<string, any>): void {
-    const { fhirResource } = claim;
 
     const { resource } = fhirResource;
-
-    //todo: check the resource content | FHIR related
     if (resource.resourceType !== 'Immunization') return; //skip this one.
 
     const { coding } = resource.vaccineCode;
-    const sidCvxCode = coding.filter((coding: any) => coding.system === 'http://hl7.org/fhir/sid/cvx');
-    if (!sidCvxCode) {
-      throw Error('we cannot recognize the immunization coding system');
-    }
 
-    const vaccCode = sidCvxCode[0].code;
-    if (!knownCovid19CvxCodes.includes(vaccCode)) {
-      throw Error(`we don't recognize the vaccination code you received (${vaccCode})`);
-    }
-  }
+    normalized.drug = {
+      code: {
+        codeValue: coding[0].code,
+        codingSystem: coding[0].system
+      }
+    };
+    normalized.doseSequence = resource.protocolApplied?.doseNumberPositiveInt || 0;
+    normalized.lotNumber = resource.lotNumber || '';
+    normalized.occurrenceDateTime = new Date(resource.occurrenceDateTime);
 
-  public checkClaimCombination(claims: Record<string, any>[]): void {
-    if (claims.length !== 2) {
-      throw Error('you must present exactly 2 resources');
-    }
-
-    const fhirResources = claims.map((claim) => claim.fhirResource);
-    const occurrenceTimes = fhirResources.map((fh) => new Date(fh.resource.occurrenceDateTime).getTime());
-    const msDiff = Math.abs(occurrenceTimes[0] - occurrenceTimes[1]);
-    const dayDiff = msDiff / 1000 / 60 / 60 / 24;
-    if (dayDiff < 21) {
-      console.error(`the immunization dates are too close (${dayDiff})`);
-      //throw Error(`the immunization dates are too close (${dayDiff})`);
-    }
+    return normalized as ImmunizationInputParams;
   }
 }
 
 export const Create = (params: ImmunizationInputParams): FHIRBundle => {
-  //poor man's structured cloning
-  //https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript/10916838#10916838
-  const fhir: FHIRResource = JSON.parse(JSON.stringify(fhirTemplate));
-
   const qty = params.doseQuantity;
   //todo: this must be corrected and depends on the vaccine code ;)
-  const doseText = `COVID-19, mRNA, LNP-S, PF, ${qty} mcg/${(qty / 100).toFixed(1)} mL dose`;
+  params.description = `COVID-19, mRNA, LNP-S, PF, ${qty} mcg/${(qty / 100).toFixed(1)} mL dose`;
 
-  fhir.resource.vaccineCode.coding = [
-    {
-      code: params.vaccineCode,
-      display: doseText,
-      system: 'http://hl7.org/fhir/sid/cvx'
-    }
-  ];
-
-  fhir.resource.occurrenceDateTime = params.occurrenceDateTime.toISOString();
-  fhir.resource.lotNumber = params.lotNumber;
-  fhir.resource.protocolApplied[0].doseNumberPositiveInt = params.doseNumber;
-  fhir.resource.doseQuantity.value = params.doseQuantity;
+  const docString = Template(params);
 
   return {
     fhirVersion: '4.0.1',
-    fhirResource: fhir
+    fhirResource: JSON.parse(docString)
   };
 };

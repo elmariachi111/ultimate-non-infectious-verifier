@@ -1,12 +1,22 @@
-import { Issuer, Resolver, VaccinationCredentialVerifier, Verifier } from '..';
+import { Account } from 'web3-core';
+import {
+  Issuer,
+  Resolver,
+  VaccinationCredentialVerifier,
+  Verifier,
+  VerifiableCredential,
+  CreateFhirHL7VaccinationCredential,
+  SMARTHEALTH_CARD_CRED_TYPE
+} from '..';
 import { DID } from '../@types';
-import { Create as CreateClaim, TYPE as SMARTHEALTH_CARD_CRED_TYPE } from '../semantic/FhirHL7VaccinationCredential';
 import newRegistry from './common/newRegistry';
 import web3 from './common/web3Provider';
 
 describe('Vaccination Credentials', () => {
   let resolver: Resolver;
-  let issuerAccount, subjectAccount, verifierAccount;
+  let issuerAccount: Account;
+  let subjectAccount: Account;
+  let verifierAccount: Account;
   let didIssuer: DID;
   let didSubject: DID;
   let didVerifier: DID;
@@ -34,23 +44,33 @@ describe('Vaccination Credentials', () => {
     verifier = new Verifier(resolver);
   });
 
-  let credentials = [];
+  let credentials: VerifiableCredential[] = [];
 
   it('can verify valid vaccination credentials (happy path)', async () => {
-    const immunization1 = CreateClaim({
-      doseNumber: 1,
+    const immunization1 = CreateFhirHL7VaccinationCredential({
+      doseSequence: 1,
       doseQuantity: 50,
       lotNumber: 'ABCDE',
       occurrenceDateTime: new Date('2021-01-01T11:45:33+11:00'),
-      vaccineCode: '208'
+      drug: {
+        code: {
+          codingSystem: 'http://hl7.org/fhir/sid/cvx',
+          codeValue: '208'
+        }
+      }
     });
 
-    const immunization2 = CreateClaim({
-      doseNumber: 2,
+    const immunization2 = CreateFhirHL7VaccinationCredential({
+      doseSequence: 2,
       doseQuantity: 80,
       lotNumber: 'EDCBA',
       occurrenceDateTime: new Date('2021-01-30T12:45:33+11:00'),
-      vaccineCode: '208'
+      drug: {
+        code: {
+          codingSystem: 'http://hl7.org/fhir/sid/cvx',
+          codeValue: '208'
+        }
+      }
     });
 
     const credential1 = await issuer.issueCredential(didSubject, immunization1, [SMARTHEALTH_CARD_CRED_TYPE]);
