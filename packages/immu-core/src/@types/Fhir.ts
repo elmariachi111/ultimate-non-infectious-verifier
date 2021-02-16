@@ -1,8 +1,12 @@
+export interface FHIRBundle {
+  fhirVersion: string;
+  fhirResource: FHIRResource;
+}
 export interface FHIRResource {
   resource: Record<string, any>;
 }
 
-export interface FHIRImmunizationInputParams {
+export interface ImmunizationInputParams {
   lotNumber: string;
   vaccineCode: string;
   occurrenceDateTime: Date;

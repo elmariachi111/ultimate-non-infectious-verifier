@@ -1,5 +1,5 @@
-import { FHIRImmunizationInputParams, FHIRResource } from '../@types/Fhir';
 import ICheckCredentials from './ICheckCredentials';
+import { FHIRBundle, ImmunizationInputParams, FHIRResource } from '../@types/Fhir';
 import fhirTemplate from './templates/hl7_immunization.json';
 
 export const TYPE = 'https://smarthealth.cards#covid19';
@@ -44,12 +44,13 @@ export class FhirHL7VaccinationCredential extends ICheckCredentials {
     const msDiff = Math.abs(occurrenceTimes[0] - occurrenceTimes[1]);
     const dayDiff = msDiff / 1000 / 60 / 60 / 24;
     if (dayDiff < 21) {
-      throw Error(`the immunization dates are too close (${dayDiff})`);
+      console.error(`the immunization dates are too close (${dayDiff})`);
+      //throw Error(`the immunization dates are too close (${dayDiff})`);
     }
   }
 }
 
-export const Create = (params: FHIRImmunizationInputParams): FHIRResource => {
+export const Create = (params: ImmunizationInputParams): FHIRBundle => {
   //poor man's structured cloning
   //https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript/10916838#10916838
   const fhir: FHIRResource = JSON.parse(JSON.stringify(fhirTemplate));
@@ -71,5 +72,8 @@ export const Create = (params: FHIRImmunizationInputParams): FHIRResource => {
   fhir.resource.protocolApplied[0].doseNumberPositiveInt = params.doseNumber;
   fhir.resource.doseQuantity.value = params.doseQuantity;
 
-  return fhir;
+  return {
+    fhirVersion: '4.0.1',
+    fhirResource: fhir
+  };
 };

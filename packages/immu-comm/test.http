@@ -1,0 +1,59 @@
+POST http://127.0.0.1:8080/vc
+Content-Type: application/json
+
+{
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1"
+  ],
+  "issuanceDate": "2021-02-15T00:29:33.139Z",
+  "credentialSubject": {
+    "id": "did:ethr:goerli:0xb17251023f45ca29c1d89747a37f0da703fdd717",
+    "fhirVersion": "4.0.1",
+    "fhirResource": {
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "did:ethr:goerli:0xb17251023f45ca29c1d89747a37f0da703fdd717",
+        "identifier": [
+          {
+            "use": "official",
+            "system": "did",
+            "value": "did:ethr:goerli:0xb17251023f45ca29c1d89747a37f0da703fdd717"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Adolf",
+            "given": [
+              "Stefan"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "issuer": {
+    "id": "did:ethr:goerli:0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1"
+  },
+  "type": [
+    "VerifiableCredential",
+    "ProofOfProvider"
+  ],
+  "proof": {
+    "type": "EcdsaSecp256k1Signature2019",
+    "verificationMethod": "did:ethr:goerli:0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1#controller",
+    "created": "2021-02-15T00:29:41.972Z",
+    "proofPurpose": "assertionMethod",
+    "jws": "eyJhbGciOiJFUzI1NksifQ..L1gSOn2SyhqQcm0wYfPfGF6RgjaznPADxoFSw-7D56dCkCVIHg9nZfO2V7pryJMvyqUhN-ixRHPDIfW3nTABuw"
+  }
+}
+
+###
+
+GET http://127.0.0.1:8080/vc/did:ethr:development:0xffcf8fdee72ac11b5c542428b35eef5769c409f0?vctype=ProofOfProvider
+Accept: application/json
+
+###
+
+GET http://localhost:8080/vc/did:ethr:development:0x23270bf93e1d6cba4a844107e1be58200a1ee804?vctype=ProofOfProvider
+Accept: application/json

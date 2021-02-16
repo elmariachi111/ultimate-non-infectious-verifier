@@ -47,6 +47,11 @@ a verifier that displays presentiation requests for validateable credential type
 
 https://github.com/decentralized-identity/ethr-did-resolver/pull/106 : the resolver would be able to resolve key material in base58 encoding (instead of base64url) as required by most crypto did libraries at the moment.
 
+
+curated list of all vaccination passport providers in the world:
+https://docs.google.com/document/d/1MQfZzlkYkXCXvnUXd7Cd6Y5g0RRXrKxGGqVcbBnSk1k/edit
+
+
 # Background
 
 ## DID backgrounders
@@ -97,8 +102,8 @@ https://medium.com/uport/erc1056-erc780-an-open-identity-and-claims-protocol-for
 Lightweight Identity:
 https://eips.ethereum.org/EIPS/eip-1056
 
-Claims Registry:
-https://github.com/ethereum/EIPs/issues/780
+On Chain Credentials Registry:
+https://github.com/ethereum/EIPs/issues/780 (not really recommended)
 
 followed by:
 
@@ -132,10 +137,12 @@ A nonfinal vc http api interface spec
 https://github.com/w3c-ccg/vc-http-api
 
 https://w3c-ccg.github.io/vc-extension-registry/#proof-methods
-(-> `Ed25519Signature2018` )
 
 DIF specs
 https://github.com/decentralized-identity/claims-credentials
+
+Credential Status Registry
+https://w3c-ccg.github.io/vc-csl2017/#introduction
 
 #### Verifiable Presentation Requests
 
@@ -262,7 +269,9 @@ CVX (Vacc codes): https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?r
 MVX (Vacc manufacturer codes): https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?rpt=mvx
 CPT (Snomed?) -> CVXmappings:  https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?rpt=cpt
 
-#### FHIR4 Immunization JSON schema
+#### Immunization schemas
+
+FHIR4 immunization general
 https://www.hl7.org/fhir/immunization.schema.json.html
 
 The preliminary FHIR4 spec, driven by M$ Smart Health Cards project:
@@ -274,11 +283,23 @@ Covid 19 sample:
 https://github.com/microsoft-healthcare-madison/health-wallet-demo/blob/master/src/fixtures/vc.pcr.json
 (in action: https://smarthealth.cards/credential-modeling/)
 
+CCC4 initiative's schema, based on a Canadian effort, driven by Consensas / Sovrin e.a.
+https://docs.google.com/document/d/1pCyS_lhbMGhOkq1jFEkI_od-9QunURKzGWA7ty5DCII/edit
+
+with a spec background described here: https://docs.google.com/document/d/1a4j0-6kJonEfSlX50ZEfAEbx2ab2IW8UuBK8vigsoLU/edit#heading=h.y43f7b8rk9yr
+
 Qatar open data:
 https://www.data.gov.qa/explore/dataset/h4-vaccination/information/
 
+Schema.org can be utilized for that:
+https://schema.org/docs/meddocs.html
+https://schema.org/docs/health-lifesci.home.html
+https://schema.org/MedicalTherapy
+impl and extended by Consensas: https://github.com/Consensas/information-passport/blob/main/docs/Vaccination.md
+
 A ruby impl of health cards (DVCI)
 https://github.com/dvci/health_cards
+
 
 
 ### Vaccination credential initiatives

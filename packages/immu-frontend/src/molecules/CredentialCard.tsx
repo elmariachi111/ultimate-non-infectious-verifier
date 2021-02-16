@@ -1,6 +1,7 @@
 import { Box, Code, Flex, Heading, Text } from '@chakra-ui/react';
 import { VerifiableCredential } from '@immu/core';
 import React from 'react';
+import { SCHEMAORG_CARD_CRED_TYPE, SMARTHEALTH_CARD_CRED_TYPE } from '@immu/core';
 
 const CredentialCard = ({
   credential,
@@ -8,23 +9,33 @@ const CredentialCard = ({
   onSelect = () => {}
 }: {
   credential: VerifiableCredential;
+  //bg: string;
   onSelect?: (credential: VerifiableCredential) => unknown;
 }) => {
-  const bg = 'teal.200';
+  const bg = 'teal.300';
 
   if (typeof credential === 'string') throw Error('noooo');
 
-  const { fhirResource } = credential.credentialSubject;
-  const vm = {
+  const vm: Record<string, any> = {
     types:
       typeof credential.type === 'string'
         ? [credential.type]
-        : credential.type.filter((t) => t != 'VerifiableCredential'),
+        : credential.type.filter((t) => t !== 'VerifiableCredential'),
     issued: new Date(credential.issuanceDate).toLocaleDateString(),
-    occurred: new Date(fhirResource.resource.occurrenceDateTime).toISOString(),
-    resourceType: fhirResource.resource.resourceType,
     issuer: credential.issuer.id
   };
+  if (credential.type.includes(SMARTHEALTH_CARD_CRED_TYPE)) {
+    const { fhirResource } = credential.credentialSubject;
+    vm.resourceType = fhirResource.resource.resourceType;
+    if (fhirResource.resource.occurrenceDateTime) {
+      vm.occurred = new Date(fhirResource.resource.occurrenceDateTime).toISOString()
+    }
+  } else if (credential.type.includes(SCHEMAORG_CARD_CRED_TYPE)) {
+    const doc = credential.credentialSubject;
+    vm.resourceType = doc['schema:name'];
+    vm.occurred = new Date(doc['schema:treatmentDate']).toISOString()
+  }
+  
 
   return (
     <Flex
@@ -49,9 +60,9 @@ const CredentialCard = ({
       ))}
       <Box px={4}>
         <Heading size="xs">{vm.resourceType} </Heading>
-        <Text fontSize="sm">
+        {vm.occurred && <Text fontSize="sm">
           occurred on <b>{vm.occurred}</b>
-        </Text>
+        </Text>}
         <Text fontSize="sm">
           issued on: <b>{vm.issued}</b>{' '}
         </Text>

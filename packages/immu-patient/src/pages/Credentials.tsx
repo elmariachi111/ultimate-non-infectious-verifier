@@ -1,7 +1,7 @@
 import { Box, Button, Divider, Flex, Heading, Text, VStack } from '@chakra-ui/react';
 import { VerifiableCredential } from '@immu/core';
 import { useCredentials } from 'hooks/CredentialStorage';
-import CredentialCard from 'molecules/CredentialCard';
+import { CredentialCard } from '@immu/frontend';
 import AcceptCredentialOffer from 'organisms/AcceptCredentialOffer';
 import React from 'react';
 import { SwipeableList, SwipeableListItem } from '@sandstreamdev/react-swipeable-list';

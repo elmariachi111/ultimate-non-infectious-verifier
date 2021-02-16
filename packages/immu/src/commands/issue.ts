@@ -18,11 +18,12 @@ export default class Issue extends Command {
   static flags = {
     help: flags.help({ char: 'h' }),
     debug: flags.boolean({ char: 'd', description: 'display debug info' }),
-    proofType: flags.string({ char: 't', required: false, default: "jwt", description: 'proof type (jwt|jws)' }),
+    proofType: flags.string({ char: 'p', required: false, default: "jwt", description: 'proof type (jwt|jws)' }),
     issuer: flags.string({ char: 'i', required: false, description: 'issuer did' }),
-    privateKey: flags.string({ char: 'p', required: false, description: 'provide a private key' }),
+    privateKey: flags.string({ char: 'k', required: false, description: 'provide a private key' }),
     subject: flags.string({ char: 's', required: true, description: 'the subject DID' }),
     out: flags.string({ char: 'o', required: false, description: "write to file" }),
+    credentialType: flags.string({ char: 't', required: false, default: "", description: "credential schema type, comma separated"})
   }
 
   static args = [
@@ -46,7 +47,8 @@ export default class Issue extends Command {
 
     const credential = await issuer.issueCredential(
       subjectDid,
-      claim
+      claim,
+      flags.credentialType ? flags.credentialType.split(',') : [],
     )
 
     issueCredential(credential, issuer, flags);
