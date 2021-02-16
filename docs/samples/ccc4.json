@@ -1,0 +1,54 @@
+{
+    "@context": "http://schema.org/",
+    "@type": "ImmunizationRecord",
+    "patient": {
+        "@type": "Patient",
+        "birthDate": "••••-••-25",
+        "familyName": "Steele",
+        "givenName": "Adrian",
+        "name": "Adrian Steele",
+        "healthCard": {
+            "@type": "HealthCard",
+            "identifier-healthCard": "•••••••••••2097",
+            "issuedBy": "CA-BC",
+            "validUntil": "2025-06"
+        }
+    },
+    "primaryPrevention": {
+        "@type": "ImmunizationRecommendation",
+        "drug": {
+            "@type": "Drug",
+            "code": {
+                "@type": "MedicalCode",
+                "codeValue": "MVX-MOD.CVX-207",
+                "codingSystem": "CDC-MVX.CVX"
+            },
+            "manufacturer": {
+                "@type": "Organization-CDC-MVX",
+                "identifier": "MVX-MOD",
+                "name": "Moderna US, Inc."
+            },
+            "name": "Moderna COVID-19 Vaccine"
+        },
+        "healthCondition": {
+            "@type": "MedicalCondition",
+            "code": {
+                "@type": "MedicalCode",
+                "codeValue": "U07",
+                "codingSystem": "ICD-10"
+            }
+        }
+    },
+    "location": {
+        "@type": "Hospital",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "CA",
+            "addressRegion": "BC"
+        },
+        "name": "Shopper's"
+    },
+    "doseSequence": 2,
+    "lotNumber": "1234-5678-90A",
+    "immunizationDate": "2021-01-01"
+}

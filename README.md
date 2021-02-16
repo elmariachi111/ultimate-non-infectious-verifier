@@ -47,6 +47,11 @@ a verifier that displays presentiation requests for validateable credential type
 
 https://github.com/decentralized-identity/ethr-did-resolver/pull/106 : the resolver would be able to resolve key material in base58 encoding (instead of base64url) as required by most crypto did libraries at the moment.
 
+
+curated list of all vaccination passport providers in the world:
+https://docs.google.com/document/d/1MQfZzlkYkXCXvnUXd7Cd6Y5g0RRXrKxGGqVcbBnSk1k/edit
+
+
 # Background
 
 ## DID backgrounders
@@ -264,7 +269,7 @@ CVX (Vacc codes): https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?r
 MVX (Vacc manufacturer codes): https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?rpt=mvx
 CPT (Snomed?) -> CVXmappings:  https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?rpt=cpt
 
-#### Immunization JSON schemas
+#### Immunization schemas
 
 FHIR4 immunization general
 https://www.hl7.org/fhir/immunization.schema.json.html
@@ -277,6 +282,11 @@ https://github.com/microsoft-healthcare-madison/health-wallet-demo/blob/master/s
 Covid 19 sample:
 https://github.com/microsoft-healthcare-madison/health-wallet-demo/blob/master/src/fixtures/vc.pcr.json
 (in action: https://smarthealth.cards/credential-modeling/)
+
+CCC4 initiative's schema, based on a Canadian effort, driven by Consensas / Sovrin e.a.
+https://docs.google.com/document/d/1pCyS_lhbMGhOkq1jFEkI_od-9QunURKzGWA7ty5DCII/edit
+
+with a spec background described here: https://docs.google.com/document/d/1a4j0-6kJonEfSlX50ZEfAEbx2ab2IW8UuBK8vigsoLU/edit#heading=h.y43f7b8rk9yr
 
 Qatar open data:
 https://www.data.gov.qa/explore/dataset/h4-vaccination/information/
