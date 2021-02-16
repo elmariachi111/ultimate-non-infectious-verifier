@@ -8,8 +8,19 @@ export interface FHIRResource {
 
 export interface ImmunizationInputParams {
   lotNumber: string;
-  vaccineCode: string;
   occurrenceDateTime: Date;
-  doseNumber: number;
+  doseSequence: number;
   doseQuantity: number;
+  description?: string;
+  drug: {
+    name: string;
+    code: {
+      codingSystem: string;
+      codeValue: string;
+    };
+    manufacturer?: {
+      identifier: string;
+      name: string;
+    };
+  };
 }

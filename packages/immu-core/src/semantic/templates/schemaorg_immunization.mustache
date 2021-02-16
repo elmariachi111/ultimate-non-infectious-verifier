@@ -1,0 +1,41 @@
+{
+    "@context": {
+        "schema:": "https://schema.org",
+        "security": "https://w3id.org/security#"
+    },
+    "@type": "ImmunizationRecord",
+    "name": "COVID-19 Immunization",
+    "patient": {},
+    "location": {},
+    "primaryPrevention": {
+        "@type": "ImmunizationRecommendation",
+        "drug": {
+            "@type": "Drug",
+            "name": "{{ params.drug.drugName }}",
+            "code": {
+                "@type": "MedicalCode",
+                "codingSystem": "{{ params.drug.code.codingSystem }}",
+                "codeValue": "{{ params.drug.code.codeValue }}"
+            },
+            {{#params.drug.manufacturer}}
+            "manufacturer": {
+                "@type": "Organization-CDC-MVX",
+                "identifier": "{{ params.drug.manufacturer.identifier }}",
+                "name": "{{ params.drug.manufacturer.name }}"
+            },
+            {{/params.drug.manufacturer}}
+            "description": "{{params.description}}",
+        },
+        "healthCondition": {
+            "@type": "MedicalCondition",
+            "code": {
+                "@type": "MedicalCode",
+                "codeValue": "U07",
+                "codingSystem": "ICD-10"
+            }
+        }
+    },
+    "doseSequence": {{params.doseSequence}},
+    "lotNumber": "{{params.lotNumber}}",
+    "immunizationDate": "{{params.occurrenceDateTime.toISOString}}"
+}
