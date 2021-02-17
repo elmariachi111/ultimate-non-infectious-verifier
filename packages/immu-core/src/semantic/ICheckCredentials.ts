@@ -43,6 +43,11 @@ export default abstract class ICheckCredentials {
       throw Error('you must present exactly 2 resources');
     }
 
+    const [code1, code2] = [immunizations[0].cvxCode, immunizations[1].cvxCode];
+    if (code1 != code2) {
+      throw Error(`[${code1}, ${code2}] are two different vaccinations. `);
+    }
+
     const treatmentDates = immunizations.map((vacc) => vacc.occurrenceDateTime.getTime());
     const msDiff = Math.abs(treatmentDates[0] - treatmentDates[1]);
     const dayDiff = msDiff / 1000 / 60 / 60 / 24;

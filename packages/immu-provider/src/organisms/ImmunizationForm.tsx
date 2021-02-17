@@ -1,4 +1,14 @@
-import { Button, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Select } from '@chakra-ui/react';
+import {
+  Button,
+  FormControl,
+  FormErrorMessage,
+  FormHelperText,
+  FormLabel,
+  Input,
+  Link,
+  Select,
+  Text
+} from '@chakra-ui/react';
 import { Covid19, SCHEMAORG_CRED_TYPE, SMARTHEALTH_CARD_CRED_TYPE } from '@immu/core';
 
 import { useForm } from 'react-hook-form';
@@ -8,7 +18,9 @@ const ImmunizationForm = ({
 }: {
   onImmunizationCreated: (params: Covid19.CovidImmunization, type: string) => void;
 }) => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, watch, errors } = useForm();
+  const cvxCode = watch('cvxCode', 0);
+  const selectedVaccine = Covid19.Covid19Vaccinations.find((vacc) => vacc.cvxCode === cvxCode);
 
   const onSubmit = (data: any) => {
     const immunization: Covid19.CovidImmunization = {
@@ -53,14 +65,16 @@ const ImmunizationForm = ({
           ))}
         </Select>
         <FormHelperText>
+          {selectedVaccine && <Text>{selectedVaccine.shortDescription}</Text>}
           See{' '}
-          <a
+          <Link
+            isExternal
+            color="teal.500"
             rel="noreferrer"
             href="https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?rpt=cvx"
-            target="_blank"
           >
             cdc.gov's vaccine codes
-          </a>
+          </Link>
         </FormHelperText>
       </FormControl>
 

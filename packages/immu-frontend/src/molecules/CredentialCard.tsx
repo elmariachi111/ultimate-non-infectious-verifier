@@ -27,7 +27,7 @@ const CredentialCard = ({
         console.debug(e.message)
       }
     })()
-  }, [credential, credentialVerifier])
+  }, [])
 
   const vm: Record<string, any> = {
     types:
