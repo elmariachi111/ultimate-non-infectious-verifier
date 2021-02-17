@@ -1,10 +1,10 @@
 import {
   Issuer,
-  CreateFhirHL7VaccinationCredential,
-  CreateSchemaOrgVaccinationCredential,
+  CreateFhirHL7Immunization,
+  CreateSchemaOrgImmunization,
   SMARTHEALTH_CARD_CRED_TYPE,
-  SCHEMAORG_CARD_CRED_TYPE,
-  ImmunizationInputParams
+  SCHEMAORG_CRED_TYPE,
+  Covid19
 } from '@immu/core';
 import { useIdentity } from '@immu/frontend';
 import ImmunizationForm from 'organisms/ImmunizationForm';
@@ -65,15 +65,14 @@ const IndexPage: React.FC = () => {
     });
   };
 
-  const Creators: Record<string, (params: ImmunizationInputParams) => any> = {
-    [SMARTHEALTH_CARD_CRED_TYPE]: CreateFhirHL7VaccinationCredential,
-    [SCHEMAORG_CARD_CRED_TYPE]: CreateSchemaOrgVaccinationCredential
+  const Creators: Record<string, (params: Covid19.CovidImmunization) => any> = {
+    [SMARTHEALTH_CARD_CRED_TYPE]: CreateFhirHL7Immunization,
+    [SCHEMAORG_CRED_TYPE]: CreateSchemaOrgImmunization
   };
 
-  const onImmunizationCreated = async (credentialParams: ImmunizationInputParams, credentialType: string) => {
+  const onImmunizationCreated = async (credentialParams: Covid19.CovidImmunization, credentialType: string) => {
     const credentialSubject = Creators[credentialType](credentialParams);
     const interactionToken = bs58.encode(crypto.randomBytes(32));
-
     const offerRequest: CredentialOfferRequestAttrs = {
       callbackURL: `${process.env.REACT_APP_COMM_SERVER}/comm/${interactionToken}?flow=credentialOfferResponse`,
       offeredCredentials: [

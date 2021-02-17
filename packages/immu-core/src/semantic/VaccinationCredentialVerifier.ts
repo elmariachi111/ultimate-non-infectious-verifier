@@ -1,9 +1,11 @@
 import { VerifiableCredential } from 'did-jwt-vc';
+
 import { Resolver } from '../Resolver';
 import { Verifier } from '../Verifier';
 import ICheckCredentials, { VerifierFlags } from './ICheckCredentials';
 import { FhirHL7VaccinationCredential, TYPE as SMARTHEALTH_CARD_CRED_TYPE } from './FhirHL7VaccinationCredential';
-import { SchemaOrgVaccinationCredential, TYPE as SCHEMAORG_CRED_TYPE } from './SchemaOrgCredential';
+import { SchemaOrgVaccinationCredential, TYPE as SCHEMAORG_CRED_TYPE } from './SchemaOrgVaccinationCredential';
+import { CovidImmunization } from './Covid19';
 
 /**
  * verifies credentials using pluggable validation strategies
@@ -18,7 +20,7 @@ export default class VaccinationCredentialVerifier {
     this.resolver = resolver;
     this.verifier = new Verifier(resolver);
   }
-  //isKnownIssuer = (did: string) => {};
+
   initialize() {
     this.strategies = {
       [SMARTHEALTH_CARD_CRED_TYPE]: new FhirHL7VaccinationCredential(this.resolver),
@@ -30,31 +32,32 @@ export default class VaccinationCredentialVerifier {
     return Object.keys(this.strategies);
   }
 
+  public getStrategy(types: string[]) {
+    const strategyType = this.supportedStrategies.find((t) => types.includes(t));
+    if (!strategyType) {
+      throw Error('dont have a verification strategy for this credential type');
+    }
+    return this.strategies[strategyType];
+  }
+
   async verify(presentedCredentials: VerifiableCredential[], flags?: VerifierFlags) {
-    const appliedStrategies: Set<ICheckCredentials> = new Set();
-    const verifiedClaims: Record<string, any>[] = [];
+    const immunizations: CovidImmunization[] = [];
 
     for await (const credential of presentedCredentials) {
       const verifiedCredential = await this.verifier.verifyCredential(credential);
       try {
-        const strategyType = this.supportedStrategies.find((t) => verifiedCredential.type.includes(t));
-        if (!strategyType) {
-          throw Error('dont have a verification strategy for this credential type');
+        const iCheckCredentials = this.getStrategy(verifiedCredential.type);
+
+        const immunization = await iCheckCredentials.checkCredential(verifiedCredential, flags);
+        if (immunization) {
+          immunizations.push(immunization);
         }
-
-        const iCheckCredentials = this.strategies[strategyType];
-        appliedStrategies.add(iCheckCredentials);
-
-        const verifiedClaim = await iCheckCredentials.checkCredential(verifiedCredential, flags);
-        verifiedClaims.push(verifiedClaim);
       } catch (e) {
         console.error(e);
       }
     }
 
-    for (const strategy of appliedStrategies) {
-      strategy.checkClaimCombination(verifiedClaims);
-    }
+    ICheckCredentials.checkVaccinationCombination(immunizations);
 
     return true;
   }

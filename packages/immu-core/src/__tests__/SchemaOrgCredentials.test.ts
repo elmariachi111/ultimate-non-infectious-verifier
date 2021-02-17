@@ -1,13 +1,22 @@
-import { Create, TYPE as SCHEMAORG_CRED_TYPE } from '../semantic/SchemaOrgCredential';
-import { Issuer, Resolver, VaccinationCredentialVerifier, Verifier } from '..';
+import {
+  Issuer,
+  Resolver,
+  VaccinationCredentialVerifier,
+  Verifier,
+  VerifiableCredential,
+  CreateSchemaOrgImmunization,
+  SCHEMAORG_CRED_TYPE
+} from '..';
 import { DID } from '../@types';
 
 import newRegistry from './common/newRegistry';
 import web3 from './common/web3Provider';
+import { Account } from 'web3-core';
 
-describe('Vaccination Credentials', () => {
+describe('Schema.org Vaccination Credentials', () => {
   let resolver: Resolver;
-  let issuerAccount, subjectAccount;
+  let issuerAccount: Account;
+  let subjectAccount: Account;
   let didIssuer: DID;
   let didSubject: DID;
   let issuer: Issuer;
@@ -33,27 +42,30 @@ describe('Vaccination Credentials', () => {
     verifier = new Verifier(resolver);
   });
 
-  let credentials = [];
+  let credentials: VerifiableCredential[] = [];
+  let immunization1: any;
 
-  it('can create a schema.org credential', async () => {
-    const vaccination1 = Create({
-      doseNumber: 1,
+  it('can create a schema.org immunization claim', async () => {
+    immunization1 = CreateSchemaOrgImmunization({
+      doseSequence: 1,
       doseQuantity: 50,
       lotNumber: 'ABCDE',
       occurrenceDateTime: new Date('2021-01-01T11:45:33+11:00'),
-      vaccineCode: '210'
+      cvxCode: '208'
     });
+  });
 
-    const vaccination2 = Create({
-      doseNumber: 2,
+  it('can create a verifiable set of schema.org credential', async () => {
+    const immunization2 = CreateSchemaOrgImmunization({
+      doseSequence: 2,
       doseQuantity: 50,
       lotNumber: 'EDCBA',
       occurrenceDateTime: new Date('2021-01-30T11:45:33+11:00'),
-      vaccineCode: '210'
+      cvxCode: '208'
     });
 
-    const credentialPayload1 = await issuer.issueCredential(didSubject, vaccination1, [SCHEMAORG_CRED_TYPE]);
-    const credentialPayload2 = await issuer.issueCredential(didSubject, vaccination2, [SCHEMAORG_CRED_TYPE]);
+    const credentialPayload1 = await issuer.issueCredential(didSubject, immunization1, [SCHEMAORG_CRED_TYPE]);
+    const credentialPayload2 = await issuer.issueCredential(didSubject, immunization2, [SCHEMAORG_CRED_TYPE]);
 
     const signingKey = await resolver.resolve(didIssuer);
 

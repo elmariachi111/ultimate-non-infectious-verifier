@@ -7,8 +7,7 @@ import { DID, EthRegistry, Issuer, Resolver, Verifier } from '@immu/core';
 const PRIVATE_KEY = 'private-key';
 
 const ETH_NETWORKS: { [network: string]: string } = {
-  'main':'1',
-  'ropsten':'3',
+  'mainnet':'1',
   'rinkeby': '4',
   'goerli': '42',
   'development': '1337'
@@ -49,9 +48,9 @@ const createAccount = (web3: Web3): Account => {
 
 const didByChainId = (account: Account, chainId: string): DID => {
   const address = account.address.toLowerCase();
-  return (Object.keys(ETH_NETWORKS).includes(chainId))
-    ? `did:ethr:${chainId}:${address}`
-    : `did:ethr:${address}`;
+  return ((chainId === 'mainnet') || (!Object.keys(ETH_NETWORKS).includes(chainId)))
+  ? `did:ethr:${address}`
+  : `did:ethr:${chainId}:${address}`;
 }
 
 const makeContext = (web3: Web3, chainId: string): IAccountContext  => {
@@ -85,6 +84,9 @@ const useIdentity = () => useContext(IdentityContext);
 const IdentityProvider = ({ children, chainId = 'development', web3 }: {
    children: React.ReactNode, chainId?: string, web3?: Web3 
   }) => {
+    if (!chainId) {
+      chainId = 'development';
+    }
   //const { activate } = useWeb3React();
 
   //const registry = new EthRegistry(resolverConfig, web3);

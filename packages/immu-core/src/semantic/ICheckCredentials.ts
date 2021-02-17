@@ -1,6 +1,11 @@
 import { Verifiable, W3CCredential } from 'did-jwt-vc';
 import { Resolver } from '../Resolver';
 import { Verifier } from '../Verifier';
+import { CovidImmunization } from './Covid19';
+
+export interface VerifierFlags {
+  skipIssuerCheck?: boolean;
+}
 
 export default abstract class ICheckCredentials {
   protected resolver: Resolver;
@@ -11,25 +16,46 @@ export default abstract class ICheckCredentials {
     this.verifier = new Verifier(resolver);
   }
 
-  protected abstract checkForSchematicCorrectness(claim: Record<string, any>): void;
-  protected abstract checkForContentCorrectness(claim: Record<string, any>): void;
-  public abstract checkClaimCombination(claims: Record<string, any>[]): void;
+  protected abstract normalize(claim: Record<string, any>): CovidImmunization | undefined;
+  protected checkForContentCorrectness(immunization: CovidImmunization): void {
+    return;
+  }
 
   public async checkCredential(
     credential: Verifiable<W3CCredential>,
     flags?: VerifierFlags
-  ): Promise<Record<string, any>> {
+  ): Promise<CovidImmunization | undefined> {
     if (!flags?.skipIssuerCheck) {
       await this.verifyIssuer(credential);
+      //todo: check if the credential has been revoked
     }
 
-    const { credentialSubject } = credential;
-    //todo: check if the credential has been revoked
+    const normalized = this.normalize(credential.credentialSubject);
 
-    this.checkForSchematicCorrectness(credentialSubject);
-    this.checkForContentCorrectness(credentialSubject);
+    if (normalized) {
+      this.checkForContentCorrectness(normalized);
+    }
+    return normalized;
+  }
 
-    return credentialSubject;
+  public static checkVaccinationCombination(immunizations: CovidImmunization[]): void {
+    if (immunizations.length !== 2) {
+      throw Error('you must present exactly 2 resources');
+    }
+
+    const [code1, code2] = [immunizations[0].cvxCode, immunizations[1].cvxCode];
+    if (code1 != code2) {
+      throw Error(`[${code1}, ${code2}] are two different vaccinations. `);
+    }
+
+    const treatmentDates = immunizations.map((vacc) => vacc.occurrenceDateTime.getTime());
+    const msDiff = Math.abs(treatmentDates[0] - treatmentDates[1]);
+    const dayDiff = msDiff / 1000 / 60 / 60 / 24;
+
+    if (dayDiff < 21) {
+      console.error(`the immunization dates are too close (${dayDiff})`);
+      //throw Error(`the immunization dates are too close (${dayDiff})`);
+    }
   }
 
   private async lookupPractitionerCredential(
@@ -69,8 +95,4 @@ export default abstract class ICheckCredentials {
       }
     }
   }
-}
-
-export interface VerifierFlags {
-  skipIssuerCheck?: boolean;
 }

@@ -1,7 +1,7 @@
 import { Box, Code, Flex, Heading, Text } from '@chakra-ui/react';
-import { VerifiableCredential } from '@immu/core';
-import React from 'react';
-import { SCHEMAORG_CARD_CRED_TYPE, SMARTHEALTH_CARD_CRED_TYPE } from '@immu/core';
+import { Covid19, VerifiableCredential } from '@immu/core';
+import React, {useEffect, useState} from 'react';
+import { useCredentialVerifier } from '..';
 
 const CredentialCard = ({
   credential,
@@ -13,8 +13,21 @@ const CredentialCard = ({
   onSelect?: (credential: VerifiableCredential) => unknown;
 }) => {
   const bg = 'teal.300';
-
   if (typeof credential === 'string') throw Error('noooo');
+
+  const {credentialVerifier} = useCredentialVerifier();
+  const [immunization, setImmunization] = useState<Covid19.CovidImmunization>();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const iCheckCredentials = credentialVerifier.getStrategy(credential.type);
+        setImmunization(await iCheckCredentials.checkCredential(credential));
+      } catch(e) {
+        console.debug(e.message)
+      }
+    })()
+  }, [])
 
   const vm: Record<string, any> = {
     types:
@@ -23,19 +36,7 @@ const CredentialCard = ({
         : credential.type.filter((t) => t !== 'VerifiableCredential'),
     issued: new Date(credential.issuanceDate).toLocaleDateString(),
     issuer: credential.issuer.id
-  };
-  if (credential.type.includes(SMARTHEALTH_CARD_CRED_TYPE)) {
-    const { fhirResource } = credential.credentialSubject;
-    vm.resourceType = fhirResource.resource.resourceType;
-    if (fhirResource.resource.occurrenceDateTime) {
-      vm.occurred = new Date(fhirResource.resource.occurrenceDateTime).toISOString()
-    }
-  } else if (credential.type.includes(SCHEMAORG_CARD_CRED_TYPE)) {
-    const doc = credential.credentialSubject;
-    vm.resourceType = doc['schema:name'];
-    vm.occurred = new Date(doc['schema:treatmentDate']).toISOString()
-  }
-  
+  }; 
 
   return (
     <Flex
@@ -54,15 +55,25 @@ const CredentialCard = ({
       onClick={() => onSelect(credential)}
     >
       {vm.types.map((type: string) => (
-        <Text opacity={0.8} textAlign="center" bg="gray.200" py={4}>
+        <Text key={`type-${type}`} opacity={0.8} textAlign="center" bg="gray.200" py={4}>
           {type}
         </Text>
       ))}
       <Box px={4}>
         <Heading size="xs">{vm.resourceType} </Heading>
-        {vm.occurred && <Text fontSize="sm">
-          occurred on <b>{vm.occurred}</b>
-        </Text>}
+        {immunization && 
+          <>
+            <Text fontSize="sm">
+              vaccine: <b>{immunization.cvx?.shortDescription}</b>
+            </Text>
+            <Text fontSize="sm">
+              sequence: {immunization.doseSequence}
+            </Text>
+            <Text fontSize="sm">
+              occurred on <b>{immunization.occurrenceDateTime.toLocaleDateString()}</b>
+            </Text>
+          </>
+        }
         <Text fontSize="sm">
           issued on: <b>{vm.issued}</b>{' '}
         </Text>
