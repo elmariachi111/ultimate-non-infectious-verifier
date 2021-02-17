@@ -1,10 +1,11 @@
 import { VerifiableCredential } from 'did-jwt-vc';
-import { ImmunizationInputParams } from '../@types/Fhir';
+
 import { Resolver } from '../Resolver';
 import { Verifier } from '../Verifier';
 import ICheckCredentials, { VerifierFlags } from './ICheckCredentials';
 import { FhirHL7VaccinationCredential, TYPE as SMARTHEALTH_CARD_CRED_TYPE } from './FhirHL7VaccinationCredential';
 import { SchemaOrgVaccinationCredential, TYPE as SCHEMAORG_CRED_TYPE } from './SchemaOrgVaccinationCredential';
+import { CovidImmunization } from './Covid19';
 
 /**
  * verifies credentials using pluggable validation strategies
@@ -32,7 +33,7 @@ export default class VaccinationCredentialVerifier {
   }
 
   async verify(presentedCredentials: VerifiableCredential[], flags?: VerifierFlags) {
-    const normalizedClaims: ImmunizationInputParams[] = [];
+    const immunizations: CovidImmunization[] = [];
 
     for await (const credential of presentedCredentials) {
       const verifiedCredential = await this.verifier.verifyCredential(credential);
@@ -44,16 +45,16 @@ export default class VaccinationCredentialVerifier {
 
         const iCheckCredentials = this.strategies[strategyType];
 
-        const normalizedClaim = await iCheckCredentials.checkCredential(verifiedCredential, flags);
-        if (normalizedClaim) {
-          normalizedClaims.push(normalizedClaim);
+        const immunization = await iCheckCredentials.checkCredential(verifiedCredential, flags);
+        if (immunization) {
+          immunizations.push(immunization);
         }
       } catch (e) {
         console.error(e);
       }
     }
 
-    ICheckCredentials.checkClaimCombination(normalizedClaims);
+    ICheckCredentials.checkVaccinationCombination(immunizations);
 
     return true;
   }

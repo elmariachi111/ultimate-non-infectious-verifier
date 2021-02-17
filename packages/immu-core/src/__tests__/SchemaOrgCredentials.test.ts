@@ -4,8 +4,8 @@ import {
   VaccinationCredentialVerifier,
   Verifier,
   VerifiableCredential,
-  CreateSchemaOrgVaccinationCredential,
-  SCHEMAORG_CARD_CRED_TYPE
+  CreateSchemaOrgImmunization,
+  SCHEMAORG_CRED_TYPE
 } from '..';
 import { DID } from '../@types';
 
@@ -43,41 +43,29 @@ describe('Schema.org Vaccination Credentials', () => {
   });
 
   let credentials: VerifiableCredential[] = [];
-  let vaccination1: any;
+  let immunization1: any;
 
-  it('can create a schema.org claim', async () => {
-    vaccination1 = CreateSchemaOrgVaccinationCredential({
+  it('can create a schema.org immunization claim', async () => {
+    immunization1 = CreateSchemaOrgImmunization({
       doseSequence: 1,
       doseQuantity: 50,
       lotNumber: 'ABCDE',
       occurrenceDateTime: new Date('2021-01-01T11:45:33+11:00'),
-      drug: {
-        name: 'Moderna COVID-19 Vaccine',
-        code: {
-          codeValue: 'MVX-MOD.CVX-207',
-          codingSystem: 'CDC-MVX.CVX'
-        }
-      }
+      cvxCode: '208'
     });
   });
 
   it('can create a verifiable set of schema.org credential', async () => {
-    const vaccination2 = CreateSchemaOrgVaccinationCredential({
+    const immunization2 = CreateSchemaOrgImmunization({
       doseSequence: 2,
       doseQuantity: 50,
       lotNumber: 'EDCBA',
       occurrenceDateTime: new Date('2021-01-30T11:45:33+11:00'),
-      drug: {
-        name: 'Moderna COVID-19 Vaccine',
-        code: {
-          codeValue: 'MVX-MOD.CVX-207',
-          codingSystem: 'CDC-MVX.CVX'
-        }
-      }
+      cvxCode: '208'
     });
 
-    const credentialPayload1 = await issuer.issueCredential(didSubject, vaccination1, [SCHEMAORG_CARD_CRED_TYPE]);
-    const credentialPayload2 = await issuer.issueCredential(didSubject, vaccination2, [SCHEMAORG_CARD_CRED_TYPE]);
+    const credentialPayload1 = await issuer.issueCredential(didSubject, immunization1, [SCHEMAORG_CRED_TYPE]);
+    const credentialPayload2 = await issuer.issueCredential(didSubject, immunization2, [SCHEMAORG_CRED_TYPE]);
 
     const signingKey = await resolver.resolve(didIssuer);
 

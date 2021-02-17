@@ -1,11 +1,7 @@
 import { Verifiable, W3CCredential } from 'did-jwt-vc';
-import { ImmunizationInputParams } from '../@types/Fhir';
 import { Resolver } from '../Resolver';
 import { Verifier } from '../Verifier';
-
-//https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?rpt=cvx
-const knownCovid19CvxCodes = ['CVX-207', 'CVX-208', 'CVX-210', 'CVX-212'];
-const knownFhirSidCvxCodes = ['207', '208', '210', '212'];
+import { CovidImmunization } from './Covid19';
 
 export interface VerifierFlags {
   skipIssuerCheck?: boolean;
@@ -20,56 +16,34 @@ export default abstract class ICheckCredentials {
     this.verifier = new Verifier(resolver);
   }
 
-  protected abstract normalize(claim: Record<string, any>): ImmunizationInputParams | undefined;
+  protected abstract normalize(claim: Record<string, any>): CovidImmunization | undefined;
+  protected checkForContentCorrectness(immunization: CovidImmunization): void {
+    return;
+  }
 
   public async checkCredential(
     credential: Verifiable<W3CCredential>,
     flags?: VerifierFlags
-  ): Promise<ImmunizationInputParams | null> {
+  ): Promise<CovidImmunization | undefined> {
     if (!flags?.skipIssuerCheck) {
       await this.verifyIssuer(credential);
+      //todo: check if the credential has been revoked
     }
 
-    const { credentialSubject } = credential;
-    //todo: check if the credential has been revoked
-
-    const normalized = this.normalize(credentialSubject);
+    const normalized = this.normalize(credential.credentialSubject);
 
     if (normalized) {
       this.checkForContentCorrectness(normalized);
-      return normalized;
     }
-    return null;
+    return normalized;
   }
 
-  protected checkForContentCorrectness(immunization: ImmunizationInputParams): void {
-    let immunizationRecognized = false;
-    let codeValue = '';
-
-    switch (immunization.drug.code.codingSystem) {
-      case 'http://hl7.org/fhir/sid/cvx':
-        codeValue = immunization.drug.code.codeValue;
-        immunizationRecognized = knownFhirSidCvxCodes.includes(codeValue);
-        break;
-      case 'CDC-MVX.CVX':
-        codeValue = immunization.drug.code.codeValue.split('.')[1];
-        immunizationRecognized = knownCovid19CvxCodes.includes(codeValue);
-        break;
-    }
-
-    if (!immunizationRecognized) {
-      throw Error(
-        `we don't recognize the vaccination code you received (${immunization.drug.code.codeValue}/${codeValue})`
-      );
-    }
-  }
-
-  public static checkClaimCombination(normalizedClaims: ImmunizationInputParams[]): void {
-    if (normalizedClaims.length !== 2) {
+  public static checkVaccinationCombination(immunizations: CovidImmunization[]): void {
+    if (immunizations.length !== 2) {
       throw Error('you must present exactly 2 resources');
     }
 
-    const treatmentDates = normalizedClaims.map((claim) => new Date(claim.occurrenceDateTime).getTime());
+    const treatmentDates = immunizations.map((vacc) => vacc.occurrenceDateTime.getTime());
     const msDiff = Math.abs(treatmentDates[0] - treatmentDates[1]);
     const dayDiff = msDiff / 1000 / 60 / 60 / 24;
 

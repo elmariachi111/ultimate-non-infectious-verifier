@@ -300,6 +300,8 @@ impl and extended by Consensas: https://github.com/Consensas/information-passpor
 A ruby impl of health cards (DVCI)
 https://github.com/dvci/health_cards
 
+Helpers for FHIR / JSON-LD schematics
+https://github.com/fhircat
 
 
 ### Vaccination credential initiatives
@@ -333,7 +335,7 @@ opinion: https://www.yogitatrainingcenter.com/w3c-verifiable-credentials-the-fai
 collection / survey of all initiatives:
 https://docs.google.com/document/d/1MQfZzlkYkXCXvnUXd7Cd6Y5g0RRXrKxGGqVcbBnSk1k/edit
 
-
+https://techcrunch.com/2021/01/19/europe-is-working-on-a-common-framework-for-vaccine-passports/
 
 ### OT: Linting TS
 

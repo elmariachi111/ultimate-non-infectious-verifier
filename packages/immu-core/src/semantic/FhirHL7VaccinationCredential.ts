@@ -1,12 +1,12 @@
+import { FHIRBundle } from '../@types/Fhir';
+import { CovidImmunization, ImmunizationTemplateParams, decodeDrugCode } from './Covid19';
 import ICheckCredentials from './ICheckCredentials';
-import { FHIRBundle, ImmunizationInputParams } from '../@types/Fhir';
 import Template from './templates/hl7_immunization';
 
 export const TYPE = 'https://smarthealth.cards#covid19';
 
 export class FhirHL7VaccinationCredential extends ICheckCredentials {
-  protected normalize(claim: Record<string, any>): ImmunizationInputParams | undefined {
-    const normalized: Record<string, any> = {};
+  protected normalize(claim: Record<string, any>): CovidImmunization | undefined {
     const { fhirResource } = claim;
     if (!fhirResource) {
       throw Error("credential doesn't contain a FHIR resource");
@@ -16,27 +16,37 @@ export class FhirHL7VaccinationCredential extends ICheckCredentials {
     if (resource.resourceType !== 'Immunization') return; //skip this one.
 
     const { coding } = resource.vaccineCode;
+    const vaccination = decodeDrugCode(coding[0].system, coding[0].code);
 
-    normalized.drug = {
-      code: {
-        codeValue: coding[0].code,
-        codingSystem: coding[0].system
-      }
+    if (!vaccination) {
+      throw new Error('couldnt decode the provided immunization code');
+    }
+
+    const immunization: CovidImmunization = {
+      doseSequence: resource.protocolApplied?.doseNumberPositiveInt || 0,
+      lotNumber: resource.lotNumber || '',
+      occurrenceDateTime: new Date(resource.occurrenceDateTime),
+      cvxCode: vaccination.cvxCode,
+      cvx: vaccination
     };
-    normalized.doseSequence = resource.protocolApplied?.doseNumberPositiveInt || 0;
-    normalized.lotNumber = resource.lotNumber || '';
-    normalized.occurrenceDateTime = new Date(resource.occurrenceDateTime);
 
-    return normalized as ImmunizationInputParams;
+    return immunization;
   }
 }
 
-export const Create = (params: ImmunizationInputParams): FHIRBundle => {
-  const qty = params.doseQuantity;
-  //todo: this must be corrected and depends on the vaccine code ;)
-  params.description = `COVID-19, mRNA, LNP-S, PF, ${qty} mcg/${(qty / 100).toFixed(1)} mL dose`;
+export const Create = (params: CovidImmunization): FHIRBundle => {
+  const templateParams: ImmunizationTemplateParams = {
+    ...params,
+    drug: {
+      code: {
+        description: params.cvx?.shortDescription,
+        codeValue: params.cvxCode,
+        codingSystem: 'http://hl7.org/fhir/sid/cvx'
+      }
+    }
+  };
 
-  const docString = Template(params);
+  const docString = Template(templateParams);
 
   return {
     fhirVersion: '4.0.1',
