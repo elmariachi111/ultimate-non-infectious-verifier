@@ -47,7 +47,7 @@ const ImmunizationForm = ({
         <FormLabel>vaccineCode</FormLabel>
         <Select name="cvxCode" placeholder="Select the vaccine administered" ref={register}>
           {Covid19.Covid19Vaccinations.map((vacc) => (
-            <option value={vacc.cvxCode} disabled={vacc.vaccineStatus === 'Inactive'}>
+            <option key={`vacc-${vacc.cvxCode}`} value={vacc.cvxCode} disabled={vacc.vaccineStatus === 'Inactive'}>
               ({vacc.cvxCode}) {vacc.mvx && vacc.mvx[0] ? vacc.mvx[0].cdcProductName : vacc.shortDescription}
             </option>
           ))}

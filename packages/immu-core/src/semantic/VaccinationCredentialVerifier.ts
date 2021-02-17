@@ -32,18 +32,21 @@ export default class VaccinationCredentialVerifier {
     return Object.keys(this.strategies);
   }
 
+  public getStrategy(types: string[]) {
+    const strategyType = this.supportedStrategies.find((t) => types.includes(t));
+    if (!strategyType) {
+      throw Error('dont have a verification strategy for this credential type');
+    }
+    return this.strategies[strategyType];
+  }
+
   async verify(presentedCredentials: VerifiableCredential[], flags?: VerifierFlags) {
     const immunizations: CovidImmunization[] = [];
 
     for await (const credential of presentedCredentials) {
       const verifiedCredential = await this.verifier.verifyCredential(credential);
       try {
-        const strategyType = this.supportedStrategies.find((t) => verifiedCredential.type.includes(t));
-        if (!strategyType) {
-          throw Error('dont have a verification strategy for this credential type');
-        }
-
-        const iCheckCredentials = this.strategies[strategyType];
+        const iCheckCredentials = this.getStrategy(verifiedCredential.type);
 
         const immunization = await iCheckCredentials.checkCredential(verifiedCredential, flags);
         if (immunization) {
