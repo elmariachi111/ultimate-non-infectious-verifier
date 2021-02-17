@@ -1,7 +1,7 @@
 import { Box, Code, Flex, Heading, Text } from '@chakra-ui/react';
 import { VerifiableCredential } from '@immu/core';
 import React from 'react';
-import { SCHEMAORG_CARD_CRED_TYPE, SMARTHEALTH_CARD_CRED_TYPE } from '@immu/core';
+import { SCHEMAORG_CRED_TYPE, SMARTHEALTH_CARD_CRED_TYPE } from '@immu/core';
 
 const CredentialCard = ({
   credential,
@@ -30,7 +30,7 @@ const CredentialCard = ({
     if (fhirResource.resource.occurrenceDateTime) {
       vm.occurred = new Date(fhirResource.resource.occurrenceDateTime).toISOString()
     }
-  } else if (credential.type.includes(SCHEMAORG_CARD_CRED_TYPE)) {
+  } else if (credential.type.includes(SCHEMAORG_CRED_TYPE)) {
     const doc = credential.credentialSubject;
     vm.resourceType = doc['schema:name'];
     vm.occurred = new Date(doc['schema:treatmentDate']).toISOString()

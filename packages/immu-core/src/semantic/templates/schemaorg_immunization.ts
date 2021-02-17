@@ -25,11 +25,10 @@ const Template = HBS.compile(`
             {{#drug.manufacturer}}
             "manufacturer": {
                 "@type": "Organization-CDC-MVX",
-                "identifier": "{{ drug.manufacturer.identifier }}",
-                "name": "{{ drug.manufacturer.name }}"
-            },
+                "identifier": "{{ identifier }}",
+                "name": "{{ name }}"
+            }
             {{/drug.manufacturer}}
-            "description": "{{ description }}"
         },
         "healthCondition": {
             "@type": "MedicalCondition",

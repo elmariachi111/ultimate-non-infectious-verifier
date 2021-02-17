@@ -1,5 +1,5 @@
 import { FHIRBundle } from '../@types/Fhir';
-import { CovidImmunization, ImmunizationTemplateParams, decodeDrugCode } from './Covid19';
+import { CovidImmunization, ImmunizationTemplateParams, decodeDrugCode, Covid19Vaccinations } from './Covid19';
 import ICheckCredentials from './ICheckCredentials';
 import Template from './templates/hl7_immunization';
 
@@ -35,11 +35,19 @@ export class FhirHL7VaccinationCredential extends ICheckCredentials {
 }
 
 export const Create = (params: CovidImmunization): FHIRBundle => {
+  if (!params.cvx) {
+    const cvx = Covid19Vaccinations.find((code) => code.cvxCode == params.cvxCode);
+    if (!cvx) {
+      throw Error(`cant resolve cvx ${params.cvxCode}`);
+    }
+    params.cvx = cvx;
+  }
+
   const templateParams: ImmunizationTemplateParams = {
     ...params,
     drug: {
       code: {
-        description: params.cvx?.shortDescription,
+        description: params.cvx.shortDescription,
         codeValue: params.cvxCode,
         codingSystem: 'http://hl7.org/fhir/sid/cvx'
       }
@@ -47,7 +55,6 @@ export const Create = (params: CovidImmunization): FHIRBundle => {
   };
 
   const docString = Template(templateParams);
-
   return {
     fhirVersion: '4.0.1',
     fhirResource: JSON.parse(docString)

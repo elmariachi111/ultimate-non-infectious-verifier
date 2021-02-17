@@ -4,7 +4,7 @@ import React from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 import Identicon from 'react-identicons';
-import { Link as RLink, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
   const { did } = useIdentity();
