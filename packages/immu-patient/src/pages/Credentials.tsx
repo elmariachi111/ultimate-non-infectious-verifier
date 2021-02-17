@@ -1,11 +1,11 @@
-import { Box, Button, Divider, Flex, Heading, Text, VStack } from '@chakra-ui/react';
+import { Box, Divider, Flex, Heading, Text, VStack } from '@chakra-ui/react';
 import { VerifiableCredential } from '@immu/core';
-import { useCredentials } from 'hooks/CredentialStorage';
 import { CredentialCard } from '@immu/frontend';
+import { SwipeableListItem } from '@sandstreamdev/react-swipeable-list';
+import '@sandstreamdev/react-swipeable-list/dist/styles.css';
+import { useCredentials } from 'hooks/CredentialStorage';
 import AcceptCredentialOffer from 'organisms/AcceptCredentialOffer';
 import React from 'react';
-import { SwipeableList, SwipeableListItem } from '@sandstreamdev/react-swipeable-list';
-import '@sandstreamdev/react-swipeable-list/dist/styles.css';
 
 const CredentialsPage = () => {
   const { credentials, removeCredential } = useCredentials();
@@ -23,8 +23,9 @@ const CredentialsPage = () => {
           return (
             <>
               <Heading size="sm">{k}</Heading>
-              {credentials[k].map((credential: VerifiableCredential) => (
+              {credentials[k].map((credential: VerifiableCredential, i) => (
                 <SwipeableListItem
+                  key={`c-${i}`}
                   swipeLeft={{
                     content: (
                       <Flex background="red.400" h="100%" w="100%" align="center" justify="flex-end">

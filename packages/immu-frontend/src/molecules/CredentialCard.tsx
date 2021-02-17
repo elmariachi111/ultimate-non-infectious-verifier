@@ -1,5 +1,5 @@
 import { Box, Code, Flex, Heading, Text } from '@chakra-ui/react';
-import { Covid19, VerifiableCredential, SCHEMAORG_CRED_TYPE, SMARTHEALTH_CARD_CRED_TYPE } from '@immu/core';
+import { Covid19, VerifiableCredential } from '@immu/core';
 import React, {useEffect, useState} from 'react';
 import { useCredentialVerifier } from '..';
 
@@ -19,12 +19,12 @@ const CredentialCard = ({
   const [immunization, setImmunization] = useState<Covid19.CovidImmunization>();
 
   useEffect(() => {
-    const iCheckCredentials = credentialVerifier.getStrategy(credential.type);
     (async () => {
       try {
+        const iCheckCredentials = credentialVerifier.getStrategy(credential.type);
         setImmunization(await iCheckCredentials.checkCredential(credential));
       } catch(e) {
-        console.debug("not an immunization")
+        console.debug(e.message)
       }
     })()
   }, [credential, credentialVerifier])
@@ -55,7 +55,7 @@ const CredentialCard = ({
       onClick={() => onSelect(credential)}
     >
       {vm.types.map((type: string) => (
-        <Text opacity={0.8} textAlign="center" bg="gray.200" py={4}>
+        <Text key={`type-${type}`} opacity={0.8} textAlign="center" bg="gray.200" py={4}>
           {type}
         </Text>
       ))}

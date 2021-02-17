@@ -79,8 +79,8 @@ const CredentialPage: React.FC = () => {
             Others can retrieve credentials about you from <Code>{credentialServiceEntry.serviceEndpoint}</Code>
           </Text>
           <VStack spacing={4} mt={6} align="start">
-            {credentials.map((c) => (
-              <CredentialCard credential={c} />
+            {credentials.map((c, i) => (
+              <CredentialCard credential={c} key={`c-${i}`} />
             ))}
           </VStack>
           {credentials.length === 0 && (
@@ -102,6 +102,7 @@ const CredentialPage: React.FC = () => {
           <Heading size="lg" mt={6}>
             VC Service entry
           </Heading>
+
           {balance > 0 ? (
             <Button onClick={addService}>add credential registry service entry</Button>
           ) : (

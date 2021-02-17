@@ -94,7 +94,7 @@ export class EthRegistry {
     }
 
     //todo: check if the endpoint responds so we can't add bullshit ;)
-    const { contract } = this.didRegistries[network];
+    const { contract } = this.getDidRegistry(network);
     const duration = 60 * 60 * 24 * 365 * 2;
 
     const endpointBuffer = Buffer.from(endpoint, 'utf-8');
