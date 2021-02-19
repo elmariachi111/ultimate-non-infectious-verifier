@@ -8,8 +8,10 @@ const interactions: {
 } = {};
 
 router.get(COMM_ENDPOINT + '/listen/:interactionToken', async (req, res) => {
-  res.header('Cache-Control', 'no-cache');
+  //https://serverfault.com/questions/801628/for-server-sent-events-sse-what-nginx-proxy-configuration-is-appropriate
   res.header('Content-Type', 'text/event-stream');
+  res.header('Cache-Control', 'no-cache');
+  res.header('X-Accel-Buffering', 'no');
 
   interactions[req.params.interactionToken]
     ? interactions[req.params.interactionToken].push(res)
