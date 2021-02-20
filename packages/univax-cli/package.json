@@ -42,7 +42,7 @@
   "main": "lib/index.js",
   "oclif": {
     "commands": "./lib/commands",
-    "bin": "immu",
+    "bin": "univax",
     "plugins": [
       "@oclif/plugin-help"
     ]

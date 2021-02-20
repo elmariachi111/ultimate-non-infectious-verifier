@@ -1,7 +1,7 @@
 import { Box, Button, Flex, FormControl, FormLabel, Heading, Textarea, useToast, VStack } from '@chakra-ui/react';
 import { useIdentity } from '@univax/frontend';
 import React, { useState } from 'react';
-import { CredentialOfferRequestAttrs, CredentialOffer } from '../../univax-core/build';
+import { CredentialOfferRequestAttrs, CredentialOffer } from '@univax/core';
 import CredentialOfferCard from 'molecules/CredentialOfferCard';
 import fetch from 'cross-fetch';
 import { useCredentials } from 'hooks/CredentialStorage';

@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "tsc -p .",
-    "contracts": "truffle migrate",
+    "contracts": "truffle compile && truffle compile --config truffle-config.4.js && truffle migrate",
     "dev": "tsc --watch --inlineSourceMap --inlineSources",
     "test": "jest"
   },

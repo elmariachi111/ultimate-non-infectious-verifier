@@ -1,6 +1,6 @@
 import { Box, Button, Flex, FormControl, FormHelperText, FormLabel, Textarea } from '@chakra-ui/react';
-import { useIdentity } from '@univax/frontend';
 import React, { useState } from 'react';
+import { useIdentity } from '@univax/frontend';
 import { JWTVerified } from '@univax/core';
 import QrReader from 'react-qr-reader';
 

@@ -4,11 +4,11 @@ import * as inquirer from 'inquirer';
 import * as roles from '../../aliases.json';
 
 export async function requestAndResolvePrivateKey(givenPrivateKey?: string): Promise<string> {
-    const privateKey: string = givenPrivateKey || await cli.prompt('Enter your private key', {
-      type: 'hide',
+  const privateKey: string = givenPrivateKey || await cli.prompt('Enter your private key', {
+    type: 'hide',
   })
-    if (Object.keys(roles).includes(privateKey))
-  // @ts-ignore
+  if (Object.keys(roles).includes(privateKey))
+    // @ts-ignore
     return roles[privateKey].privateKey;
 
   return privateKey
@@ -27,12 +27,12 @@ export async function chooseDidFromRoles(givenDid?: string): Promise<string> {
       value: roles[role].did
     }));
     const prompt = inquirer.createPromptModule()
-    const {did} = await prompt([{
-        type: 'list',
-        name: 'did',
-        message: 'choose a DID from your local wallet',
+    const { did } = await prompt([{
+      type: 'list',
+      name: 'did',
+      message: 'choose a DID from your local wallet',
       choices: choices
-      }
+    }])
     return did
   }
 }
@@ -41,23 +41,23 @@ export async function chooseSigningKey(
   issuerDid: DIDDocument,
 ): Promise<{ signingKey: PublicKey; signingPrivateKey: string }> {
   const prompt = inquirer.createPromptModule();
-  const {signingKey: signingKeyChoice} = await prompt([{
-      type: 'list',
-      name: 'signingKey',
-      message: 'signing key to use',
-      choices: issuerDid.publicKey.map((publicKey) => ({
-        name: `${publicKey.id}(${publicKey.type}) `,
-        value: publicKey.id
-      }))
-    },
+  const { signingKey: signingKeyChoice } = await prompt([{
+    type: 'list',
+    name: 'signingKey',
+    message: 'signing key to use',
+    choices: issuerDid.publicKey.map((publicKey) => ({
+      name: `${publicKey.id}(${publicKey.type}) `,
+      value: publicKey.id
+    }))
+  },
   ]);
   const [signingKey] = issuerDid.publicKey.filter(pk => pk.id == signingKeyChoice)
 
-  const {signingPrivateKey} = await prompt([{
-      message: `private key for ${signingKey.id}`,
-      name: 'signingPrivateKey',
-      type: 'hide',
-    },
+  const { signingPrivateKey } = await prompt([{
+    message: `private key for ${signingKey.id}`,
+    name: 'signingPrivateKey',
+    type: 'hide',
+  },
   ])
 
   return {

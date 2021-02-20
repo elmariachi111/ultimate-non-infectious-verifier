@@ -10,9 +10,9 @@ This project is a building block for the interoperable usage of [W3C verifiable 
 
  Linux Foundation / Covid Credentials Initiative ([CCI](https://www.covidcreds.org/)), the Vaccination Credential Initiative ([VCI](https://vaccinationcredential.org/)), [Good Health Pass](https://www.goodhealthpass.org/) are the most well known working groups that strive to specify a worldwide standard for vaccination crdentials, including their creation, derivation and attestation.
 
-## project setup / guideline
+## project setup
 
-This is a monorepo built on pnpm workspaces. [Get a global pnpm](https://pnpm.js.org/en/) if you haven't got one already 
+This is a monorepo built on pnpm workspaces. [Get a global pnpm](https://pnpm.js.org/en/) if you haven't got one already by:
 
 ```
 npm install -g pnpm
@@ -24,11 +24,11 @@ Since during development we're relying on a local ethr did registry we must depl
 
 We're using Typescript. Most tsconfigs extend the root tsconfig.json. We rely on eslint and use `dotenv-flow` for env configurations. `.env` are sample files and go into VCS, you override them by `.env.local` files.
 
-These are main packages relevant at the moment:
+These are the main packages relevant at the moment:
 
 ### `univax-core`
 
-comes with foundational classes and no interactivity or environmental assumptions. For signing and credential creation is relies on the @transmute crypto libraries and makes use of did-jwt and did-jwt-vc which ar primarily supposed to interact with EcDsa256 keypairs. The library also supports EdDSA25519 signatures and contains code to add and verify ed25519 public keys to a did:ethr identity. The resolver is configured to resolve did:ethr (on any network, when providing an Infura API key) and did:key. 
+comes with foundational classes and no interactivity or environmental assumptions. For signing and credential creation is relies on the @transmute crypto libraries and makes use of did-jwt and did-jwt-vc which are primarily supposed to interact with EcDsa256 keypairs. The library also supports EdDSA25519 signatures and contains code to add and verify ed25519 public keys to a did:ethr identity. The resolver is configured to resolve did:ethr (on any network, when providing an Infura API key) and did:key. 
 
 ### `univax-cli`
 

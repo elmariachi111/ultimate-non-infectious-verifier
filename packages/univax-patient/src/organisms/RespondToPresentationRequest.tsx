@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Code, Flex, Radio, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Checkbox, Code, Flex, Text, VStack } from '@chakra-ui/react';
 import { JWTVerified, VerifiableCredential } from '@univax/core';
 import { CredentialCard, useIdentity } from '@univax/frontend';
 import { useCredentials } from 'hooks/CredentialStorage';

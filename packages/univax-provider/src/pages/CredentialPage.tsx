@@ -86,7 +86,8 @@ const CredentialPage: React.FC = () => {
           {credentials.length === 0 && (
             <Text>
               No one has issued a <Code>ProofOfProvider</Code> credential for you. Ask an authority to issue one for you
-              using <Code>{did}</Code>
+              using your did <Code>{did}</Code> as subject, <Code>ProofOfProvider</Code> as type and <Code>POST</Code>{' '}
+              it to <Code>{credentialServiceEntry.serviceEndpoint}</Code>
             </Text>
           )}
           <Button

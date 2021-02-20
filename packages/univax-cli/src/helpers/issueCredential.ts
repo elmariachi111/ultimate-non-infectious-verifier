@@ -1,4 +1,4 @@
-import {CredentialPayload, Issuer} from '@univax/core';
+import { CredentialPayload, Issuer } from '@univax/core';
 import { chooseSigningKey, requestAndResolvePrivateKey } from './prompts';
 import { writeFileSync } from 'fs';
 
@@ -24,11 +24,9 @@ export async function issueCredential(
   } else if (flags.proofType == 'jws') {
     const { signingKey, signingPrivateKey } = await chooseSigningKey(await issuer.resolveIssuerDid());
     jsonVerifiableCredential = JSON.stringify({
-        ...credential,
+      ...credential,
       proof: await issuer.createJsonProof(credential, signingKey, signingPrivateKey)
-      },
-      null,
-      2
+    }, null, 2);
   } else {
     throw new Error(`proof type ${flags.proofType} is not supported`);
   }
