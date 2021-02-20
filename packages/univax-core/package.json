@@ -1,19 +1,33 @@
 {
   "name": "@univax/core",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.0.94",
+  "description": "an universal immunization verifiable credential resolution and verification library",
   "engines": {
     "node": ">=10",
     "pnpm": ">=3"
   },
+  "homepage": "https://github.com/elmariachi111/ultimate-non-infectious-verifier/blob/main/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/elmariachi111/ultimate-non-infectious-verifier.git"
+  },
+  "license": "MIT",
   "scripts": {
     "build": "tsc -p .",
     "contracts": "truffle compile && truffle compile --config truffle-config.4.js && truffle migrate",
     "dev": "tsc --watch --inlineSourceMap --inlineSources",
     "test": "jest"
   },
+  "files": [
+    "src",
+    "build"
+  ],
   "main": "build/index.js",
   "types": "build/index.d.ts",
+  "publishConfig": {
+    "access": "public",
+    "typings": "build/index.d.ts"
+  },
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
