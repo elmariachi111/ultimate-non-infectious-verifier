@@ -88,7 +88,7 @@ Meta.me Hlth.id
 https://metame.com/
 https://hlthid.com/
 
-David Janes / Consensas
+David Janes / CCCC4 / Consensas
 opinion: https://www.yogitatrainingcenter.com/w3c-verifiable-credentials-the-fairly-odd-blueprints-by-david-janes-consensas-feb-2021/
 
 collection / survey of all initiatives:
@@ -105,6 +105,7 @@ https://docs.google.com/document/d/1MQfZzlkYkXCXvnUXd7Cd6Y5g0RRXrKxGGqVcbBnSk1k/
 FHIR4 immunization general
 https://www.hl7.org/fhir/immunization.schema.json.html
 
+### M$ Smart Health Cards (VCI)
 The preliminary FHIR4 spec, driven by M$ Smart Health Cards project:
 http://build.fhir.org/ig/dvci/vaccine-credential-ig/branches/main/
 
@@ -114,25 +115,26 @@ Covid 19 sample:
 https://github.com/microsoft-healthcare-madison/health-wallet-demo/blob/master/src/fixtures/vc.pcr.json
 (in action: https://smarthealth.cards/credential-modeling/)
 
-CCC4 initiative's schema, based on a Canadian effort, driven by Consensas / Sovrin e.a.
+http://build.fhir.org/ig/dvci/vaccine-credential-ig/branches/main/
+
+Helpers for FHIR / JSON-LD schematics
+https://github.com/fhircat
+
+### Schema.org oriented schemas
+
+David Janes' mighty survey of everything he found: https://docs.google.com/document/d/1a4j0-6kJonEfSlX50ZEfAEbx2ab2IW8UuBK8vigsoLU/edit#heading=h.y43f7b8rk9yr
+
+[CCCC4 initiative](https://cccc4.ca/)'s schema, based on a Canadian effort, driven by Consensas e.a.
 https://docs.google.com/document/d/1pCyS_lhbMGhOkq1jFEkI_od-9QunURKzGWA7ty5DCII/edit
-
-with a spec background described here: https://docs.google.com/document/d/1a4j0-6kJonEfSlX50ZEfAEbx2ab2IW8UuBK8vigsoLU/edit#heading=h.y43f7b8rk9yr
-
-Qatar open data:
-https://www.data.gov.qa/explore/dataset/h4-vaccination/information/
 
 Schema.org can be utilized for that:
 https://schema.org/docs/meddocs.html
 https://schema.org/docs/health-lifesci.home.html
 https://schema.org/MedicalTherapy
-impl and extended by Consensas: https://github.com/Consensas/information-passport/blob/main/docs/Vaccination.md
 
-A ruby impl of health cards (DVCI)
-https://github.com/dvci/health_cards
+it's impl and extended by Consensas: https://github.com/Consensas/information-passport/blob/main/docs/Vaccination.md
+and a sample: https://consensas.world/did/did:cns:ABMY2TCODB.json
 
-Helpers for FHIR / JSON-LD schematics
-https://github.com/fhircat
 
 ## The CDC recommendation for Vaccination codes
 https://www.cdc.gov/vaccines/programs/iis/downloads/business-rules.pdf  
@@ -141,6 +143,27 @@ pointing to detailed vaccination code sources (CVX / MVX):
 CVX (Vacc codes): https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?rpt=cvx
 MVX (Vacc manufacturer codes): https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?rpt=mvx
 CPT (Snomed?) -> CVXmappings:  https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?rpt=cpt
+
+### CDCs vaccine program IIS specs
+
+specs on how CDC is storing and representing immunization data in various use cases:
+https://www.cdc.gov/vaccines/programs/iis/about.html
+https://www.cdc.gov/vaccines/programs/iis/functional-standards/func-stds-v4-1.html
+https://www.cdc.gov/vaccines/programs/iis/technical-guidance/downloads/hl7guide-1-5-2014-11.pdf
+
+## Administrative papers
+
+Vaccination proof interop guidelines by the EU:
+https://ec.europa.eu/health/sites/health/files/ehealth/docs/vaccination-proof_interoperability-guidelines_en.pdf
+
+Qatar open data:
+https://www.data.gov.qa/explore/dataset/h4-vaccination/information/
+
+## others
+
+A ruby impl of health cards (DVCI)
+https://github.com/dvci/health_cards
+
 
 # DID and VC related specs
 
@@ -358,7 +381,7 @@ https://khalilstemmler.com/blogs/typescript/eslint-for-typescript/
 - let univax-core only operate on *signer* `({data}) => Uint8Array` interfaces and add private key converters for the different key types accordingly (get rid of Signer)
 
 - test against generic did/vc wallets
-- add a verifier for Consensa JSON-LD schemes for an immunization proof
+- add a verifier for Consensas JSON-LD schemes for an immunization proof
 - what's that Segment 4 spec of the CCI working group?
 - use a VC revocation registry like ERC780 
 - revoke Credentials using their hash (see: are ld proofs part of that hash?? )

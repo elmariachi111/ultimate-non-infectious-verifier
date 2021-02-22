@@ -12,3 +12,24 @@ services:
       - --gasPrice=5e9
     ports:
       - "7545:8545"
+
+  mongo:
+    image: 'mongo'
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27018:27017"
+
+  ipfs:
+    image: 'ipfs/go-ipfs:latest'
+    volumes:
+      - ./.ipfs_data:/data/ipfs
+      - /export
+    ports:
+      - 4001:4001
+      - 127.0.0.1:8081:8080
+      - 127.0.0.1:5051:5001
+
+
