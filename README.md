@@ -312,7 +312,7 @@ https://github.com/SelfKeyFoundation/selfkey-did-ledger/blob/develop/DIDMethodSp
 
 https://github.com/decentralized-identity/ethr-did-resolver/pull/106 : the resolver would be able to resolve key material in base58 encoding (instead of base64url) as required by most crypto did libraries at the moment.
 
-## Other DID / SSI wallet approaches worth considering
+# Other DID / SSI (wallet) approaches worth considering
 
 - [Jolocom](https://jolocom.github.io/jolocom-sdk/1.0.0/). Highly involved in the SSI/DID space, drives the INATBA international SSI consortium. Concentrates on DIDComm v2 (open sourced a Rust implementation / JWK, JWM recently). Identities are anchored on  Rinkeby (did:jolo) but they're migrating KERI based microledger DIDs (did:jun)
 
@@ -326,6 +326,25 @@ https://github.com/decentralized-identity/ethr-did-resolver/pull/106 : the resol
 
 - Apple Wallet (sic) also fundamentally builds upon VC schematics.
 
+## W3C Universal Wallet
+
+driven by Transmute, lots of React (Material) foundational code and password based locking of content that's wrapped in credentials:
+
+https://w3c-ccg.github.io/universal-wallet-interop-spec/
+
+## Sidetree protocol
+anchors CRDT records of DID changes on arbitrary ledgers (or even inline of the did fragment part, see "long form" sidetree DIDs)
+
+https://identity.foundation/sidetree/spec/
+https://github.com/decentralized-identity/sidetree
+
+most popular implementation: ION (anchors on Bitcoin, driven by Micro$oft)
+https://github.com/decentralized-identity/ion
+
+Transmute has built a more generic (and simpler) implementation that supports :ion (bitcoin), :elem (ethereum), :photon (QLDB) and :trustbloc (fabric) methods: 
+https://github.com/transmute-industries/sidetree.js
+
+
 # loosely related
 
 ## Modern signature libraries:
@@ -338,7 +357,11 @@ NaCL DIDs: https://github.com/uport-project/nacl-did
 (sig suites: https://github.com/digitalbazaar/vc-js/blob/master/BACKGROUND.md#generating-keys-and-suites)
 
 generic did:key methods Transmute
+https://w3c-ccg.github.io/did-method-key/
 https://github.com/transmute-industries/did-key.js
+https://did.key.transmute.industries/
+
+> Since there is no support for update and deactivate for the did:key method, it is not possible to recover from a security compromise. For this reason, using a did:key for interactions that last weeks to months is strongly discouraged. 
 
 browser based ed25519: noble
 https://github.com/paulmillr/noble-ed25519

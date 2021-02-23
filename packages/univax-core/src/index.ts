@@ -5,7 +5,7 @@ export { EthRegistry } from './EthRegistry';
 export * as Ed25519Signing from './Ed25519Signing';
 export * as Secp256k1Signing from './Secp256k1Signing';
 export * from './Request';
-export * from './displayCredential';
+export * from './util/displayCredential';
 
 export { VerifiedCredential, VerifiableCredential, Verifiable, W3CCredential } from 'did-jwt-vc';
 export { JWTVerified } from 'did-jwt';
@@ -17,6 +17,14 @@ export {
 } from 'did-jwt-vc/lib/types';
 
 export { DID, BufferLike, JSONProof } from './@types';
+export {
+  SidetreeElem,
+  SidetreeElemEnvironment,
+  CreateSidetreeElemDid,
+  GetResolver as GetSidetreeElementResolver
+} from './SidetreeElem';
+export { Element as SidetreeElemMethod } from '@sidetree/element';
+
 export * from './@types/Jolocom';
 
 export { FHIRResource, FHIRBundle } from './@types/Fhir';

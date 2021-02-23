@@ -1,21 +1,37 @@
 import { DIDDocument, Resolver as DIDResolver } from 'did-resolver';
-import { getResolver } from 'ethr-did-resolver';
+import { getResolver as getEthrDidResolver } from 'ethr-did-resolver';
 import { default as getKeyResolver } from 'key-did-resolver';
 import { DID } from './@types';
 import { EthereumAddress, EthProviderConfig } from './@types/Ethereum';
 
+interface DIDResolverRegistry {
+  [method: string]: (did: string, parsed: any) => Promise<DIDDocument>;
+}
 export class Resolver {
   didResolver: DIDResolver;
 
+  private registry: DIDResolverRegistry;
+
   constructor(providerConfig: EthProviderConfig[]) {
-    const ethrDidResolver = getResolver({
+    const ethrDidResolver = getEthrDidResolver({
       networks: providerConfig
     });
 
-    this.didResolver = new DIDResolver({
+    this.registry = {};
+
+    this.didResolver = this.addResolvers({
       ...ethrDidResolver,
       ...getKeyResolver.getResolver()
     });
+  }
+
+  public addResolvers(resolvers: DIDResolverRegistry): DIDResolver {
+    this.registry = {
+      ...this.registry,
+      ...resolvers
+    };
+    this.didResolver = new DIDResolver(this.registry);
+    return this.didResolver;
   }
 
   static ethProviderConfig(infuraId: string): EthProviderConfig[] {

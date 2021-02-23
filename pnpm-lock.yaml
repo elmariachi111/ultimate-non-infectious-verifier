@@ -143,6 +143,8 @@ importers:
       '@relocke/base58': 1.0.0
       '@sidetree/cas-ipfs': 0.2.3-unstable.5
       '@sidetree/common': 0.2.3-unstable.5
+      '@sidetree/core': 0.2.3-unstable.5
+      '@sidetree/did-method': 0.2.3-unstable.5
       '@sidetree/element': 0.2.3-unstable.5
       '@sidetree/ethereum': 0.2.3-unstable.5
       '@stablelib/sha256': 1.0.0
@@ -205,6 +207,8 @@ importers:
       '@relocke/base58': ^1.0.0
       '@sidetree/cas-ipfs': ^0.2.3-unstable.5
       '@sidetree/common': ^0.2.3-unstable.5
+      '@sidetree/core': ^0.2.3-unstable.5
+      '@sidetree/did-method': ^0.2.3-unstable.5
       '@sidetree/element': ^0.2.3-unstable.5
       '@sidetree/ethereum': ^0.2.3-unstable.5
       '@stablelib/sha256': ^1.0.0
