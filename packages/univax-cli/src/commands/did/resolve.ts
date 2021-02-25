@@ -24,6 +24,6 @@ export default class Resolve extends Command {
     const didDoc = await resolver.resolve(args.did);
     console.log(JSON.stringify(didDoc, null, 2));
 
-    //await sidetreeElemMethod.close();
+    this.exit()
   }
 }

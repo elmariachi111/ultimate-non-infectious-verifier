@@ -1,4 +1,4 @@
-import { EthRegistry, Resolver, SidetreeElem, SidetreeElemMethod, GetSidetreeElementResolver } from "@univax/core";
+import { EthRegistry, Resolver, SidetreeElemEnvironment } from "@univax/core";
 
 const config =
     [
@@ -20,27 +20,15 @@ export const resolver = new Resolver(config);
  */
 export async function extendResolver(resolver: Resolver): Promise<Resolver> {
 
-    /** private singleton */
-    let sidetreeElemMethodInstance: SidetreeElemMethod;
+    await resolver.initializeSidetreeResolver({
+      eth: {
+        node: process.env.ETHEREUM_NODE!,
+        sideTreeContractAddress: process.env.SIDETREE!,
+      },
+      ipfsNode: process.env.IPFS_API!,
+      mongoConnection: process.env.MONGO_CONNECTION!,
+      dbName: 'element-test'
+    })
 
-    async function getSidetreeElemMethod(): Promise<SidetreeElemMethod> {
-        if (!sidetreeElemMethodInstance) {
-            sidetreeElemMethodInstance = await SidetreeElem({
-                eth: {
-                    node: process.env.ETHEREUM_NODE!,
-                    sideTreeContractAddress: process.env.SIDETREE!,
-                },
-                ipfsNode: process.env.IPFS_API!,
-                mongoConnection: process.env.MONGO_CONNECTION!,
-                dbName: 'element-test'
-            });    
-        }
-    
-        return sidetreeElemMethodInstance;
-    }
-
-    const sidetreeElemMethod = await getSidetreeElemMethod();
-    resolver.addResolvers(GetSidetreeElementResolver(sidetreeElemMethod));
     return resolver;
 }
-

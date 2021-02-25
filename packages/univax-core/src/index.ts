@@ -17,12 +17,7 @@ export {
 } from 'did-jwt-vc/lib/types';
 
 export { DID, BufferLike, JSONProof, PublicKey } from './@types';
-export {
-  SidetreeElem,
-  SidetreeElemEnvironment,
-  CreateSidetreeElemDid,
-  GetResolver as GetSidetreeElementResolver
-} from './SidetreeElem';
+export { SidetreeElemEnvironment, CreateSidetreeElemDid } from './SidetreeElem';
 export { Element as SidetreeElemMethod } from '@sidetree/element';
 
 export * from './@types/Jolocom';

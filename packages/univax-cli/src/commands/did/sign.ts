@@ -51,5 +51,6 @@ export default class Sign extends Command {
       message: args.message,
       signature: base58.encode(signature)
     });
+    this.exit();
   }
 }

@@ -57,3 +57,13 @@ Accept: application/json
 
 GET http://localhost:8080/vc/did:ethr:development:0x23270bf93e1d6cba4a844107e1be58200a1ee804?vctype=ProofOfProvider
 Accept: application/json
+
+
+###
+POST http://localhost:8080/resolve
+Content-Type: application/json
+
+{
+  "did": "did:elem:EiABeh2B0F2TWARIZ_YD9Dp_xVIqUquhaK2EhsgRff3cAQ"
+}
+

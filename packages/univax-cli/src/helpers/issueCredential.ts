@@ -33,8 +33,8 @@ export async function issueCredential(
 
   if (flags.out) {
     writeFileSync(flags.out, jsonVerifiableCredential, 'utf-8');
-  } else {
-    console.log(jsonVerifiableCredential);
-  }
+  } 
+  console.log(jsonVerifiableCredential);
+  
   return jsonVerifiableCredential;
 }

@@ -3,6 +3,7 @@ import { getResolver as getEthrDidResolver } from 'ethr-did-resolver';
 import { default as getKeyResolver } from 'key-did-resolver';
 import { DID } from './@types';
 import { EthereumAddress, EthProviderConfig } from './@types/Ethereum';
+import { SidetreeElem, SidetreeElemEnvironment, GetResolver as GetSidetreeElementResolver } from './SidetreeElem';
 
 interface DIDResolverRegistry {
   [method: string]: (did: string, parsed: any) => Promise<DIDDocument>;
@@ -32,6 +33,11 @@ export class Resolver {
     };
     this.didResolver = new DIDResolver(this.registry);
     return this.didResolver;
+  }
+
+  public async initializeSidetreeResolver(sidetreeElemEnvironment: SidetreeElemEnvironment): Promise<DIDResolver> {
+    const sidetreeElemMethod = await SidetreeElem(sidetreeElemEnvironment);
+    return this.addResolvers(GetSidetreeElementResolver(sidetreeElemMethod));
   }
 
   static ethProviderConfig(infuraId: string): EthProviderConfig[] {
