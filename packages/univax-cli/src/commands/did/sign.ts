@@ -1,9 +1,8 @@
-import { Ed25519Signing, PublicKey, Secp256k1Signing } from '@univax/core';
 import { Command, flags } from '@oclif/command';
+import { Ed25519Signing, Secp256k1Signing } from '@univax/core';
 import * as base58 from 'bs58';
-import * as inquirer from 'inquirer';
 import { chooseSigningKey } from '../../helpers/prompts';
-import { resolver } from '../../resolver';
+import { extendResolver, resolver as _resolver } from '../../resolver';
 
 export default class Sign extends Command {
   static description = 'creates a new ed25519 signature on message. Asks for private keys';
@@ -22,7 +21,7 @@ export default class Sign extends Command {
 
   async run() {
     const { flags, args } = this.parse(Sign);
-
+    const resolver = await extendResolver(_resolver);
     const did = await resolver.resolve(args.did);
     if (!did.authentication) {
       console.error('no authentication methods found in your did')

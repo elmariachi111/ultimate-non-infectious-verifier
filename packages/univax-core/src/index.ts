@@ -9,14 +9,14 @@ export * from './util/displayCredential';
 
 export { VerifiedCredential, VerifiableCredential, Verifiable, W3CCredential } from 'did-jwt-vc';
 export { JWTVerified } from 'did-jwt';
-export { PublicKey, Authentication, DIDDocument } from 'did-resolver';
+export { Authentication, DIDDocument } from 'did-resolver';
 export {
   CredentialPayload,
   JwtCredentialSubject,
   PresentationPayload //VerifiableCredential
 } from 'did-jwt-vc/lib/types';
 
-export { DID, BufferLike, JSONProof } from './@types';
+export { DID, BufferLike, JSONProof, PublicKey } from './@types';
 export {
   SidetreeElem,
   SidetreeElemEnvironment,

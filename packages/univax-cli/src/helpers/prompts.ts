@@ -1,4 +1,4 @@
-import { DIDDocument, PublicKey } from '@univax/core';
+import { DIDDocument, PublicKey, Ed25519Signing } from '@univax/core';
 import cli from 'cli-ux';
 import * as inquirer from 'inquirer';
 import * as roles from '../../aliases.json';
@@ -51,14 +51,20 @@ export async function chooseSigningKey(
     }))
   },
   ]);
-  const [signingKey] = issuerDid.publicKey.filter(pk => pk.id == signingKeyChoice)
+  
+  const signingKey: PublicKey | undefined = issuerDid.publicKey.find(pk => pk.id == signingKeyChoice)
+  if (signingKey === undefined) throw Error("this cannot happen");
 
-  const { signingPrivateKey } = await prompt([{
+  let { signingPrivateKey } = await prompt([{
     message: `private key for ${signingKey.id}`,
     name: 'signingPrivateKey',
-    type: 'hide',
+    type: 'password',
   },
   ])
+
+  if (signingKey.publicKeyJwk) {
+    signingPrivateKey = Ed25519Signing.privateKeyJwkFromPrivateKeyBase58(signingPrivateKey);
+  }
 
   return {
     signingKey,

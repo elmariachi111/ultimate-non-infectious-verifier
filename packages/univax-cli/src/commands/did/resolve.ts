@@ -1,6 +1,5 @@
 import { Command } from '@oclif/command';
-import { getSidetreeElemMethod, resolver } from '../../resolver';
-import { GetSidetreeElementResolver } from '@univax/core';
+import { resolver as _resolver, extendResolver } from '../../resolver';
 
 export default class Resolve extends Command {
   static description = `
@@ -20,12 +19,11 @@ export default class Resolve extends Command {
   async run() {
     const { args } = this.parse(Resolve);
 
-    const sidetreeElemMethod = await getSidetreeElemMethod();
-    resolver.addResolvers(GetSidetreeElementResolver(sidetreeElemMethod));
+    const resolver = await extendResolver(_resolver);
 
     const didDoc = await resolver.resolve(args.did);
     console.log(JSON.stringify(didDoc, null, 2));
 
-    await sidetreeElemMethod.close();
+    //await sidetreeElemMethod.close();
   }
 }

@@ -1,4 +1,8 @@
-# UniVaccs
+# UniVacs
+
+## Universal Non Infectious Verifier for Arbitrary Credential Schemas
+
+https://www.youtube.com/watch?v=GIgTk2ryk8I
 
 This project is a building block for the interoperable usage of [W3C verifiable credentials](https://www.w3.org/TR/vc-data-model/) to prove the immunization status of an user. It makes use of W3C compliant [DIDs](https://w3c.github.io/did-core/) and VCs to verify any kind of immunization health pass that's presented to a verifier. Its operational goals are to provide a high level, extendable SDK/API and sample implementations to:
 
@@ -9,6 +13,10 @@ This project is a building block for the interoperable usage of [W3C verifiable 
 - support an extensible range of immunization credential schemas since health credentials aren't internationally standardized (yet, but approaches using FHIR or JSON-LD data are the most promising ones). 
 
  Linux Foundation / Covid Credentials Initiative ([CCI](https://www.covidcreds.org/)), the Vaccination Credential Initiative ([VCI](https://vaccinationcredential.org/)), [Good Health Pass](https://www.goodhealthpass.org/) are the most well known working groups that strive to specify a worldwide standard for vaccination crdentials, including their creation, derivation and attestation.
+
+### Veriwhat? Decentrawho? Self Sowondering?
+
+If all that "identity" / DID stuff is totally new to you and you need a soft introduction, we've got you covered: [checkout our docs about Verifiable Credentials for health applications](https://github.com/elmariachi111/ultimate-non-infectious-verifier/blob/main/docs/Decentralized%20Identity.md). It should explain most concepts rather well and contains even more pointers to basic concepts.
 
 ## project setup
 
@@ -188,6 +196,8 @@ Mattr is a cli tool for all kinds of DID / VC ops
 https://mattr.global/
 APIs: https://learn.mattr.global/
 
+https://verifier.interop.transmute.world/
+
 ## Verifiable Credential implementation details
 
 https://www.w3.org/TR/vc-data-model/
@@ -213,6 +223,8 @@ https://identity.foundation/presentation-exchange/
 https://github.com/decentralized-identity/presentation-exchange
 https://w3c-ccg.github.io/vp-request-spec/
 needed to request a credential from a holder
+
+https://www.evernym.com/blog/getting-to-practical-interop-with-verifiable-credentials/
 
 ## DID Comm
 

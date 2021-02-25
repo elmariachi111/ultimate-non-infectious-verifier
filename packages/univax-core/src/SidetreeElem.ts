@@ -5,6 +5,7 @@ import { OperationGenerator, Jwk, CreateOperation } from '@sidetree/core';
 import { EthereumLedger } from '@sidetree/ethereum';
 import { IpfsCasWithCache } from '@sidetree/cas-ipfs';
 import Web3 from 'web3_130';
+import { Ed25519Signing } from '.';
 
 export interface SidetreeElemEnvironment {
   eth: {
@@ -57,7 +58,7 @@ export function GetResolver(didMethod: Element): any {
     elem: async (did: string, parsed: any) => {
       await didMethod.triggerBatchAndObserve();
       const responseModel = await didMethod.handleResolveRequest(did);
-      return responseModel.body;
+      return responseModel.body.didDocument;
     }
   };
 }
@@ -84,6 +85,16 @@ async function CreateDidOperation(): Promise<any> {
   const encodedDelta = createOperation.encodedDelta;
   const longFormDid = `${shortFormDid}?-sidetree-initial-state=${encodedSuffixData}.${encodedDelta}`;
 
+  const { publicKeyBase58, privateKeyBase58 } = Ed25519Signing.recoverEd25519KeyPair(
+    {
+      id: signingPublicKey.id,
+      type: signingPublicKey.type,
+      controller: shortFormDid,
+      publicKeyJwk: signingPublicKey.jwk
+    },
+    signingPrivateKey
+  ).toKeyPair(true);
+
   return {
     shortFormDid,
     longFormDid,
@@ -100,7 +111,9 @@ async function CreateDidOperation(): Promise<any> {
       },
       signing: {
         signingPublicKey,
-        signingPrivateKey
+        signingPrivateKey,
+        signingPublicKeyBase58: publicKeyBase58,
+        signingPrivateKeyBase58: privateKeyBase58
       }
     }
   };
