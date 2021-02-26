@@ -1,6 +1,6 @@
 export { Issuer } from './Issuer';
 export { Verifier, JSONCredential } from './Verifier';
-export { Resolver } from './Resolver';
+export { default as ResolverBuilder, Resolvable } from './ResolverBuilder';
 export { EthRegistry } from './EthRegistry';
 export * as Ed25519Signing from './Ed25519Signing';
 export * as Secp256k1Signing from './Secp256k1Signing';
@@ -9,14 +9,14 @@ export * from './util/displayCredential';
 
 export { VerifiedCredential, VerifiableCredential, Verifiable, W3CCredential } from 'did-jwt-vc';
 export { JWTVerified } from 'did-jwt';
-export { Authentication, DIDDocument } from 'did-resolver';
+export { Authentication, DIDDocument, PublicKey } from 'did-resolver';
 export {
   CredentialPayload,
   JwtCredentialSubject,
   PresentationPayload //VerifiableCredential
 } from 'did-jwt-vc/lib/types';
 
-export { DID, BufferLike, JSONProof, PublicKey } from './@types';
+export { DID, BufferLike, JSONProof } from './@types';
 export { SidetreeElemEnvironment, CreateSidetreeElemDid } from './SidetreeElem';
 export { Element as SidetreeElemMethod } from '@sidetree/element';
 

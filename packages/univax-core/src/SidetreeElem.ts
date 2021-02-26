@@ -6,6 +6,7 @@ import { EthereumLedger } from '@sidetree/ethereum';
 import { IpfsCasWithCache } from '@sidetree/cas-ipfs';
 import Web3 from 'web3_130';
 import { Ed25519Signing } from '.';
+import { DIDResolverRegistry } from './ResolverBuilder';
 
 export interface SidetreeElemEnvironment {
   eth: {
@@ -53,7 +54,7 @@ export async function SidetreeElem(sideTreeElemEnvironment: SidetreeElemEnvironm
   return element;
 }
 
-export function GetResolver(didMethod: Element): any {
+export function GetResolver(didMethod: Element): DIDResolverRegistry {
   return {
     elem: async (did: string, parsed: any) => {
       await didMethod.triggerBatchAndObserve();

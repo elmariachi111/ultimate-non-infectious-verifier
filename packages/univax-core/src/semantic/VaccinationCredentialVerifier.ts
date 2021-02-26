@@ -1,7 +1,7 @@
 import { VerifiableCredential } from 'did-jwt-vc';
 
-import { Resolver } from '../Resolver';
-import { Verifier } from '../Verifier';
+import { Resolvable, Verifier } from '..';
+
 import ICheckCredentials, { VerifierFlags } from './ICheckCredentials';
 import { FhirHL7VaccinationCredential, TYPE as SMARTHEALTH_CARD_CRED_TYPE } from './FhirHL7VaccinationCredential';
 import { SchemaOrgVaccinationCredential, TYPE as SCHEMAORG_CRED_TYPE } from './SchemaOrgVaccinationCredential';
@@ -13,10 +13,10 @@ import { CovidImmunization } from './Covid19';
 export default class VaccinationCredentialVerifier {
   private strategies: Record<string, ICheckCredentials> = {};
 
-  private resolver: Resolver;
+  private resolver: Resolvable;
   private verifier: Verifier;
 
-  constructor(resolver: Resolver) {
+  constructor(resolver: Resolvable) {
     this.resolver = resolver;
     this.verifier = new Verifier(resolver);
   }

@@ -3,7 +3,7 @@ import base64url from 'base64url';
 import bs58 from 'bs58';
 //import { CryptoLD } from 'crypto-ld';
 import crypto from 'crypto';
-import { JsonWebKey, PublicKey } from './@types';
+import { PublicKey } from 'did-resolver';
 
 export const privateKeyJwkFromPrivateKeyBase58 = keyUtils.privateKeyJwkFromPrivateKeyBase58;
 

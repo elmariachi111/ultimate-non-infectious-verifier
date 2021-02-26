@@ -1,10 +1,10 @@
-import { Resolver, Issuer, Verifier } from '..';
+import { ResolverBuilder, Resolvable, Issuer, Verifier } from '..';
 import web3 from './common/web3Provider';
 import newRegistry from './common/newRegistry';
 import { DID } from '../@types';
 
 describe('JwtCredentials', () => {
-  let resolver: Resolver;
+  let resolver: Resolvable;
   let issuerAccount, subjectAccount;
   let didIssuer: DID;
   let didSubject: DID;
@@ -12,13 +12,15 @@ describe('JwtCredentials', () => {
   let verifier: Verifier;
   beforeAll(async () => {
     const registry = await newRegistry(web3);
-    resolver = new Resolver([
-      {
-        name: 'development',
-        provider: web3.currentProvider,
-        registry: registry.address
-      }
-    ]);
+    resolver = ResolverBuilder()
+      .addEthResolver([
+        {
+          name: 'development',
+          provider: web3.currentProvider,
+          registry: registry.address
+        }
+      ])
+      .build();
 
     issuerAccount = web3.eth.accounts.create();
     subjectAccount = web3.eth.accounts.create();

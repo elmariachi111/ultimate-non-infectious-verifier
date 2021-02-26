@@ -9,7 +9,7 @@ import {
 import { Ed25519Signing } from '.';
 import { Secp256k1Signing } from '.';
 
-import { Resolver } from './Resolver';
+import { Resolvable } from '.';
 import { JWTVerified, verifyJWT as DidVerifyJWT } from 'did-jwt';
 import { JSONProof } from './@types';
 
@@ -19,9 +19,9 @@ export interface JSONCredential {
 }
 
 export class Verifier {
-  private resolver: Resolver;
+  private resolver: Resolvable;
 
-  constructor(resolver: Resolver) {
+  constructor(resolver: Resolvable) {
     this.resolver = resolver;
   }
 
