@@ -43,7 +43,6 @@ export const router: Router = Router();
 router.post(RESOLVER_ENDPOINT, async (req, res) => {
   const did = req.body.did;
   try {
-    console.log(did);
     const didDoc = await resolver.resolve(did);
     res.status(200).json(didDoc);
   } catch (e) {

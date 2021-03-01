@@ -94,21 +94,31 @@ export default function ResolverBuilder() {
       return {
         resolve: async (did: string): Promise<DIDDocument> => {
           if (!initialized) {
+            console.log('initializing Resolver');
             await Promise.all(promises);
             localResolver = new ResolverClass(registry, cache);
             initialized = true;
           }
 
-          try {
-            return localResolver.resolve(did);
-          } catch (e) {
-            if (fallbackResolver) {
-              return fallbackResolver(did);
-            }
-
-            console.error(e.message);
-            throw e;
-          }
+          //need to use Promise manually here, doesn't catch resolver throws :(
+          return new Promise((resolve, reject) => {
+            localResolver
+              .resolve(did)
+              .then((resolved) => resolve(resolved))
+              .catch((e) => {
+                if (fallbackResolver) {
+                  (async () => {
+                    try {
+                      resolve(await fallbackResolver(did));
+                    } catch (e) {
+                      reject(e);
+                    }
+                  })();
+                } else {
+                  reject(e);
+                }
+              });
+          });
         }
       };
     }

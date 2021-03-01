@@ -1,7 +1,7 @@
 import { EthRegistry, ResolverBuilder, EthProviderConfig } from "@univax/core";
 import sidetree from './sidetree';
 
-const { NODE_ENV, ETHEREUM_NODE, SIDETREE, REGISTRY, IPFS_API, MONGO_CONNECTION, INFURA_ID} = process.env;
+const { NODE_ENV, ETHEREUM_NODE, REMOTE_FALLBACK_RESOLVER, SIDETREE, REGISTRY, IPFS_API, MONGO_CONNECTION, INFURA_ID} = process.env;
 
 let ethNetworks: EthProviderConfig[] = [];
 
@@ -27,6 +27,10 @@ const builder = ResolverBuilder().addKeyResolver().addEthResolver(ethNetworks);
 
 if (SIDETREE && ETHEREUM_NODE && IPFS_API && MONGO_CONNECTION) {
   builder.addSideTreeResolver(sidetree);
+}
+
+if (REMOTE_FALLBACK_RESOLVER) {
+  builder.addRemoteFallbackResolver(REMOTE_FALLBACK_RESOLVER)
 }
 
 export const registry = new EthRegistry(ethNetworks);
