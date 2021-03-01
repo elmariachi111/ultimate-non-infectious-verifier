@@ -1,34 +1,33 @@
-import { EthRegistry, Resolver, SidetreeElemEnvironment } from "@univax/core";
+import { EthRegistry, ResolverBuilder, EthProviderConfig } from "@univax/core";
+import sidetree from './sidetree';
 
-const config =
-    [
-        ...Resolver.ethProviderConfig(process.env.INFURA_ID!),
-        {
-            name: "development",
-            rpcUrl: process.env.ETHEREUM_NODE!,
-            registry: process.env.REGISTRY!
-        }
-    ];
+const { NODE_ENV, ETHEREUM_NODE, SIDETREE, REGISTRY, IPFS_API, MONGO_CONNECTION, INFURA_ID} = process.env;
 
-export const registry = new EthRegistry(config);
-export const resolver = new Resolver(config);
+let ethNetworks: EthProviderConfig[] = [];
 
-/**
- * adds sidetree/elem resolver
- * 
- * @param resolver 
- */
-export async function extendResolver(resolver: Resolver): Promise<Resolver> {
+if (INFURA_ID) {
+  ethNetworks = [
+    ...ethNetworks,
+    ...ResolverBuilder.ethProviderConfig(INFURA_ID!)
+  ]
+} 
 
-    await resolver.initializeSidetreeResolver({
-      eth: {
-        node: process.env.ETHEREUM_NODE!,
-        sideTreeContractAddress: process.env.SIDETREE!,
-      },
-      ipfsNode: process.env.IPFS_API!,
-      mongoConnection: process.env.MONGO_CONNECTION!,
-      dbName: 'element-test'
-    })
-
-    return resolver;
+if (NODE_ENV == 'development') { 
+  ethNetworks = [
+  ...ethNetworks,
+  {
+    name: "development",
+    rpcUrl: ETHEREUM_NODE,
+    registry: REGISTRY!
+  }
+]
 }
+
+const builder = ResolverBuilder().addKeyResolver().addEthResolver(ethNetworks);
+
+if (SIDETREE && ETHEREUM_NODE && IPFS_API && MONGO_CONNECTION) {
+  builder.addSideTreeResolver(sidetree);
+}
+
+export const registry = new EthRegistry(ethNetworks);
+export const resolver = builder.build();

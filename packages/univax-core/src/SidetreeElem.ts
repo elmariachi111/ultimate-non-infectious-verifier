@@ -1,4 +1,5 @@
 import { Element } from '@sidetree/element';
+export { Element } from '@sidetree/element';
 import { ICas, Config } from '@sidetree/common';
 import { OperationGenerator, Jwk, CreateOperation } from '@sidetree/core';
 
@@ -18,7 +19,11 @@ export interface SidetreeElemEnvironment {
   dbName?: string;
 }
 
-export async function SidetreeElem(sideTreeElemEnvironment: SidetreeElemEnvironment): Promise<Element> {
+/**
+ * initializes a new sidetree elem "API"
+ * @param sideTreeElemEnvironment
+ */
+export async function SidetreeElemMethod(sideTreeElemEnvironment: SidetreeElemEnvironment): Promise<Element> {
   const web3 = new Web3(sideTreeElemEnvironment.eth.node);
   const ledger = new EthereumLedger(web3, sideTreeElemEnvironment.eth.sideTreeContractAddress);
 
@@ -54,11 +59,11 @@ export async function SidetreeElem(sideTreeElemEnvironment: SidetreeElemEnvironm
   return element;
 }
 
-export function GetResolver(didMethod: Element): DIDResolverRegistry {
+export function GetResolver(elemMethod: Element): DIDResolverRegistry {
   return {
     elem: async (did: string, parsed: any) => {
-      await didMethod.triggerBatchAndObserve();
-      const responseModel = await didMethod.handleResolveRequest(did);
+      await elemMethod.triggerBatchAndObserve();
+      const responseModel = await elemMethod.handleResolveRequest(did);
       return responseModel.body.didDocument;
     }
   };

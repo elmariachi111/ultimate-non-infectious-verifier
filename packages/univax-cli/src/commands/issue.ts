@@ -5,7 +5,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import * as roles from '../../aliases.json';
 import { issueCredential } from '../helpers/issueCredential';
 import { chooseDidFromRoles } from '../helpers/prompts';
-import { extendResolver, resolver as _resolver } from '../resolver';
+import { resolver } from '../resolver';
 
 export default class Issue extends Command {
   static description = 'issues a generic credential. Asks for private keys';
@@ -32,8 +32,7 @@ export default class Issue extends Command {
 
   async run() {
     const { args, flags } = this.parse(Issue)
-    const resolver = await extendResolver(_resolver);
-    
+        
     const claim = JSON.parse(readFileSync(args.claim, 'utf-8'))
 
     const subjectDid = flags.subject.startsWith('did:')

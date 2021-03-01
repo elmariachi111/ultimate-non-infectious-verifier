@@ -1,7 +1,7 @@
 import { Command, flags } from '@oclif/command';
 import * as fs from 'fs';
-import { Ed25519Signing, CreateSidetreeElemDid } from '@univax/core';
-import { getSidetreeElemMethod } from '../../resolver';
+import { Ed25519Signing, Sidetree } from '@univax/core';
+import sidetree from '../../sidetree';
 
 export default class Create extends Command {
   static description = 'creates a new Ed25519 based did:key DID';
@@ -21,8 +21,11 @@ export default class Create extends Command {
 
     switch (flags.type) {
       case 'elem': 
-        const didMethod = await getSidetreeElemMethod();
-        const didResult = await CreateSidetreeElemDid(didMethod);
+        const didMethod = await sidetree;
+        if (!didMethod) {
+          throw Error("Sidetree is not configured");
+        }
+        const didResult = await Sidetree.CreateSidetreeElemDid(didMethod);
         did = didResult.shortFormDid;
         keyFile = JSON.stringify(didResult, null, 2);
         await didMethod.close();
@@ -39,5 +42,7 @@ export default class Create extends Command {
       console.log('keyfile', keyFile);
       fs.writeFileSync(`${did}.key.json`, keyFile);
     }
+
+    this.exit();
   }
 }

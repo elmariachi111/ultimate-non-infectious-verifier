@@ -6,6 +6,7 @@ export * as Ed25519Signing from './Ed25519Signing';
 export * as Secp256k1Signing from './Secp256k1Signing';
 export * from './Request';
 export * from './util/displayCredential';
+export * as Sidetree from './SidetreeElem';
 
 export { VerifiedCredential, VerifiableCredential, Verifiable, W3CCredential } from 'did-jwt-vc';
 export { JWTVerified } from 'did-jwt';
@@ -16,13 +17,11 @@ export {
   PresentationPayload //VerifiableCredential
 } from 'did-jwt-vc/lib/types';
 
-export { DID, BufferLike, JSONProof } from './@types';
-export { SidetreeElemEnvironment, CreateSidetreeElemDid } from './SidetreeElem';
-export { Element as SidetreeElemMethod } from '@sidetree/element';
-
 export * from './@types/Jolocom';
-
+export { EthProviderConfig } from './@types/Ethereum';
+export { DID, BufferLike, JSONProof } from './@types';
 export { FHIRResource, FHIRBundle } from './@types/Fhir';
+
 export { default as VaccinationCredentialVerifier } from './semantic/VaccinationCredentialVerifier';
 export {
   Create as CreateFhirHL7Immunization,

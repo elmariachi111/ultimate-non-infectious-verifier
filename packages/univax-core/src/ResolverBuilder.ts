@@ -2,7 +2,8 @@ import { DIDCache, DIDDocument, DIDResolver, Resolver as ResolverClass } from 'd
 import { getResolver as getEthrDidResolver } from 'ethr-did-resolver';
 import { default as getKeyResolver } from 'key-did-resolver';
 import { EthProviderConfig } from './@types/Ethereum';
-import { GetResolver as GetSidetreeElementResolver, SidetreeElem, SidetreeElemEnvironment } from './SidetreeElem';
+import { GetResolver as GetSidetreeElementResolver, SidetreeElemMethod, SidetreeElemEnvironment } from './SidetreeElem';
+import { Element } from '@sidetree/element';
 import fetch from 'cross-fetch';
 
 export interface DIDResolverRegistry {
@@ -20,18 +21,16 @@ export default function ResolverBuilder() {
   let cache: boolean | DIDCache = false;
 
   let fallbackResolver: Resolver;
+  let initialized = false;
+
+  const promises: Promise<any>[] = [];
 
   return {
     addEthResolver: function (ethNetworks: EthProviderConfig[] = [], infuraId?: string) {
       let networks = ethNetworks;
 
       if (infuraId) {
-        networks = [
-          { name: 'mainnet', rpcUrl: `https://mainnet.infura.io/v3/${infuraId}` },
-          { name: 'rinkeby', rpcUrl: `https://rinkeby.infura.io/v3/${infuraId}` },
-          { name: 'goerli', rpcUrl: `https://goerli.infura.io/v3/${infuraId}` },
-          ...networks
-        ];
+        networks = ResolverBuilder.ethProviderConfig(infuraId);
       }
 
       registry = {
@@ -49,12 +48,13 @@ export default function ResolverBuilder() {
       return this;
     },
 
-    addSideTreeResolver: async function (sidetreeElemEnvironment: SidetreeElemEnvironment) {
-      const sidetreeElemMethod = await SidetreeElem(sidetreeElemEnvironment);
-
+    addSideTreeResolver: async function (sidetreeElem: Element | Promise<Element>) {
+      if (sidetreeElem instanceof Promise) {
+        promises.push(sidetreeElem);
+      }
       registry = {
         ...registry,
-        ...GetSidetreeElementResolver(sidetreeElemMethod)
+        ...GetSidetreeElementResolver(await sidetreeElem)
       };
       return this;
     },
@@ -90,9 +90,15 @@ export default function ResolverBuilder() {
     },
 
     build: function (): Resolvable {
-      const localResolver = new ResolverClass(registry, cache);
+      let localResolver: ResolverClass;
       return {
         resolve: async (did: string): Promise<DIDDocument> => {
+          if (!initialized) {
+            await Promise.all(promises);
+            localResolver = new ResolverClass(registry, cache);
+            initialized = true;
+          }
+
           try {
             return localResolver.resolve(did);
           } catch (e) {
@@ -108,3 +114,12 @@ export default function ResolverBuilder() {
     }
   };
 }
+
+ResolverBuilder.ethProviderConfig = (infuraId: string): EthProviderConfig[] => {
+  return [
+    { name: 'mainnet', rpcUrl: `https://mainnet.infura.io/v3/${infuraId}` },
+    { name: 'ropsten', rpcUrl: `https://ropsten.infura.io/v3/${infuraId}` },
+    { name: 'rinkeby', rpcUrl: `https://rinkeby.infura.io/v3/${infuraId}` },
+    { name: 'goerli', rpcUrl: `https://goerli.infura.io/v3/${infuraId}` }
+  ];
+};

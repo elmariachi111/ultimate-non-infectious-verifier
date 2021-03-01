@@ -8,7 +8,7 @@ import {
   VerifiableCredential,
   W3CCredential
 } from 'did-jwt-vc/lib/types';
-import { PublicKey } from 'did-resolver';
+import { DIDDocument, PublicKey } from 'did-resolver';
 import { Ed25519Signing, Secp256k1Signing, Resolvable } from '.';
 import { DID } from './@types';
 
@@ -23,6 +23,10 @@ export class Issuer {
   constructor(resolver: Resolvable, did: DID) {
     this.resolver = resolver;
     this.did = did;
+  }
+
+  async resolveIssuerDid(): Promise<DIDDocument> {
+    return await this.resolver.resolve(this.did);
   }
 
   async issueCredential(

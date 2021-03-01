@@ -1,5 +1,5 @@
 import { Command } from '@oclif/command';
-import { resolver as _resolver, extendResolver } from '../../resolver';
+import { resolver } from '../../resolver';
 
 export default class Resolve extends Command {
   static description = `
@@ -18,9 +18,7 @@ export default class Resolve extends Command {
 
   async run() {
     const { args } = this.parse(Resolve);
-
-    const resolver = await extendResolver(_resolver);
-
+    
     const didDoc = await resolver.resolve(args.did);
     console.log(JSON.stringify(didDoc, null, 2));
 
