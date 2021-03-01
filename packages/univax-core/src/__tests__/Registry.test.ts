@@ -1,6 +1,6 @@
 import { Ed25519KeyPair } from '@transmute/did-key-ed25519';
 import { Account } from 'web3-core';
-import { Ed25519Signing, Issuer, Resolver, Verifier } from '..';
+import { Ed25519Signing, Issuer, ResolverBuilder, Resolvable, Verifier } from '..';
 import { DID } from '../@types';
 import { EthereumAddress } from '../@types/Ethereum';
 import { EthRegistry } from '../EthRegistry';
@@ -8,7 +8,7 @@ import newRegistry from './common/newRegistry';
 import web3 from './common/web3Provider';
 
 describe('EthRegistry', () => {
-  let resolver: Resolver;
+  let resolver: Resolvable;
   let someAccount: EthereumAddress;
   let didSome: DID;
   let someKeyPair: Ed25519KeyPair;
@@ -28,7 +28,7 @@ describe('EthRegistry', () => {
       }
     ];
 
-    resolver = new Resolver(regConfig);
+    resolver = ResolverBuilder().addEthResolver(regConfig).build();
     ethRegistry = new EthRegistry(regConfig);
 
     someAccount = (await web3.eth.getAccounts())[1];

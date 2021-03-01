@@ -1,4 +1,4 @@
-import { JSONProof } from '.';
+import { DID, JSONProof } from '.';
 
 export interface CredentialOfferInputRequest {
   [key: string]: string | null;
@@ -52,4 +52,7 @@ export interface CredentialOfferResponseAttrs {
 //customized
 export interface SignedCredentialOfferResponseAttrs extends CredentialOfferResponseAttrs {
   proof: JSONProof;
+  issuer: {
+    id: DID;
+  };
 }

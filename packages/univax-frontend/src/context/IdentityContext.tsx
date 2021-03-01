@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Account } from 'web3-core';
 import Web3 from 'web3';
-import { DID, EthRegistry, Issuer, Resolver, Verifier } from '@univax/core';
+import { DID, EthRegistry, Issuer, Resolvable, ResolverBuilder, Verifier } from '@univax/core';
 //import { useWeb3React } from '@web3-react/core';
 
 const PRIVATE_KEY = 'private-key';
@@ -15,7 +15,7 @@ const ETH_NETWORKS: { [network: string]: string } = {
 
 interface IAccountContext {
   account: Account;
-  resolver: Resolver;
+  resolver: Resolvable;
   registry: EthRegistry;
   verifier: Verifier;
   issuer: Issuer,
@@ -24,7 +24,7 @@ interface IAccountContext {
   chainId: string;
 }
 
-const resolverConfig = Resolver.ethProviderConfig(process.env.REACT_APP_INFURA_ID!);
+const resolverConfig = ResolverBuilder.ethProviderConfig(process.env.REACT_APP_INFURA_ID!);
 if (process.env.REACT_APP_WEB3_RPC_URL) {
   resolverConfig.push({
     name: 'development',
@@ -54,8 +54,12 @@ const didByChainId = (account: Account, chainId: string): DID => {
 }
 
 const makeContext = (web3: Web3, chainId: string): IAccountContext  => {
-  
-  const resolver = new Resolver(resolverConfig);
+  const builder = ResolverBuilder().addEthResolver(resolverConfig).addKeyResolver();
+  if (process.env.REACT_APP_REMOTE_FALLBACK_RESOLVER) {
+    builder.addRemoteFallbackResolver(process.env.REACT_APP_REMOTE_FALLBACK_RESOLVER);
+  }
+
+  const resolver = builder.build();
   const registry = new EthRegistry(resolverConfig);
   const account = loadAccount(web3) || createAccount(web3);
   const did = didByChainId(account, chainId);
@@ -79,7 +83,8 @@ const defaultContext = makeContext(new Web3(), 'development');
 
 const IdentityContext = React.createContext<IAccountContext>(defaultContext);
 
-const useIdentity = () => useContext(IdentityContext);
+const useIdentity = () => useContext(IdentityContext); 
+
 
 const IdentityProvider = ({ children, chainId = 'development', web3 }: {
    children: React.ReactNode, chainId?: string, web3?: Web3 
@@ -87,8 +92,7 @@ const IdentityProvider = ({ children, chainId = 'development', web3 }: {
     if (!chainId) {
       chainId = 'development';
     }
-  //const { activate } = useWeb3React();
-
+  
   //const registry = new EthRegistry(resolverConfig, web3);
   const context = makeContext(web3 || new Web3(), chainId);
   return (

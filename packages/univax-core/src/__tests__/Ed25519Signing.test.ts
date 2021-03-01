@@ -3,7 +3,7 @@ import { Ed25519Signing } from '../';
 describe('Ed255219 Keys', () => {
   it('can create a new keypair', async () => {
     const seed = new Uint8Array(32);
-    for (let i = 32; i-- > 0;) {
+    for (let i = 32; i-- > 0; ) {
       seed[32 - i] = i;
     }
     const keypair = await Ed25519Signing.createEd25519VerificationKey(seed);
@@ -46,7 +46,7 @@ describe('Ed255219 Keys', () => {
     expect(recover).toThrow();
   });
 
-  it('can recover from a base64 encoded public key', async () => {
+  it('can recover a base64 encoded public key', async () => {
     const keypair = await Ed25519Signing.createEd25519VerificationKey();
     const pubKey = {
       id: keypair.id,
@@ -57,6 +57,51 @@ describe('Ed255219 Keys', () => {
     const recovered = Ed25519Signing.recoverEd25519KeyPair(pubKey).toKeyPair();
 
     expect(recovered.publicKeyBase58 == keypair.toKeyPair().publicKeyBase58);
+  });
+
+  it('can recover a JWK encoded public key', async () => {
+    const keyFromDid = {
+      id: '#signingKey',
+      controller: 'did:elem:EiABeh2B0F2TWARIZ_YD9Dp_xVIqUquhaK2EhsgRff3cAQ',
+      type: 'Ed25519VerificationKey2018',
+      publicKeyJwk: {
+        crv: 'Ed25519',
+        x: 'UaYZW8Zt7yRMtpmBaAf6jpNJyTlNxFn3d8J1wEALQ_s',
+        kty: 'OKP',
+        kid: 'WFx-mgyyl4Ajnm2U3ot81K_RiroW3gVhyLlj2p-RmUk'
+      }
+    };
+
+    const keyPair = Ed25519Signing.recoverEd25519KeyPair(keyFromDid);
+    const recoveredJwk = await keyPair.toJwk(false);
+    expect(recoveredJwk).toStrictEqual(keyFromDid.publicKeyJwk);
+  });
+
+  it('can recover a JWK encoded public / private key pair', async () => {
+    const keyFromDid = {
+      id: '#signingKey',
+      controller: 'did:elem:EiABeh2B0F2TWARIZ_YD9Dp_xVIqUquhaK2EhsgRff3cAQ',
+      type: 'Ed25519VerificationKey2018',
+      publicKeyJwk: {
+        crv: 'Ed25519',
+        x: 'UaYZW8Zt7yRMtpmBaAf6jpNJyTlNxFn3d8J1wEALQ_s',
+        kty: 'OKP',
+        kid: 'WFx-mgyyl4Ajnm2U3ot81K_RiroW3gVhyLlj2p-RmUk'
+      }
+    };
+
+    const privateSigningKey = {
+      crv: 'Ed25519',
+      x: 'UaYZW8Zt7yRMtpmBaAf6jpNJyTlNxFn3d8J1wEALQ_s',
+      d: 'qG4v8MMHJ-l84cJbl16oNH9UQRcL6SCT21S_xAILMFA',
+      kty: 'OKP',
+      kid: 'WFx-mgyyl4Ajnm2U3ot81K_RiroW3gVhyLlj2p-RmUk'
+    };
+
+    const keyPair = Ed25519Signing.recoverEd25519KeyPair(keyFromDid, privateSigningKey);
+    const signature = await keyPair.signer().sign({ data: 'some data' });
+    const verified = await keyPair.verifier().verify({ data: 'some data', signature });
+    expect(verified).toBeTruthy();
   });
 
   it('can sign and verify JWS messages', async () => {

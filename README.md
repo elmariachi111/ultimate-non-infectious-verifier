@@ -1,4 +1,8 @@
-# UniVaccs
+# UniVacs
+
+## Universal Non Infectious Verifier for Arbitrary Credential Schemas
+
+https://www.youtube.com/watch?v=GIgTk2ryk8I
 
 This project is a building block for the interoperable usage of [W3C verifiable credentials](https://www.w3.org/TR/vc-data-model/) to prove the immunization status of an user. It makes use of W3C compliant [DIDs](https://w3c.github.io/did-core/) and VCs to verify any kind of immunization health pass that's presented to a verifier. Its operational goals are to provide a high level, extendable SDK/API and sample implementations to:
 
@@ -9,6 +13,10 @@ This project is a building block for the interoperable usage of [W3C verifiable 
 - support an extensible range of immunization credential schemas since health credentials aren't internationally standardized (yet, but approaches using FHIR or JSON-LD data are the most promising ones). 
 
  Linux Foundation / Covid Credentials Initiative ([CCI](https://www.covidcreds.org/)), the Vaccination Credential Initiative ([VCI](https://vaccinationcredential.org/)), [Good Health Pass](https://www.goodhealthpass.org/) are the most well known working groups that strive to specify a worldwide standard for vaccination crdentials, including their creation, derivation and attestation.
+
+### Veriwhat? Decentrawho? Self Sowondering?
+
+If all that "identity" / DID stuff is totally new to you and you need a soft introduction, we've got you covered: [checkout our docs about Verifiable Credentials for health applications](https://github.com/elmariachi111/ultimate-non-infectious-verifier/blob/main/docs/Decentralized%20Identity.md). It should explain most concepts rather well and contains even more pointers to basic concepts.
 
 ## project setup
 
@@ -88,7 +96,7 @@ Meta.me Hlth.id
 https://metame.com/
 https://hlthid.com/
 
-David Janes / Consensas
+David Janes / CCCC4 / Consensas
 opinion: https://www.yogitatrainingcenter.com/w3c-verifiable-credentials-the-fairly-odd-blueprints-by-david-janes-consensas-feb-2021/
 
 collection / survey of all initiatives:
@@ -105,6 +113,7 @@ https://docs.google.com/document/d/1MQfZzlkYkXCXvnUXd7Cd6Y5g0RRXrKxGGqVcbBnSk1k/
 FHIR4 immunization general
 https://www.hl7.org/fhir/immunization.schema.json.html
 
+### M$ Smart Health Cards (VCI)
 The preliminary FHIR4 spec, driven by M$ Smart Health Cards project:
 http://build.fhir.org/ig/dvci/vaccine-credential-ig/branches/main/
 
@@ -114,25 +123,39 @@ Covid 19 sample:
 https://github.com/microsoft-healthcare-madison/health-wallet-demo/blob/master/src/fixtures/vc.pcr.json
 (in action: https://smarthealth.cards/credential-modeling/)
 
-CCC4 initiative's schema, based on a Canadian effort, driven by Consensas / Sovrin e.a.
+http://build.fhir.org/ig/dvci/vaccine-credential-ig/branches/main/
+
+Helpers for FHIR / JSON-LD schematics
+https://github.com/fhircat
+
+### Mattr (under W3C umbrella)
+unofficial draft of a W3C vaccination model
+https://w3c-ccg.github.io/vaccination-vocab/
+
+### Schema.org oriented schemas
+
+David Janes' mighty survey of everything he found: https://docs.google.com/document/d/1a4j0-6kJonEfSlX50ZEfAEbx2ab2IW8UuBK8vigsoLU/edit#heading=h.y43f7b8rk9yr
+
+[CCCC4 initiative](https://cccc4.ca/)'s schema, based on a Canadian effort, driven by Consensas e.a.
 https://docs.google.com/document/d/1pCyS_lhbMGhOkq1jFEkI_od-9QunURKzGWA7ty5DCII/edit
-
-with a spec background described here: https://docs.google.com/document/d/1a4j0-6kJonEfSlX50ZEfAEbx2ab2IW8UuBK8vigsoLU/edit#heading=h.y43f7b8rk9yr
-
-Qatar open data:
-https://www.data.gov.qa/explore/dataset/h4-vaccination/information/
 
 Schema.org can be utilized for that:
 https://schema.org/docs/meddocs.html
 https://schema.org/docs/health-lifesci.home.html
 https://schema.org/MedicalTherapy
-impl and extended by Consensas: https://github.com/Consensas/information-passport/blob/main/docs/Vaccination.md
 
-A ruby impl of health cards (DVCI)
-https://github.com/dvci/health_cards
+it's impl and extended by Consensas: https://github.com/Consensas/information-passport/blob/main/docs/Vaccination.md
+and a sample: https://consensas.world/did/did:cns:ABMY2TCODB.json
 
-Helpers for FHIR / JSON-LD schematics
-https://github.com/fhircat
+### LOINC
+yet another weird medical coding standard https://loinc.org/downloads/loinc-table/
+
+### American Immunization Registry Association
+https://repository.immregistries.org/resource/hl7-version-2-5-1-implementation-guide-for-immunization-messaging-release-1-5-1/
+(slighty unrelated, mainly deals with communication aspects)
+
+### CVC (Canada Vaccine Catalogue) API
+https://cvc.canimmunize.ca/docs/#/
 
 ## The CDC recommendation for Vaccination codes
 https://www.cdc.gov/vaccines/programs/iis/downloads/business-rules.pdf  
@@ -141,6 +164,28 @@ pointing to detailed vaccination code sources (CVX / MVX):
 CVX (Vacc codes): https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?rpt=cvx
 MVX (Vacc manufacturer codes): https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?rpt=mvx
 CPT (Snomed?) -> CVXmappings:  https://www2a.cdc.gov/vaccines/IIS/IISStandards/vaccines.asp?rpt=cpt
+
+### CDCs vaccine program IIS specs
+
+specs on how CDC is storing and representing immunization data in various use cases:
+https://www.cdc.gov/vaccines/programs/iis/about.html
+https://www.cdc.gov/vaccines/programs/iis/functional-standards/func-stds-v4-1.html
+https://www.cdc.gov/vaccines/programs/iis/technical-guidance/downloads/hl7guide-1-5-2014-11.pdf
+
+
+## Administrative papers
+
+Vaccination proof interop guidelines by the **European Union**:
+https://ec.europa.eu/health/sites/health/files/ehealth/docs/vaccination-proof_interoperability-guidelines_en.pdf
+
+Qatar open data:
+https://www.data.gov.qa/explore/dataset/h4-vaccination/information/
+
+## others
+
+A ruby impl of health cards (DVCI)
+https://github.com/dvci/health_cards
+
 
 # DID and VC related specs
 
@@ -164,6 +209,8 @@ A lot of use case samples (maily non tech) https://www.w3.org/TR/did-use-cases/
 Mattr is a cli tool for all kinds of DID / VC ops
 https://mattr.global/
 APIs: https://learn.mattr.global/
+
+https://verifier.interop.transmute.world/
 
 ## Verifiable Credential implementation details
 
@@ -190,6 +237,8 @@ https://identity.foundation/presentation-exchange/
 https://github.com/decentralized-identity/presentation-exchange
 https://w3c-ccg.github.io/vp-request-spec/
 needed to request a credential from a holder
+
+https://www.evernym.com/blog/getting-to-practical-interop-with-verifiable-credentials/
 
 ## DID Comm
 
@@ -289,7 +338,7 @@ https://github.com/SelfKeyFoundation/selfkey-did-ledger/blob/develop/DIDMethodSp
 
 https://github.com/decentralized-identity/ethr-did-resolver/pull/106 : the resolver would be able to resolve key material in base58 encoding (instead of base64url) as required by most crypto did libraries at the moment.
 
-## Other DID / SSI wallet approaches worth considering
+# Other DID / SSI (wallet) approaches worth considering
 
 - [Jolocom](https://jolocom.github.io/jolocom-sdk/1.0.0/). Highly involved in the SSI/DID space, drives the INATBA international SSI consortium. Concentrates on DIDComm v2 (open sourced a Rust implementation / JWK, JWM recently). Identities are anchored on  Rinkeby (did:jolo) but they're migrating KERI based microledger DIDs (did:jun)
 
@@ -303,6 +352,25 @@ https://github.com/decentralized-identity/ethr-did-resolver/pull/106 : the resol
 
 - Apple Wallet (sic) also fundamentally builds upon VC schematics.
 
+## W3C Universal Wallet
+
+driven by Transmute, lots of React (Material) foundational code and password based locking of content that's wrapped in credentials:
+
+https://w3c-ccg.github.io/universal-wallet-interop-spec/
+
+## Sidetree protocol
+anchors CRDT records of DID changes on arbitrary ledgers (or even inline of the did fragment part, see "long form" sidetree DIDs)
+
+https://identity.foundation/sidetree/spec/
+https://github.com/decentralized-identity/sidetree
+
+most popular implementation: ION (anchors on Bitcoin, driven by Micro$oft)
+https://github.com/decentralized-identity/ion
+
+Transmute has built a more generic (and simpler) implementation that supports :ion (bitcoin), :elem (ethereum), :photon (QLDB) and :trustbloc (fabric) methods: 
+https://github.com/transmute-industries/sidetree.js
+
+
 # loosely related
 
 ## Modern signature libraries:
@@ -315,7 +383,11 @@ NaCL DIDs: https://github.com/uport-project/nacl-did
 (sig suites: https://github.com/digitalbazaar/vc-js/blob/master/BACKGROUND.md#generating-keys-and-suites)
 
 generic did:key methods Transmute
+https://w3c-ccg.github.io/did-method-key/
 https://github.com/transmute-industries/did-key.js
+https://did.key.transmute.industries/
+
+> Since there is no support for update and deactivate for the did:key method, it is not possible to recover from a security compromise. For this reason, using a did:key for interactions that last weeks to months is strongly discouraged. 
 
 browser based ed25519: noble
 https://github.com/paulmillr/noble-ed25519
@@ -358,7 +430,7 @@ https://khalilstemmler.com/blogs/typescript/eslint-for-typescript/
 - let univax-core only operate on *signer* `({data}) => Uint8Array` interfaces and add private key converters for the different key types accordingly (get rid of Signer)
 
 - test against generic did/vc wallets
-- add a verifier for Consensa JSON-LD schemes for an immunization proof
+- add a verifier for Consensas JSON-LD schemes for an immunization proof
 - what's that Segment 4 spec of the CCI working group?
 - use a VC revocation registry like ERC780 
 - revoke Credentials using their hash (see: are ld proofs part of that hash?? )

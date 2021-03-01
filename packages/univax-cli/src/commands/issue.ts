@@ -32,7 +32,7 @@ export default class Issue extends Command {
 
   async run() {
     const { args, flags } = this.parse(Issue)
-
+        
     const claim = JSON.parse(readFileSync(args.claim, 'utf-8'))
 
     const subjectDid = flags.subject.startsWith('did:')
@@ -48,6 +48,7 @@ export default class Issue extends Command {
       flags.credentialType ? flags.credentialType.split(',') : [],
     )
 
-    issueCredential(credential, issuer, flags);
+    await issueCredential(credential, issuer, flags);
+    this.exit();
   }
 }

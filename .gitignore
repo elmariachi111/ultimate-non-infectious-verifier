@@ -24,4 +24,5 @@ yarn-error.log*
 
 .eslintcache
 .ganache_data
+.ipfs_data
 bak

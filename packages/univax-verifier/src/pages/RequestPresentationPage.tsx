@@ -1,10 +1,10 @@
-import { useIdentity, useCredentialVerifier } from '@univax/frontend';
-import { createPresentationRequest, Resolver } from '@univax/core';
-import { useState, useEffect } from 'react';
-import crypto from 'crypto';
-import bs58 from 'bs58';
-import QRCode from 'qrcode';
 import { Alert, AlertIcon, Box, Button, Code, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useClipboard } from '@chakra-ui/react';
+import { createPresentationRequest } from '@univax/core';
+import { useCredentialVerifier, useIdentity } from '@univax/frontend';
+import bs58 from 'bs58';
+import crypto from 'crypto';
+import QRCode from 'qrcode';
+import { useEffect, useState } from 'react';
 
 interface PresentationResponseAttrs {
   presentationResponse: string;
@@ -29,7 +29,7 @@ const RequestPresentationPage: React.FC = () => {
     }
     setIsValid(null);
     setErrorMessage("");
-    presentRequest(did, resolver);
+    presentRequest();
   }
 
   const presentationReceived = async (data: PresentationResponseAttrs) => {
@@ -45,7 +45,7 @@ const RequestPresentationPage: React.FC = () => {
     }
   }
 
-  const presentRequest = async (did: string, resolver: Resolver) => {
+  const presentRequest = async () => {
 
     const interactionToken = bs58.encode(crypto.randomBytes(32));
     const request = createPresentationRequest({
@@ -93,7 +93,6 @@ const RequestPresentationPage: React.FC = () => {
       </Box>
     }
 
-
       <Modal isOpen={(isValid !== null)} onClose={reset}>
         <ModalOverlay />
         <ModalContent>
@@ -112,9 +111,6 @@ const RequestPresentationPage: React.FC = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-
-
-
     </Box>
   );
 };

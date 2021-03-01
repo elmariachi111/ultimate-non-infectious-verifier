@@ -1,19 +1,24 @@
-import { Ed25519Signing, Resolver } from '../';
+import { Ed25519Signing, ResolverBuilder } from '../';
 import web3 from './common/web3Provider';
 import newRegistry from './common/newRegistry';
+import { Resolvable } from 'did-jwt';
 
 describe('Resolver', () => {
-  let resolver: Resolver;
+  let resolver: Resolvable;
   describe('ethrResolver', () => {
     beforeAll(async () => {
       const registry = await newRegistry(web3);
-      resolver = new Resolver([
-        {
-          name: 'development',
-          provider: web3.currentProvider,
-          registry: registry.address
-        }
-      ]);
+
+      resolver = ResolverBuilder()
+        .addEthResolver([
+          {
+            name: 'development',
+            provider: web3.currentProvider,
+            registry: registry.address
+          }
+        ])
+        .addKeyResolver()
+        .build();
     });
 
     it('runs a local chain', async () => {

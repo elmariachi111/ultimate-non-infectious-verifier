@@ -1,6 +1,5 @@
 import { Verifiable, W3CCredential } from 'did-jwt-vc';
-import { Resolver } from '../Resolver';
-import { Verifier } from '../Verifier';
+import { Resolvable, Verifier } from '..';
 import { CovidImmunization } from './Covid19';
 
 export interface VerifierFlags {
@@ -8,10 +7,10 @@ export interface VerifierFlags {
 }
 
 export default abstract class ICheckCredentials {
-  protected resolver: Resolver;
+  protected resolver: Resolvable;
   protected verifier: Verifier;
 
-  constructor(resolver: Resolver) {
+  constructor(resolver: Resolvable) {
     this.resolver = resolver;
     this.verifier = new Verifier(resolver);
   }

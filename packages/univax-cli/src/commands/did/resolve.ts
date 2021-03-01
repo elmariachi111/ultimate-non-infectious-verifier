@@ -3,8 +3,8 @@ import { resolver } from '../../resolver';
 
 export default class Resolve extends Command {
   static description = `
-    resolves aa did (or eth address). 
-    Support methods atm: [ethr|key]
+    resolves a did (or eth address). 
+    Support methods atm: [ethr|key|elem]
   `
 
   static examples = [
@@ -18,8 +18,10 @@ export default class Resolve extends Command {
 
   async run() {
     const { args } = this.parse(Resolve);
-
+    
     const didDoc = await resolver.resolve(args.did);
-    console.log(didDoc);
+    console.log(JSON.stringify(didDoc, null, 2));
+
+    this.exit()
   }
 }

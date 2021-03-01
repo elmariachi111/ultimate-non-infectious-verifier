@@ -1,9 +1,13 @@
-import { Ed25519KeyPair } from '@transmute/did-key-ed25519';
+import { Ed25519KeyPair, keyUtils } from '@transmute/did-key-ed25519';
 import base64url from 'base64url';
 import bs58 from 'bs58';
 //import { CryptoLD } from 'crypto-ld';
 import crypto from 'crypto';
 import { PublicKey } from 'did-resolver';
+
+export const privateKeyJwkFromPrivateKeyBase58 = keyUtils.privateKeyJwkFromPrivateKeyBase58;
+
+export const KEY_TYPE = 'Ed25519VerificationKey2018';
 
 export async function createEd25519VerificationKey(seed?: Uint8Array): Promise<Ed25519KeyPair> {
   const edKeyPair = await Ed25519KeyPair.generate({
@@ -14,29 +18,32 @@ export async function createEd25519VerificationKey(seed?: Uint8Array): Promise<E
 }
 
 /**
- * ethr-did-registry only stores keys as base64 or hex, so we must
- * convert it first
  *
  * @param PublicKey publicKey the controlled public key from registry
- * @param string privateKey the private key in base58
+ * @param string privateKey the private key in base58 or JWK
  */
-export function recoverEd25519KeyPair(key: PublicKey, privateKeyBase58?: string): Ed25519KeyPair {
-  let publicKeyBase58 = key.publicKeyBase58;
-  if (!publicKeyBase58) {
+export function recoverEd25519KeyPair(key: PublicKey, privateKey?: string | JsonWebKey): Ed25519KeyPair {
+  if (key.publicKeyJwk) {
+    return Ed25519KeyPair.from({
+      ...key,
+      publicKeyJwk: key.publicKeyJwk,
+      privateKeyJwk: privateKey
+    });
+  } else {
+    // ethr-did-registry only stores keys as base64 or hex, so we must transcode it first
     if (key.publicKeyBase64) {
-      publicKeyBase58 = bs58.encode(Buffer.from(key.publicKeyBase64, 'base64'));
-    } else {
-      throw Error('no compatible public key found');
+      key.publicKeyBase58 = bs58.encode(Buffer.from(key.publicKeyBase64, 'base64'));
     }
+
+    if (key.publicKeyBase58) {
+      return Ed25519KeyPair.from({
+        ...key,
+        publicKeyBase58: key.publicKeyBase58,
+        privateKeyBase58: privateKey as string
+      });
+    }
+    throw Error('no compatible public key found');
   }
-
-  const keyConfig = {
-    ...key,
-    publicKeyBase58,
-    privateKeyBase58
-  };
-
-  return Ed25519KeyPair.from(keyConfig);
 }
 
 /**

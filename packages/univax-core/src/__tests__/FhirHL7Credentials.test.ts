@@ -1,7 +1,8 @@
 import { Account } from 'web3-core';
 import {
   Issuer,
-  Resolver,
+  Resolvable,
+  ResolverBuilder,
   VaccinationCredentialVerifier,
   VerifiableCredential,
   CreateFhirHL7Immunization,
@@ -12,7 +13,7 @@ import newRegistry from './common/newRegistry';
 import web3 from './common/web3Provider';
 
 describe('Fhir HL7 / M$ Smart Health Card Vaccination Credentials', () => {
-  let resolver: Resolver;
+  let resolver: Resolvable;
   let issuerAccount: Account;
   let subjectAccount: Account;
   let didIssuer: DID;
@@ -21,13 +22,15 @@ describe('Fhir HL7 / M$ Smart Health Card Vaccination Credentials', () => {
 
   beforeAll(async () => {
     const registry = await newRegistry(web3);
-    resolver = new Resolver([
-      {
-        name: 'development',
-        provider: web3.currentProvider,
-        registry: registry.address
-      }
-    ]);
+    resolver = ResolverBuilder()
+      .addEthResolver([
+        {
+          name: 'development',
+          provider: web3.currentProvider,
+          registry: registry.address
+        }
+      ])
+      .build();
 
     issuerAccount = web3.eth.accounts.create();
     subjectAccount = web3.eth.accounts.create();

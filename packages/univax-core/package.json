@@ -6,6 +6,7 @@
     "node": ">=10",
     "pnpm": ">=3"
   },
+  "author": "Stefan Adolf <stefan.adolf@turbinekreuzberg.com>",
   "homepage": "https://github.com/elmariachi111/ultimate-non-infectious-verifier/blob/main/README.md",
   "repository": {
     "type": "git",
@@ -56,7 +57,14 @@
     "@jolocom/protocol-ts": "^0.5.2",
     "@openzeppelin/contracts": "^3.4.0",
     "@relocke/base58": "^1.0.0",
+    "@sidetree/cas-ipfs": "^0.2.3-unstable.5",
+    "@sidetree/common": "^0.2.3-unstable.5",
+    "@sidetree/core": "^0.2.3-unstable.5",
+    "@sidetree/did-method": "^0.2.3-unstable.5",
+    "@sidetree/element": "^0.2.3-unstable.5",
+    "@sidetree/ethereum": "^0.2.3-unstable.5",
     "@stablelib/sha256": "^1.0.0",
+    "@transmute/did-key-common": "^0.2.1-unstable.35",
     "@transmute/did-key-ed25519": "^0.2.1-unstable.29",
     "@transmute/did-key-secp256k1": "^0.2.1-unstable.31",
     "@transmute/did-key-web-crypto": "^0.2.1-unstable.29",
@@ -65,10 +73,11 @@
     "base64url": "^3.0.1",
     "bn.js": "^5.1.3",
     "bs58": "^4.0.1",
+    "cross-fetch": "^3.0.6",
     "crypto-ld": "^4.0.3",
     "did-jwt": "^4.8.1",
     "did-jwt-vc": "^1.0.6",
-    "did-resolver": "^2.1.2",
+    "did-resolver": "^2.2.0",
     "ethereumjs-tx": "^2.1.2",
     "ethereumjs-util": "^7.0.7",
     "ethr-did-registry": "^0.0.3",
@@ -82,6 +91,7 @@
     "web3-core": "1.3.3",
     "web3-eth": "1.3.3",
     "web3-eth-contract": "1.3.3",
-    "web3-utils": "1.3.3"
+    "web3-utils": "1.3.3",
+    "web3_130": "npm:web3@1.3.0"
   }
 }

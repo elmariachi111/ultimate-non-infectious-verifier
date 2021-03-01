@@ -9,22 +9,22 @@ import {
   W3CCredential
 } from 'did-jwt-vc/lib/types';
 import { DIDDocument, PublicKey } from 'did-resolver';
-import { Ed25519Signing, Secp256k1Signing } from '.';
+import { Ed25519Signing, Secp256k1Signing, Resolvable } from '.';
 import { DID } from './@types';
-import { Resolver } from './Resolver';
 
 export class Issuer {
-  private resolver: Resolver;
+  private resolver: Resolvable;
   private did: DID;
 
   /**
    * @param resolver Resolver
    * @param did string
    */
-  constructor(resolver: Resolver, did: DID) {
+  constructor(resolver: Resolvable, did: DID) {
     this.resolver = resolver;
     this.did = did;
   }
+
   async resolveIssuerDid(): Promise<DIDDocument> {
     return await this.resolver.resolve(this.did);
   }
@@ -34,7 +34,7 @@ export class Issuer {
     claim: JwtCredentialSubject,
     credentialType: string[] = []
   ): Promise<W3CCredential> {
-    const issuerDid = await this.resolveIssuerDid();
+    const issuerDid = await this.resolver.resolve(this.did);
     //const nbf = Math.floor( / 1000);
     const vcPayload: W3CCredential = {
       '@context': ['https://www.w3.org/2018/credentials/v1'],
@@ -63,7 +63,7 @@ export class Issuer {
   }
 
   async createJwt(credential: CredentialPayload, privateKey: string) {
-    const issuerDid = await this.resolveIssuerDid();
+    const issuerDid = await this.resolver.resolve(this.did);
     const didIssuer: DidIssuer = {
       did: issuerDid.id,
       signer: SimpleSigner(privateKey)
