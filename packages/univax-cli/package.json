@@ -1,6 +1,7 @@
 {
   "name": "@univax/cli",
-  "version": "0.0.2",
+  "version": "0.0.97",
+  "description": "a CLI tool that makes @univax/core accessible",
   "author": "Stefan Adolf <stefan.adolf@turbinekreuzberg.com>",
   "bin": {
     "univax": "./bin/run"

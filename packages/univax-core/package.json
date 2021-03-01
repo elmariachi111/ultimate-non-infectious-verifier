@@ -1,6 +1,6 @@
 {
   "name": "@univax/core",
-  "version": "0.0.96",
+  "version": "0.0.97",
   "description": "an universal immunization verifiable credential resolution and verification library",
   "engines": {
     "node": ">=10",
@@ -29,6 +29,13 @@
     "access": "public",
     "typings": "build/index.d.ts"
   },
+  "keywords": [
+    "DID",
+    "Verifiable Credentials",
+    "Vaccination Credentials",
+    "Imunization",
+    "DID Resolver"
+  ],
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
@@ -91,7 +98,6 @@
     "web3-core": "1.3.3",
     "web3-eth": "1.3.3",
     "web3-eth-contract": "1.3.3",
-    "web3-utils": "1.3.3",
-    "web3_130": "npm:web3@1.3.0"
+    "web3-utils": "1.3.3"
   }
 }

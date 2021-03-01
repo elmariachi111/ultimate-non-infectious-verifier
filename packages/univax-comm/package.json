@@ -1,14 +1,21 @@
 {
   "name": "@univax/comm",
-  "version": "0.0.1",
+  "version": "0.0.97",
   "description": "univax comm is an EventSource server to communicate back to clients",
-  "main": "src/index.ts",
+  "author": "Stefan Adolf <stefan.adolf@turbinekreuzberg.com>",
+  "homepage": "https://github.com/elmariachi111/ultimate-non-infectious-verifier/blob/main/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/elmariachi111/ultimate-non-infectious-verifier.git"
+  },
+  "license": "MIT",
   "scripts": {
     "build": "tsc",
     "start": "node build",
     "dev": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "main": "src/index.ts",
   "nodemonConfig": {
     "watch": [
       "src"
@@ -20,8 +27,11 @@
     "exec": "ts-node ./src/index.ts"
   },
   "keywords": [
-    "express",
-    "typescript"
+    "DID",
+    "Verifiable Credentials",
+    "Vaccination Credentials",
+    "Imunization",
+    "DID Resolver"
   ],
   "devDependencies": {
     "@types/bs58": "^4.0.1",

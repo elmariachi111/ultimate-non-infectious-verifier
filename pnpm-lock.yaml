@@ -180,7 +180,6 @@ importers:
       web3-eth: 1.3.3
       web3-eth-contract: 1.3.3
       web3-utils: 1.3.3
-      web3_130: /web3/1.3.0
     devDependencies:
       '@babel/core': 7.12.10
       '@babel/preset-env': 7.12.11_@babel+core@7.12.10
@@ -264,7 +263,6 @@ importers:
       web3-eth: 1.3.3
       web3-eth-contract: 1.3.3
       web3-utils: 1.3.3
-      web3_130: npm:web3@1.3.0
   packages/univax-frontend:
     dependencies:
       '@chakra-ui/react': 1.3.3_1f092169ac92beab8fb19447205acc59

@@ -2,6 +2,7 @@
   "name": "@univax/sidetree",
   "version": "0.1.0",
   "description": "a sidetree elem convenience wrapper",
+  "author": "Stefan Adolf <stefan.adolf@turbinekreuzberg.com>",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "files": [
@@ -15,7 +16,15 @@
     "dev": "tsc --watch --inlineSourceMap --inlineSources",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Stefan Adolf <stefan.adolf@turbinekreuzberg.com>",
+  "homepage": "https://github.com/elmariachi111/ultimate-non-infectious-verifier/blob/main/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/elmariachi111/ultimate-non-infectious-verifier.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "typings": "build/index.d.ts"
+  },
   "license": "MIT",
   "dependencies": {
     "@openzeppelin/contracts": "^3.4.0",
