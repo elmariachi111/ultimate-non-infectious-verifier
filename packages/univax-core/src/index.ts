@@ -6,7 +6,6 @@ export * as Ed25519Signing from './Ed25519Signing';
 export * as Secp256k1Signing from './Secp256k1Signing';
 export * from './Request';
 export * from './util/displayCredential';
-export * as Sidetree from './SidetreeElem';
 
 export { VerifiedCredential, VerifiableCredential, Verifiable, W3CCredential } from 'did-jwt-vc';
 export { JWTVerified } from 'did-jwt';

@@ -6,11 +6,10 @@ module.exports = {
       network_id: '*' // Match any network id
     }
   },
-  contracts_directory: "./contracts/0.5",
+  contracts_directory: "./contracts",
   compilers: {
     solc: {
       version: "0.5.0"
     }
   }
-
 };

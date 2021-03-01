@@ -1,13 +1,16 @@
-import { Element } from '@sidetree/element';
-export { Element } from '@sidetree/element';
-import { ICas, Config } from '@sidetree/common';
-import { OperationGenerator, Jwk, CreateOperation } from '@sidetree/core';
-
-import { EthereumLedger } from '@sidetree/ethereum';
 import { IpfsCasWithCache } from '@sidetree/cas-ipfs';
-import Web3 from 'web3_130';
-import { Ed25519Signing } from '.';
-import { DIDResolverRegistry } from './ResolverBuilder';
+import { Config, ICas } from '@sidetree/common';
+import { CreateOperation, Jwk, OperationGenerator } from '@sidetree/core';
+import { Element } from '@sidetree/element';
+import { EthereumLedger } from '@sidetree/ethereum';
+import { Ed25519KeyPair } from '@transmute/did-key-ed25519';
+import { DIDResolver } from 'did-resolver';
+import Web3 from 'web3';
+export { Element } from '@sidetree/element';
+
+interface DIDResolverRegistry {
+  [index: string]: DIDResolver;
+}
 
 export interface SidetreeElemEnvironment {
   eth: {
@@ -91,15 +94,13 @@ async function CreateDidOperation(): Promise<any> {
   const encodedDelta = createOperation.encodedDelta;
   const longFormDid = `${shortFormDid}?-sidetree-initial-state=${encodedSuffixData}.${encodedDelta}`;
 
-  const { publicKeyBase58, privateKeyBase58 } = Ed25519Signing.recoverEd25519KeyPair(
-    {
-      id: signingPublicKey.id,
-      type: signingPublicKey.type,
-      controller: shortFormDid,
-      publicKeyJwk: signingPublicKey.jwk
-    },
-    signingPrivateKey
-  ).toKeyPair(true);
+  const { publicKeyBase58, privateKeyBase58 } = Ed25519KeyPair.from({
+    id: signingPublicKey.id,
+    type: signingPublicKey.type,
+    controller: shortFormDid,
+    publicKeyJwk: signingPublicKey.jwk,
+    privateKeyJwk: signingPrivateKey
+  }).toKeyPair(true);
 
   return {
     shortFormDid,

@@ -1,12 +1,13 @@
 {
   "name": "@univax/cli",
-  "version": "0.0.1",
-  "author": "Stefan Adolf @elmariachi111",
+  "version": "0.0.2",
+  "author": "Stefan Adolf <stefan.adolf@turbinekreuzberg.com>",
   "bin": {
     "univax": "./bin/run"
   },
   "dependencies": {
     "@univax/core": "workspace:*",
+    "@univax/sidetree": "workspace:*",
     "@oclif/command": "^1.8.0",
     "@oclif/config": "^1.17.0",
     "@oclif/errors": "^1.3.4",

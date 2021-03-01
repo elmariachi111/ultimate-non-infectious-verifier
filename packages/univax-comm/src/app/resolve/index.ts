@@ -1,7 +1,18 @@
-import { ResolverBuilder, Sidetree, EthProviderConfig } from '@univax/core';
+import { SidetreeElemMethod, GetResolver as GetSidetreeElementResolver } from '@univax/sidetree';
+import { ResolverBuilder, EthProviderConfig } from '@univax/core';
+
 import { Router } from 'express';
 import { RESOLVER_ENDPOINT } from '../../constants/endpoint';
-const { NODE_ENV, ETHEREUM_NODE, SIDETREE, REGISTRY, IPFS_API, MONGO_CONNECTION, INFURA_ID } = process.env;
+const {
+  NODE_ENV,
+  ETHEREUM_NODE,
+  SIDETREE,
+  REGISTRY,
+  IPFS_API,
+  MONGO_CONNECTION,
+  MONGO_SIDETREE_ELEMENT_DBNAME,
+  INFURA_ID
+} = process.env;
 
 let ethNetworks: EthProviderConfig[] = [];
 
@@ -23,17 +34,21 @@ if (NODE_ENV == 'development') {
 const builder = ResolverBuilder().addKeyResolver().addEthResolver(ethNetworks);
 
 if (SIDETREE && ETHEREUM_NODE && IPFS_API && MONGO_CONNECTION) {
-  builder.addSideTreeResolver(
-    Sidetree.SidetreeElemMethod({
+  const sideTreeRegistry = async () => {
+    const _sidetree = await SidetreeElemMethod({
       eth: {
         node: ETHEREUM_NODE,
         sideTreeContractAddress: SIDETREE
       },
       ipfsNode: IPFS_API,
       mongoConnection: MONGO_CONNECTION,
-      dbName: 'element-test'
-    })
-  );
+      dbName: MONGO_SIDETREE_ELEMENT_DBNAME || 'sidetree-elem-cache'
+    });
+    if (!_sidetree) throw Error('sidetree not constructed');
+    return GetSidetreeElementResolver(_sidetree);
+  };
+
+  builder.addCustomResolver(sideTreeRegistry());
 }
 
 const resolver = builder.build();

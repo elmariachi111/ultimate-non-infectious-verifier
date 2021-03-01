@@ -1,10 +1,8 @@
+import fetch from 'cross-fetch';
 import { DIDCache, DIDDocument, DIDResolver, Resolver as ResolverClass } from 'did-resolver';
 import { getResolver as getEthrDidResolver } from 'ethr-did-resolver';
 import { default as getKeyResolver } from 'key-did-resolver';
 import { EthProviderConfig } from './@types/Ethereum';
-import { GetResolver as GetSidetreeElementResolver, SidetreeElemMethod, SidetreeElemEnvironment } from './SidetreeElem';
-import { Element } from '@sidetree/element';
-import fetch from 'cross-fetch';
 
 export interface DIDResolverRegistry {
   [index: string]: DIDResolver;
@@ -48,19 +46,19 @@ export default function ResolverBuilder() {
       return this;
     },
 
-    addSideTreeResolver: async function (sidetreeElem: Element | Promise<Element>) {
-      if (sidetreeElem instanceof Promise) {
-        promises.push(sidetreeElem);
+    addCustomResolver: async function (customRegistry: DIDResolverRegistry | Promise<DIDResolverRegistry>) {
+      let _registry: DIDResolverRegistry;
+      if (customRegistry instanceof Promise) {
+        promises.push(customRegistry);
+        _registry = await customRegistry;
+      } else {
+        _registry = customRegistry;
       }
+
       registry = {
         ...registry,
-        ...GetSidetreeElementResolver(await sidetreeElem)
+        ..._registry
       };
-      return this;
-    },
-
-    addCustomResolver: function (method: string, resolve: DIDResolver) {
-      registry[method] = resolve;
       return this;
     },
 

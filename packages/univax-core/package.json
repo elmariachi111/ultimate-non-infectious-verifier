@@ -6,6 +6,7 @@
     "node": ">=10",
     "pnpm": ">=3"
   },
+  "author": "Stefan Adolf <stefan.adolf@turbinekreuzberg.com>",
   "homepage": "https://github.com/elmariachi111/ultimate-non-infectious-verifier/blob/main/README.md",
   "repository": {
     "type": "git",
