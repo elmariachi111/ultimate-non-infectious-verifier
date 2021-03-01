@@ -46,19 +46,22 @@ export default function ResolverBuilder() {
       return this;
     },
 
-    addCustomResolver: async function (customRegistry: DIDResolverRegistry | Promise<DIDResolverRegistry>) {
-      let _registry: DIDResolverRegistry;
+    addCustomResolver: function (customRegistry: DIDResolverRegistry | Promise<DIDResolverRegistry>) {
       if (customRegistry instanceof Promise) {
         promises.push(customRegistry);
-        _registry = await customRegistry;
+        customRegistry.then((_registry) => {
+          registry = {
+            ...registry,
+            ..._registry
+          };
+        });
       } else {
-        _registry = customRegistry;
+        registry = {
+          ...registry,
+          ...customRegistry
+        };
       }
 
-      registry = {
-        ...registry,
-        ..._registry
-      };
       return this;
     },
 
@@ -92,7 +95,6 @@ export default function ResolverBuilder() {
       return {
         resolve: async (did: string): Promise<DIDDocument> => {
           if (!initialized) {
-            console.log('initializing Resolver');
             await Promise.all(promises);
             localResolver = new ResolverClass(registry, cache);
             initialized = true;
