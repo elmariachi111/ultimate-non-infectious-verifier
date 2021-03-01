@@ -128,6 +128,10 @@ http://build.fhir.org/ig/dvci/vaccine-credential-ig/branches/main/
 Helpers for FHIR / JSON-LD schematics
 https://github.com/fhircat
 
+### Mattr (under W3C umbrella)
+unofficial draft of a W3C vaccination model
+https://w3c-ccg.github.io/vaccination-vocab/
+
 ### Schema.org oriented schemas
 
 David Janes' mighty survey of everything he found: https://docs.google.com/document/d/1a4j0-6kJonEfSlX50ZEfAEbx2ab2IW8UuBK8vigsoLU/edit#heading=h.y43f7b8rk9yr
@@ -143,6 +147,15 @@ https://schema.org/MedicalTherapy
 it's impl and extended by Consensas: https://github.com/Consensas/information-passport/blob/main/docs/Vaccination.md
 and a sample: https://consensas.world/did/did:cns:ABMY2TCODB.json
 
+### LOINC
+yet another weird medical coding standard https://loinc.org/downloads/loinc-table/
+
+### American Immunization Registry Association
+https://repository.immregistries.org/resource/hl7-version-2-5-1-implementation-guide-for-immunization-messaging-release-1-5-1/
+(slighty unrelated, mainly deals with communication aspects)
+
+### CVC (Canada Vaccine Catalogue) API
+https://cvc.canimmunize.ca/docs/#/
 
 ## The CDC recommendation for Vaccination codes
 https://www.cdc.gov/vaccines/programs/iis/downloads/business-rules.pdf  
@@ -159,9 +172,10 @@ https://www.cdc.gov/vaccines/programs/iis/about.html
 https://www.cdc.gov/vaccines/programs/iis/functional-standards/func-stds-v4-1.html
 https://www.cdc.gov/vaccines/programs/iis/technical-guidance/downloads/hl7guide-1-5-2014-11.pdf
 
+
 ## Administrative papers
 
-Vaccination proof interop guidelines by the EU:
+Vaccination proof interop guidelines by the **European Union**:
 https://ec.europa.eu/health/sites/health/files/ehealth/docs/vaccination-proof_interoperability-guidelines_en.pdf
 
 Qatar open data:
