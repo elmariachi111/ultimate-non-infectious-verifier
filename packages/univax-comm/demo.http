@@ -65,5 +65,6 @@ Content-Type: application/json
 
 {
   "did": "did:elem:EiABeh2B0F2TWARIZ_YD9Dp_xVIqUquhaK2EhsgRff3cAQ"
+  //"did": "did:key:z6MkiCjjwB1yz34noVQ2ovC2JRbf4fjXMfrTfLEoP37k65S3"
 }
 
