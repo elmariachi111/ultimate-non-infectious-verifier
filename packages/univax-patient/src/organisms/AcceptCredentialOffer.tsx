@@ -21,12 +21,15 @@ const AcceptCredentialOffer = () => {
   const toast = useToast();
 
   const acceptCredentialOffer = async (acceptedOffer: CredentialOffer) => {
+    const issuerDid = await issuer.resolveIssuerDid();
     const payload = {
       callbackURL: credentialOffer!.callbackURL,
+      issuer: {
+        id: issuerDid.id
+      },
       selectedCredentials: [{ type: acceptedOffer.type }]
     };
 
-    const issuerDid = await issuer.resolveIssuerDid();
     const proof = await issuer.createJsonProof(payload, issuerDid.publicKey[0], account.privateKey);
     const serverPayload = {
       ...payload,
@@ -37,7 +40,7 @@ const AcceptCredentialOffer = () => {
     const eventSource = new EventSource(`${process.env.REACT_APP_COMM_SERVER}/comm/listen/${interactionToken}`);
 
     eventSource.addEventListener('receiveCredential', async function (event: any) {
-      console.log(event);
+      console.debug(event);
       await receiveCredential(JSON.parse(event.data));
       eventSource.close();
     });

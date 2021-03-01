@@ -5,27 +5,27 @@ Content-Type: application/json
   "@context": [
     "https://www.w3.org/2018/credentials/v1"
   ],
-  "issuanceDate": "2021-02-20T21:15:12.388Z",
+  "issuanceDate": "2021-03-01T16:23:51.760Z",
   "credentialSubject": {
-    "id": "did:ethr:development:0x7b91333cb3a0155a0a8ea9800c912097e602a3aa",
+    "id": "did:ethr:development:0xe19c8f61d4d3b3a0e8414c11f7c96f7a961802f5",
     "fhirVersion": "4.0.1",
     "fhirResource": {
       "resource": {
         "resourceType": "Practitioner",
-        "id": "did:ethr:development:0x7b91333cb3a0155a0a8ea9800c912097e602a3aa",
+        "id": "did:ethr:development:0xe19c8f61d4d3b3a0e8414c11f7c96f7a961802f5",
         "identifier": [
           {
             "use": "official",
             "system": "did",
-            "value": "did:ethr:development:0x7b91333cb3a0155a0a8ea9800c912097e602a3aa"
+            "value": "did:ethr:development:0xe19c8f61d4d3b3a0e8414c11f7c96f7a961802f5"
           }
         ],
         "name": [
           {
             "use": "official",
-            "family": "Klaus",
+            "family": "Adolf",
             "given": [
-              "Brinkmann"
+              "Stefan"
             ]
           }
         ]
@@ -33,18 +33,18 @@ Content-Type: application/json
     }
   },
   "issuer": {
-    "id": "did:ethr:development:0xffcf8fdee72ac11b5c542428b35eef5769c409f0"
+    "id": "did:elem:EiBKGmrF3D3O5HC2DHke3fkK-hEx6zT6wnJ6x9FPTyItkA"
   },
   "type": [
     "VerifiableCredential",
     "ProofOfProvider"
   ],
   "proof": {
-    "type": "EcdsaSecp256k1Signature2019",
-    "verificationMethod": "did:ethr:development:0xffcf8fdee72ac11b5c542428b35eef5769c409f0#controller",
-    "created": "2021-02-20T21:15:15.023Z",
+    "type": "Ed25519Signature2018",
+    "verificationMethod": "#signingKey",
+    "created": "2021-03-01T16:23:59.732Z",
     "proofPurpose": "assertionMethod",
-    "jws": "eyJhbGciOiJFUzI1NksifQ..MZBmAzNO4klPBjFKSG6a4HAULGqAnukYU3_GiQLnUacKnHs7cJOmzXi8-huHg5desSGOslcyHUIEQ9lo2fC8tw"
+    "jws": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..HlAJi4Wzs3l7PQ2sVLh7rqjnpf5PUye-8mTaZ9GvdTmTqqDRLfg1JvuvHvMD5UnqH3ShSdR4ZcOc-pS7vfe5DQ"
   }
 }
 
