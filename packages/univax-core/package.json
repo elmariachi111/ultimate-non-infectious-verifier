@@ -1,6 +1,6 @@
 {
   "name": "@univax/core",
-  "version": "0.0.95",
+  "version": "0.0.96",
   "description": "an universal immunization verifiable credential resolution and verification library",
   "engines": {
     "node": ">=10",
