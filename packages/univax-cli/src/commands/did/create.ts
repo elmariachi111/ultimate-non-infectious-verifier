@@ -1,6 +1,6 @@
 import { Command, flags } from '@oclif/command';
 import * as fs from 'fs';
-import { Ed25519Signing } from '@univax/core';
+import { Ed25519Signing, Jolocom } from '@univax/core';
 import sidetree from '../../sidetree';
 import { CreateSidetreeElemDid } from '@univax/sidetree';
 
@@ -32,11 +32,19 @@ export default class Create extends Command {
         await didMethod.close();
       break;
 
+      case 'jun': 
+        const identity = await Jolocom.createNewIdentity("secret");
+        console.log(identity.toJSON());
+
+      break;
+
       case 'key': case 'default': 
         const edKeyPair = await Ed25519Signing.createEd25519VerificationKey();
         did = `did:key:${edKeyPair.fingerprint()}`;
         keyFile = JSON.stringify(edKeyPair.toKeyPair(true));
       break;
+
+      
     } 
 
     if (did) {

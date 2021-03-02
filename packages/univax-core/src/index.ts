@@ -6,6 +6,7 @@ export * as Ed25519Signing from './Ed25519Signing';
 export * as Secp256k1Signing from './Secp256k1Signing';
 export * from './Request';
 export * from './util/displayCredential';
+export * as Jolocom from './Jolocom';
 
 export { VerifiedCredential, VerifiableCredential, Verifiable, W3CCredential } from 'did-jwt-vc';
 export { JWTVerified } from 'did-jwt';
@@ -17,6 +18,7 @@ export {
 } from 'did-jwt-vc/lib/types';
 
 export * from './@types/Jolocom';
+
 export { EthProviderConfig } from './@types/Ethereum';
 export { DID, BufferLike, JSONProof } from './@types';
 export { FHIRResource, FHIRBundle } from './@types/Fhir';
