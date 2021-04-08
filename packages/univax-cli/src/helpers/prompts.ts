@@ -1,4 +1,4 @@
-import { DIDDocument, PublicKey, Ed25519Signing } from '@univax/core';
+import { DIDDocument, PublicKey, Ed25519Signing, Jolocom } from '@univax/core';
 import cli from 'cli-ux';
 import * as inquirer from 'inquirer';
 import * as roles from '../../aliases.json';
@@ -37,6 +37,30 @@ export async function chooseDidFromRoles(givenDid?: string): Promise<string> {
   }
 }
 
+export async function chooseDidFromJolocomSdk(): Promise<string> {
+  const wallets = await Jolocom.listIdenitites();
+  const choices = wallets.map((wallet: any) => ({
+    name: wallet.id,
+    value: wallet.id
+  }));
+  const prompt = inquirer.createPromptModule()
+  const { did } = await prompt([{
+    type: 'list',
+    name: 'did',
+    message: 'choose a DID from your local wallet',
+    choices: choices
+  }])
+  return did
+}
+
+export async function promptForPassword(): Promise<string> {
+  const {secret} = await inquirer.prompt([{
+    type: 'password',
+    name: 'secret',
+  }])
+  return secret;
+
+}
 export async function chooseSigningKey(
   issuerDid: DIDDocument,
 ): Promise<{ signingKey: PublicKey; signingPrivateKey: string }> {

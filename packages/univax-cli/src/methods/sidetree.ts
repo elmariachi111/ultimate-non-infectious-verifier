@@ -2,7 +2,7 @@ import { SidetreeElemMethod, Element } from "@univax/sidetree";
 
 const { ETHEREUM_NODE, SIDETREE, IPFS_API, MONGO_CONNECTION} = process.env;
 
-let sidetree: Promise<Element|null> = (async () => {
+const sidetree: Promise<Element|null> = (async () => {
     if (SIDETREE && ETHEREUM_NODE && IPFS_API && MONGO_CONNECTION) {
         return await SidetreeElemMethod({
           eth: {
@@ -17,5 +17,6 @@ let sidetree: Promise<Element|null> = (async () => {
         return null;
     }
 })();
+
 
 export default sidetree;

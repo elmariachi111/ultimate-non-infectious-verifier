@@ -3,6 +3,12 @@ import { ResolverBuilder, EthProviderConfig } from '@univax/core';
 
 import { Router } from 'express';
 import { RESOLVER_ENDPOINT } from '../../constants/endpoint';
+
+/**
+ * these routes are roughly related to
+ * https://w3c-ccg.github.io/did-resolution/#resolver-architectures
+ */
+
 const {
   NODE_ENV,
   ETHEREUM_NODE,

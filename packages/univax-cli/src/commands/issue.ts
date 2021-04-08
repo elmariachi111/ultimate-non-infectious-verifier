@@ -1,10 +1,10 @@
-import { Issuer } from '@univax/core';
+import { Issuer, W3CCredential, Jolocom } from '@univax/core';
 import { Command, flags } from '@oclif/command';
 import { readFileSync, writeFileSync } from 'fs';
 // @ts-ignore
 import * as roles from '../../aliases.json';
-import { issueCredential } from '../helpers/issueCredential';
-import { chooseDidFromRoles } from '../helpers/prompts';
+import { issueCredential, joloIssueCredential } from '../helpers/issueCredential';
+import { chooseDidFromRoles, promptForPassword } from '../helpers/prompts';
 import { resolver } from '../resolver';
 
 export default class Issue extends Command {
@@ -41,14 +41,24 @@ export default class Issue extends Command {
 
     const issuerDid = await chooseDidFromRoles(flags.issuer)
     const issuer = new Issuer(resolver, issuerDid);
-
-    const credential = await issuer.issueCredential(
+    const credential: W3CCredential = await issuer.issueCredential(
       subjectDid,
       claim,
       flags.credentialType ? flags.credentialType.split(',') : [],
     )
 
-    await issueCredential(credential, issuer, flags);
+    let issuedCredential;
+    if (Jolocom.isJolocomDid(issuerDid)) {
+      issuedCredential = await joloIssueCredential(credential, issuerDid, credential.type.join(","), flags);
+    } else {
+      issuedCredential = await issueCredential(credential, issuer, flags);      
+    }
+
+    if (flags.out) {
+      writeFileSync(flags.out, issuedCredential, 'utf-8');
+    } 
+    console.log(issuedCredential);
+    
     this.exit();
   }
 }

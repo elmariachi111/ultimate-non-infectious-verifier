@@ -45,10 +45,12 @@ export class Verifier {
     });
   }
 
+  //async findKey()
   async verifyJsonCredential(jsonCredential: Verifiable<W3CCredential | Record<string, any>>): Promise<boolean> {
     const { proof, ...credential } = jsonCredential;
     const payload = JSON.stringify(credential, null, 2);
-    const did = await this.resolver.resolve(credential.issuer.id);
+    const issuerDid = credential.issuer.id || credential.issuer;
+    const did = await this.resolver.resolve(issuerDid);
 
     const [veriKey] = did.publicKey.filter((key) => key.id == proof.verificationMethod);
 

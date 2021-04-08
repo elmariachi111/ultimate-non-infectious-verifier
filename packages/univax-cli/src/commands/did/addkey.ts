@@ -3,9 +3,9 @@ import { Command, flags } from '@oclif/command';
 import { resolver, registry } from '../../resolver';
 
 export default class AddKey extends Command {
-  static description = 'creates a new Ed25519 keypair for signing and registers it on eth registry';
+  static description = '(ethr) creates a new Ed25519 keypair for signing and registers it on eth registry';
 
-  static examples = ['$ immu did:addkey <did> '];
+  static examples = ['$ univax did:addkey <did> '];
 
   static flags = {
     help: flags.help({ char: 'h' }),

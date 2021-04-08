@@ -1,18 +1,14 @@
 import { Command, flags } from '@oclif/command';
-import { Ed25519Signing, Secp256k1Signing } from '@univax/core';
+import { Ed25519Signing, Secp256k1Signing, Jolocom } from '@univax/core';
 import * as base58 from 'bs58';
-import { chooseSigningKey } from '../../helpers/prompts';
+import { chooseSigningKey, promptForPassword } from '../../helpers/prompts';
 import { resolver } from '../../resolver';
+import jolocom from '../../methods/jolocom'
 
 export default class Sign extends Command {
-  static description = 'creates a new ed25519 signature on message. Asks for private keys';
+  static description = 'signs <message>. Asks for private keys';
 
-  static examples = ['$ immu did:sign <did> <message>'];
-
-  static flags = {
-    help: flags.help({ char: 'h' }),
-    debug: flags.boolean({ char: 'd', description: 'display debug info' }),
-  };
+  static examples = ['$ univax did:sign <did> <message>'];
 
   static args = [
     { name: 'did', required: true },
@@ -20,31 +16,43 @@ export default class Sign extends Command {
   ];
 
   async run() {
-    const { flags, args } = this.parse(Sign);
+    const { args } = this.parse(Sign);
     
     const did = await resolver.resolve(args.did);
-    if (!did.authentication) {
+
+    if (!did.publicKey) {
       console.error('no authentication methods found in your did')
       return
     }
-    const { signingKey, signingPrivateKey } = await chooseSigningKey(did);
+    let signature;
 
-    let signer;
-    if (signingKey.type == 'Secp256k1VerificationKey2018') {
-      const s256keyPair = await (signingKey.ethereumAddress
-        ? Secp256k1Signing.recoverKeyPairFromEthereumAccount(signingPrivateKey.slice(2))
-        : Secp256k1Signing.recoverKeyPair(signingKey, signingPrivateKey))
-      signer = s256keyPair.signer();
-    } else if (signingKey.type == 'Ed25519VerificationKey2018') {
-      const edKeyPair = await Ed25519Signing.recoverEd25519KeyPair(signingKey, signingPrivateKey);
-      signer = await edKeyPair.signer();
+    if (Jolocom.isJolocomDid(args.did)) {
+      const sdk = await jolocom;
+      const passphrase = await promptForPassword();
+      const agent = await sdk.loadAgent(passphrase, args.did);
+      //const did = agent.idw.didDocument.toJSON();
+      const content = Buffer.from(args.message, 'utf-8');
+      signature = await agent.idw.sign(content, passphrase);
     } else {
-      throw new Error(`unsupported key type ${signingKey.type}`)
-    }
+      const { signingKey, signingPrivateKey } = await chooseSigningKey(did);
 
-    const signature = await signer.sign({
-      data: args.message
-    });
+      let signer;
+      if (signingKey.type == 'Secp256k1VerificationKey2018') {
+        const s256keyPair = await (signingKey.ethereumAddress
+          ? Secp256k1Signing.recoverKeyPairFromEthereumAccount(signingPrivateKey.slice(2))
+          : Secp256k1Signing.recoverKeyPair(signingKey, signingPrivateKey))
+        signer = s256keyPair.signer();
+      } else if (signingKey.type == 'Ed25519VerificationKey2018') {
+        const edKeyPair = await Ed25519Signing.recoverEd25519KeyPair(signingKey, signingPrivateKey);
+        signer = await edKeyPair.signer();
+      } else {
+        throw new Error(`unsupported key type ${signingKey.type}`)
+      }
+  
+      signature = await signer.sign({
+        data: args.message
+      });
+    }
 
     console.log({
       did: did.id,
