@@ -85,6 +85,10 @@ Vaccination Credential Initiative
 (Microsoft, Oracle, Salesforce etc)
 - https://vaccinationcredential.org/
 
+
+Spherity / SAP Reopen
+- https://devpost.com/software/reopen-einfuhrung-von-sars-cov-2-antigen-schnelltest-passen
+
 IATA Travel Pass Initiative  
 - https://www.iata.org/en/programs/passenger/travel-pass/
 
@@ -99,12 +103,9 @@ https://hlthid.com/
 David Janes / CCCC4 / Consensas
 opinion: https://www.yogitatrainingcenter.com/w3c-verifiable-credentials-the-fairly-odd-blueprints-by-david-janes-consensas-feb-2021/
 
-collection / survey of all initiatives:
-https://docs.google.com/document/d/1MQfZzlkYkXCXvnUXd7Cd6Y5g0RRXrKxGGqVcbBnSk1k/edit
-
 https://techcrunch.com/2021/01/19/europe-is-working-on-a-common-framework-for-vaccine-passports/
 
-curated list of all vaccination passport providers in the world:
+curated list of all vaccination passport providers in the world (David Janes)
 https://docs.google.com/document/d/1MQfZzlkYkXCXvnUXd7Cd6Y5g0RRXrKxGGqVcbBnSk1k/edit
 
 
@@ -113,9 +114,30 @@ https://docs.google.com/document/d/1MQfZzlkYkXCXvnUXd7Cd6Y5g0RRXrKxGGqVcbBnSk1k/
 FHIR4 immunization general
 https://www.hl7.org/fhir/immunization.schema.json.html
 
+Paul Knowles' / John Walker's (CCI) effort to bring together jurisdicational dependent and global credential specs:
+https://drive.google.com/drive/u/1/folders/1h4vF79KzUY6KipBt3A6kMEboiqcSYtv7
+
+Immunization Schema Survey
+https://docs.google.com/document/d/1a4j0-6kJonEfSlX50ZEfAEbx2ab2IW8UuBK8vigsoLU/edit#heading=h.y43f7b8rk9yr
+
+List of paper based vaccine credentials
+https://www.lfph.io/wp-content/uploads/2021/03/CCI-Paper-Based-VC-Summit-Summary-Report.pdf
+
+A paper based, compressed credential by PathCheck
+https://vaccine-docs.pathcheck.org/
+https://github.com/Path-Check/paper-cred/
+https://github.pathcheck.org/vial.html
+
+### W3C oriented schemas
+https://w3id.org/vaccination/ ->
+https://w3c-ccg.github.io/vaccination-vocab/
+https://w3c-ccg.github.io/vaccination-vocab/context/v1/index.json
+
+
 ### M$ Smart Health Cards (VCI)
-The preliminary FHIR4 spec, driven by M$ Smart Health Cards project:
+The preliminary FHIR4 spec, driven by M$ Smart Health Cards project & DVCI:
 http://build.fhir.org/ig/dvci/vaccine-credential-ig/branches/main/
+-> https://github.com/dvci/vaccine-credential-ig
 
 M$ Smart Health Cards initiative bundles FHIR/HL7 information into health credentials
 https://github.com/microsoft-healthcare-madison/health-wallet-demo/blob/master/src/fixtures/vc.json
@@ -130,11 +152,9 @@ https://github.com/fhircat
 
 ### Mattr (under W3C umbrella)
 unofficial draft of a W3C vaccination model
-https://w3c-ccg.github.io/vaccination-vocab/
+
 
 ### Schema.org oriented schemas
-
-David Janes' mighty survey of everything he found: https://docs.google.com/document/d/1a4j0-6kJonEfSlX50ZEfAEbx2ab2IW8UuBK8vigsoLU/edit#heading=h.y43f7b8rk9yr
 
 [CCCC4 initiative](https://cccc4.ca/)'s schema, based on a Canadian effort, driven by Consensas e.a.
 https://docs.google.com/document/d/1pCyS_lhbMGhOkq1jFEkI_od-9QunURKzGWA7ty5DCII/edit
@@ -178,10 +198,26 @@ https://www.cdc.gov/vaccines/programs/iis/technical-guidance/downloads/hl7guide-
 Vaccination proof interop guidelines by the **European Union**:
 https://ec.europa.eu/health/sites/health/files/ehealth/docs/vaccination-proof_interoperability-guidelines_en.pdf
 
+Trust framework / interop requirements
+https://ec.europa.eu/health/sites/health/files/ehealth/docs/trust-framework_interoperability_certificates_en.pdf
+
+as discussed by Evernym:
+https://www.evernym.com/blog/eu-digital-green-certificate-program/
+
+and debated on TC: https://techcrunch.com/2021/03/17/europes-rush-for-a-covid-19-digital-pass-stirs-concerns/
+
+(WHO) A call for participation
+https://www.who.int/news-room/articles-detail/call-for-public-comments-interim-guidance-for-developing-a-smart-vaccination-certificate-release-candidate-1
+
+
+
 Qatar open data:
 https://www.data.gov.qa/explore/dataset/h4-vaccination/information/
 
-## others
+## others / custom / products
+
+Lumedic
+https://www.lumedic.io/
 
 A ruby impl of health cards (DVCI)
 https://github.com/dvci/health_cards
@@ -194,6 +230,7 @@ https://github.com/dvci/health_cards
 https://w3c-ccg.github.io/did-primer/
 https://www.w3.org/TR/did-core/#a-simple-example
 https://www.w3.org/TR/vc-data-model/#proofs-signatures
+https://www.w3.org/TR/vc-data-model/#linked-data-proofs
 
 The official, generic universal DIF DID resolver:
 https://github.com/decentralized-identity/universal-resolver
@@ -219,6 +256,7 @@ https://www.w3.org/TR/vc-imp-guide/
 
 A nonfinal vc http api interface spec
 https://github.com/w3c-ccg/vc-http-api
+
 
 https://w3c-ccg.github.io/vc-extension-registry/#proof-methods
 
@@ -412,6 +450,10 @@ https://www.npmjs.com/package/vc-js/v/0.6.4?activeTab=readme
 based on W3C draft on Crypto LD signatures:
 https://w3c-ccg.github.io/ld-cryptosuite-registry/#ed25519
 https://github.com/w3c-ccg
+
+https://www.ionos.com/digitalguide/websites/website-creation/tutorial-json-ld-with-schemaorg/
+
+Jolocom's lib doku for custom credentials: https://jolocom-lib.readthedocs.io/en/latest/signedCredentials.html#working-with-custom-credentials
 
 ### OT: Linting TS
 
