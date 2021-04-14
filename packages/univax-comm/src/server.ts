@@ -5,6 +5,8 @@ import morgan from 'morgan';
 import { router as CommRouter } from './app/comm';
 import { router as VCRouter } from './app/vc';
 import { router as ResolverRouter } from './app/resolve';
+import { createServer } from 'http';
+import { Server as SocketServer, Socket } from 'socket.io';
 
 const app: Express = express();
 
@@ -45,4 +47,20 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
   });
 });
 
-export default app;
+const httpServer = createServer(app);
+const io = new SocketServer(httpServer, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
+});
+io.on('connection', (socket) => {
+  socket.on('credentialOfferAccepted', (data) => {
+    socket.to(data.interactionToken).emit('credentialOfferAccepted', data);
+  });
+  socket.on('credentialIssued', (data) => {
+    socket.to(data.subjectToken).emit('credentialIssued', data);
+  });
+});
+
+export default httpServer;

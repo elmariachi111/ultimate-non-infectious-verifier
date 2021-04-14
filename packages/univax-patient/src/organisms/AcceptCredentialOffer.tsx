@@ -1,13 +1,15 @@
 import { Box, Button, Flex, FormControl, FormLabel, Heading, Textarea, useToast, VStack } from '@chakra-ui/react';
 import { useIdentity } from '@univax/frontend';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CredentialOfferRequestAttrs, CredentialOffer } from '@univax/core';
 import CredentialOfferCard from 'molecules/CredentialOfferCard';
-import fetch from 'cross-fetch';
+//import fetch from 'cross-fetch';
 import { useCredentials } from 'hooks/CredentialStorage';
 import QrReader from 'react-qr-reader';
+import { io, Socket } from 'socket.io-client';
 
 interface ReceivedCredential {
+  interactionToken: string;
   signedCredentialJwt: string;
 }
 
@@ -16,6 +18,15 @@ const AcceptCredentialOffer = () => {
 
   const [credentialOffer, setCredentialOffer] = useState<CredentialOfferRequestAttrs & { issuer: string }>();
   const [isScanning, setScanning] = useState<boolean>(false);
+  const [socket, setSocket] = useState<any>();
+
+  useEffect(() => {
+    const _socket = io(process.env.REACT_APP_COMM_SERVER as string);
+    _socket.on('connect', () => {
+      console.log(_socket.id);
+    });
+    setSocket(_socket);
+  }, []);
 
   const { addCredential } = useCredentials();
   const toast = useToast();
@@ -23,7 +34,8 @@ const AcceptCredentialOffer = () => {
   const acceptCredentialOffer = async (acceptedOffer: CredentialOffer) => {
     const issuerDid = await issuer.resolveIssuerDid();
     const payload = {
-      callbackURL: credentialOffer!.callbackURL,
+      interactionToken: acceptedOffer.interactionToken,
+      subjectToken: socket!.id,
       issuer: {
         id: issuerDid.id
       },
@@ -36,26 +48,23 @@ const AcceptCredentialOffer = () => {
       proof
     };
 
-    const interactionToken = new URL(credentialOffer!.callbackURL).pathname.split('/').slice(-1)[0];
-    const eventSource = new EventSource(`${process.env.REACT_APP_COMM_SERVER}/comm/listen/${interactionToken}`);
-
-    eventSource.addEventListener('receiveCredential', async function (event: any) {
-      console.debug(event);
-      await receiveCredential(JSON.parse(event.data));
-      eventSource.close();
+    //const interactionToken = new URL(credentialOffer!.callbackURL).pathname.split('/').slice(-1)[0];
+    //const eventSource = new EventSource(`${process.env.REACT_APP_COMM_SERVER}/comm/listen/${interactionToken}`);
+    socket!.on('credentialIssued', async (credential: ReceivedCredential) => {
+      //eventSource.addEventListener('receiveCredential', async function (event: any) {
+      console.debug(credential);
+      await receiveCredential(credential);
     });
 
-    const response = await fetch(payload.callbackURL, {
-      method: 'POST',
-      body: JSON.stringify(serverPayload),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    socket!.emit('credentialOfferAccepted', serverPayload);
 
-    if (response.ok) {
-      console.log(await response.json());
-    }
+    // const response = await fetch(payload.callbackURL, {
+    //   method: 'POST',
+    //   body: JSON.stringify(serverPayload),
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   }
+    // });
   };
 
   const receiveCredential = async (data: ReceivedCredential) => {

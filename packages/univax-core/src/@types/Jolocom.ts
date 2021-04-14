@@ -27,6 +27,7 @@ export interface CredentialOfferMetadata {
 }
 
 export interface CredentialOffer {
+  interactionToken: string;
   type: string;
   requestedInput?: CredentialOfferInputRequest;
   renderInfo?: CredentialOfferRenderInfo;
@@ -34,7 +35,7 @@ export interface CredentialOffer {
 }
 
 export interface CredentialOfferRequestAttrs {
-  callbackURL: string;
+  interactionToken: string;
   offeredCredentials: CredentialOffer[];
 }
 
@@ -45,7 +46,8 @@ export interface CredentialOfferResponseSelection {
   };
 }
 export interface CredentialOfferResponseAttrs {
-  callbackURL: string;
+  interactionToken: string;
+  subjectToken: string;
   selectedCredentials: CredentialOfferResponseSelection[];
 }
 

@@ -5,7 +5,7 @@ import { SwipeableListItem } from '@sandstreamdev/react-swipeable-list';
 import '@sandstreamdev/react-swipeable-list/dist/styles.css';
 import { useCredentials } from 'hooks/CredentialStorage';
 import AcceptCredentialOffer from 'organisms/AcceptCredentialOffer';
-import React from 'react';
+import React, { useState } from 'react';
 
 const CredentialsPage = () => {
   const { credentials, removeCredential } = useCredentials();
