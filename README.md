@@ -153,6 +153,9 @@ https://github.com/fhircat
 ### Mattr (under W3C umbrella)
 unofficial draft of a W3C vaccination model
 
+### Spherity pathogen vocabulary JSON schemas
+
+https://github.com/Spherity/Pathogen-Vocab
 
 ### Schema.org oriented schemas
 
@@ -200,6 +203,19 @@ https://ec.europa.eu/health/sites/health/files/ehealth/docs/vaccination-proof_in
 
 Trust framework / interop requirements
 https://ec.europa.eu/health/sites/health/files/ehealth/docs/trust-framework_interoperability_certificates_en.pdf
+
+EU Standardised Data set: 
+https://ec.europa.eu/health/sites/health/files/preparedness_response/docs/covid-19_rat_common-list_en.pdf
+
+Recovery:
+https://ec.europa.eu/health/sites/health/files/ehealth/docs/citizen_recovery-interoperable-certificates_en.pdf
+
+Digital Green Certificate overview
+https://ec.europa.eu/health/ehealth/covid-19_en
+
+European legislation:
+https://ec.europa.eu/commission/presscorner/detail/en/ip_21_1181 -> law: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52021PC0130
+
 
 as discussed by Evernym:
 https://www.evernym.com/blog/eu-digital-green-certificate-program/
@@ -477,3 +493,4 @@ https://khalilstemmler.com/blogs/typescript/eslint-for-typescript/
 - use a VC revocation registry like ERC780 
 - revoke Credentials using their hash (see: are ld proofs part of that hash?? )
 - store a remote picture on ipfs that's resolveable by the verifier / part of the credential (or another credential?)
+- add BBS+ signature support https://www.npmjs.com/package/@mattrglobal/bbs-signatures
