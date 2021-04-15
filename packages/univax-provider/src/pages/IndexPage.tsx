@@ -9,26 +9,18 @@ import {
   SCHEMAORG_CRED_TYPE,
   Covid19
 } from '@univax/core';
-import { useIdentity } from '@univax/frontend';
+import { useIdentity, useLibP2P, P2PMessage } from '@univax/frontend';
 import ImmunizationForm from 'organisms/ImmunizationForm';
 import { useState, useEffect } from 'react';
 import { Box, Heading, useClipboard, useToast } from '@chakra-ui/react';
-import { io, Socket } from 'socket.io-client';
 import QRCode from 'qrcode';
+import bs58 from 'bs58';
+import crypto from 'crypto';
 
 const IndexPage: React.FC = () => {
   const { account, resolver, did, verifier, issuer } = useIdentity();
-
+  const { p2p, peerId, rendezvousServer, messageEmitter } = useLibP2P();
   const [offerJwt, setOfferJwt] = useState<string>('');
-  const [socket, setSocket] = useState<Socket>();
-
-  useEffect(() => {
-    const _socket = io(process.env.REACT_APP_COMM_SERVER as string);
-    _socket.on('connect', () => {
-      console.log(_socket.id);
-    });
-    setSocket(_socket);
-  }, []);
 
   const [offerJwtQrCode, setOfferJwtQrCode] = useState<string>();
   const toast = useToast();
@@ -53,19 +45,7 @@ const IndexPage: React.FC = () => {
     const credentialJwt = await issuer.createJwt(credential, account.privateKey);
     console.debug(credentialJwt);
 
-    // const dispatchCredential = await fetch(
-    //   `${process.env.REACT_APP_COMM_SERVER}/comm/${_interactionToken}?flow=receiveCredential`,
-    //   {
-    //     method: 'POST',
-    //     body: JSON.stringify({ signedCredentialJwt: credentialJwt }),
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     }
-    //   }
-    // );
-
     socket!.emit('credentialIssued', {
-      O: response.subjectToken,
       signedCredentialJwt: credentialJwt
     });
     //console.log(await dispatchCredential.json());
@@ -85,13 +65,12 @@ const IndexPage: React.FC = () => {
 
   const onImmunizationCreated = async (credentialParams: Covid19.CovidImmunization, credentialType: string) => {
     const credentialSubject = Creators[credentialType](credentialParams);
-    //const interactionToken = bs58.encode(crypto.randomBytes(32));
+    const interactionToken = `${peerId!.id.toString()}.bs58.encode(crypto.randomBytes(32))`;
     const offerRequest: CredentialOfferRequestAttrs = {
-      interactionToken: socket!.id,
+      interactionToken,
       //callbackURL: `${process.env.REACT_APP_COMM_SERVER}/comm/${interactionToken}?flow=credentialOfferResponse`,
       offeredCredentials: [
         {
-          interactionToken: socket!.id,
           type: credentialType,
           renderInfo: {
             renderAs: CredentialRenderTypes.claim,
@@ -115,8 +94,8 @@ const IndexPage: React.FC = () => {
 
     //const eventSource = new EventSource(`${process.env.REACT_APP_COMM_SERVER}/comm/listen/${interactionToken}`);
     //eventSource.addEventListener('credentialOfferResponse',
-    socket!.on('credentialOfferAccepted', async function (data: SignedCredentialOfferResponseAttrs) {
-      //const data: SignedCredentialOfferResponseAttrs = JSON.parse(event.data);
+    messageEmitter.on('credentialOfferAccepted', async function (_data: string) {
+      const data: SignedCredentialOfferResponseAttrs = JSON.parse(_data);
       console.log(data);
       await offerResponseReceived(data, credentialSubject);
     });

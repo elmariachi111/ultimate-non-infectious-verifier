@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react';
 
 const CredentialPage: React.FC = () => {
   const { did, resolver, registry, account, chainId } = useIdentity();
-
   const { web3, contract } = registry.getDidRegistry(chainId);
 
   const [balance, setBalance] = useState<number>(0);

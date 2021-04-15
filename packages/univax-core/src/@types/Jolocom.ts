@@ -27,7 +27,7 @@ export interface CredentialOfferMetadata {
 }
 
 export interface CredentialOffer {
-  interactionToken: string;
+  //interactionToken: string;
   type: string;
   requestedInput?: CredentialOfferInputRequest;
   renderInfo?: CredentialOfferRenderInfo;
