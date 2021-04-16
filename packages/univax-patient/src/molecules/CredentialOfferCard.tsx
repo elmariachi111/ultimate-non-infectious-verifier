@@ -14,26 +14,26 @@ const CredentialOfferCard = ({
   const bg = offer.renderInfo?.background?.color || 'gray.100';
   return (
     <Flex
-      direction="column"
-      justify="space-around"
+      justify="space-evenly"
       bg={bg}
+      direction="column"
       minHeight="3xs"
       minW="100%"
       maxW="lg"
-      borderRadius="lg"
-      border="1px"
-      borderBottom="4px solid"
-      borderColor="teal.500"
+      pt={4}
+      borderRadius="xl"
+      borderBottom="3px solid"
+      borderColor="teal.600"
     >
-      <Text opacity={0.8} textAlign="center" bg="gray.200" py={4}>
+      <Text textAlign="center" color="white" fontSize="xl" textShadow="#FFF 0px 0px 2px">
         {offer.type}
       </Text>
 
       <Button colorScheme="teal" mx={2} onClick={() => acceptCredentialOffer(offer)}>
         accept
       </Button>
-      <Box align="center" w="100%" overflow="hidden" px={2}>
-        <Code colorScheme="whiteAlpha" variant="solid" fontSize="xs" p={1}>
+      <Box align="center" w="100%" overflow="hidden">
+        <Code colorScheme="white" variant="solid" fontSize="xs" pt={4}>
           {issuer}
         </Code>
       </Box>

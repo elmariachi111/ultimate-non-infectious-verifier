@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Code, Flex, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Checkbox, Code, Flex, Text, VStack, useToast } from '@chakra-ui/react';
 import { JWTVerified, VerifiableCredential } from '@univax/core';
 import { CredentialCard, useIdentity } from '@univax/frontend';
 import { useCredentials } from 'hooks/CredentialStorage';
@@ -17,7 +17,7 @@ const RespondToPresentationRequest = ({
   const { lookupCredentials } = useCredentials();
   const { requestedSubjects } = presentationRequest.payload;
   const foundCredentials = lookupCredentials(requestedSubjects);
-
+  const toast = useToast();
   const [selectedCredentials, setSelectedCredentials] = useState<VerifiableCredential[]>(foundCredentials);
 
   async function presentCredentials(credentialSelection: VerifiableCredential[]) {
@@ -27,8 +27,6 @@ const RespondToPresentationRequest = ({
     const presentation = await issuer.createPresentation(credentialSelection);
     const presentationJwt = await issuer.createPresentationJwt(presentation, account.privateKey);
 
-    console.log(presentationJwt);
-
     const presentationResponse = await fetch(presentationRequest.payload.callbackUrl, {
       method: 'POST',
       body: JSON.stringify({ presentationResponse: presentationJwt }),
@@ -36,8 +34,16 @@ const RespondToPresentationRequest = ({
         'Content-Type': 'application/json'
       }
     });
-
-    console.log(presentationResponse);
+    toast({
+      title: 'presentation dispatched',
+      description: 'Good Luck.',
+      status: 'success',
+      duration: 5000,
+      isClosable: true,
+      onCloseComplete: () => {
+        cancel();
+      }
+    });
   }
 
   function toggleCredential(credential: VerifiableCredential) {

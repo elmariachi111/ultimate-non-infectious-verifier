@@ -12,7 +12,7 @@ const CredentialCard = ({
   //bg: string;
   onSelect?: (credential: VerifiableCredential) => unknown;
 }) => {
-  const bg = 'teal.300';
+
   if (typeof credential === 'string') throw Error('noooo');
 
   const {credentialVerifier} = useCredentialVerifier();
@@ -41,45 +41,48 @@ const CredentialCard = ({
   return (
     <Flex
       direction="column"
-      justify="space-evenly"
-      bg={bg}
+      bgGradient="linear(to-br, teal.300, teal.500)"
       minHeight="3xs"
       minW="100%"
       maxW="lg"
       pt={4}
-      borderRadius="lg"
-      border="1px"
-      borderBottom="4px solid"
-      borderColor="teal.500"
+      borderRadius="xl"
+      borderBottom="3px solid"
+      borderColor="teal.600"
       overflow="hidden"
       onClick={() => onSelect(credential)}
     >
       {vm.types.map((type: string) => (
-        <Text key={`type-${type}`} opacity={0.8} textAlign="center" bg="gray.200" py={4}>
+        <Text 
+          key={`type-${type}`} textAlign="center" py={4}
+          color="white"
+          fontSize="xl"
+          textShadow="#FFF 0px 0px 2px"
+          >
           {type}
         </Text>
       ))}
-      <Box px={4}>
+      <Box px={4} my={4}>
         <Heading size="xs">{vm.resourceType} </Heading>
         {immunization && 
           <>
-            <Text fontSize="sm">
+            <Text >
               vaccine: <b>{immunization.cvx?.shortDescription}</b>
             </Text>
-            <Text fontSize="sm">
-              sequence: {immunization.doseSequence}
+            <Text >
+              sequence: <b>{immunization.doseSequence}</b>
             </Text>
-            <Text fontSize="sm">
+            <Text >
               occurred on <b>{immunization.occurrenceDateTime.toLocaleDateString()}</b>
             </Text>
           </>
         }
-        <Text fontSize="sm">
+        <Text>
           issued on: <b>{vm.issued}</b>{' '}
         </Text>
       </Box>
-      <Box align="center" w="100%" overflow="hidden" >
-        <Code p={1} colorScheme="whiteAlpha" variant="solid" fontSize="xs">
+      <Box align="center" w="100%" overflow="hidden" my={3}>
+        <Code p={1} colorScheme="white" variant="solid" fontSize="xs" px={2}>
           {vm.issuer}{' '}
         </Code>
       </Box>
