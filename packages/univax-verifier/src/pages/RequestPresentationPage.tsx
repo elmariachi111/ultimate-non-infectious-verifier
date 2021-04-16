@@ -87,8 +87,7 @@ const RequestPresentationPage: React.FC = () => {
   }, [did, resolver])
 
   return (
-    <Box mt={6} >{presentationRequestJwt &&
-      <Box>
+    <Box mt={6}>
         <Heading>present your credentials</Heading>
         <Box>
           <Text>We're accepting </Text>
@@ -99,20 +98,22 @@ const RequestPresentationPage: React.FC = () => {
           </Box>
           <Text>at the moment</Text>
         </Box>
-        <Flex direction="column" alignItems="center">
-          <Image src={presentationJwtQrCode} alt="qr code" onClick={onCopy} />
-          {hasCopied && <Text color="green.400">copied to clipboard</Text>}
-        </Flex>
-      </Box>
-    }
-    {
-      validationResult && <>
-        <Box my={3}>
-          <ValidationResultBox {...validationResult} reset={reset} />
-        </Box>
-        <ValidationResultCredentials {...validationResult} />
-      </>
-    }
+      {
+      validationResult 
+        ? <>
+            <Box my={3}>
+              <ValidationResultBox {...validationResult} reset={reset} />
+            </Box>
+            <ValidationResultCredentials {...validationResult} />
+          </> 
+        : <Flex direction="column" alignItems="center">
+            {presentationJwtQrCode && (<>
+            <Image src={presentationJwtQrCode} alt="qr code" onClick={onCopy} />
+            {hasCopied && <Text color="green.400">copied to clipboard</Text>}
+            </>)}
+          </Flex>
+      }    
+
     </Box>
   );
 };

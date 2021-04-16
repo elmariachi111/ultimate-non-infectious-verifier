@@ -1,22 +1,21 @@
+import { Box, Heading, useToast } from '@chakra-ui/react';
 import {
-  Issuer,
+  Covid19,
   CreateFhirHL7Immunization,
   CreateSchemaOrgImmunization,
   CredentialOfferRequestAttrs,
   CredentialRenderTypes,
-  SignedCredentialOfferResponseAttrs,
-  SMARTHEALTH_CARD_CRED_TYPE,
+  Issuer,
   SCHEMAORG_CRED_TYPE,
-  Covid19
+  SignedCredentialOfferResponseAttrs,
+  SMARTHEALTH_CARD_CRED_TYPE
 } from '@univax/core';
 import { useIdentity } from '@univax/frontend';
+import bs58 from 'bs58';
+import crypto from 'crypto';
+import QrModal from 'molecules/QrModal';
 import ImmunizationForm from 'organisms/ImmunizationForm';
 import { useState } from 'react';
-import crypto from 'crypto';
-import bs58 from 'bs58';
-import { Box, Heading, useClipboard, useToast } from '@chakra-ui/react';
-
-import QrModal from 'molecules/QrModal';
 
 const IndexPage: React.FC = () => {
   const { account, resolver, did, verifier, issuer } = useIdentity();
@@ -38,6 +37,7 @@ const IndexPage: React.FC = () => {
       throw Error('the offer proof is invalid');
     }
     const receiverDid = await resolver.resolve(response.proof.verificationMethod);
+    console.log(credentialSubject);
 
     const credential = await issuer.issueCredential(
       receiverDid.id,
@@ -59,7 +59,9 @@ const IndexPage: React.FC = () => {
       }
     );
 
-    console.log(await dispatchCredential.json());
+    const dispatchResult = await dispatchCredential.json();
+    reset();
+
     toast({
       title: 'Credential accepted.',
       description: 'the subject has accepted your credential.',
@@ -85,7 +87,7 @@ const IndexPage: React.FC = () => {
           renderInfo: {
             renderAs: CredentialRenderTypes.claim,
             background: {
-              color: '#26d3b3'
+              color: '#4fd1c4'
             },
             text: {
               color: '#FFFFFF'
@@ -109,13 +111,13 @@ const IndexPage: React.FC = () => {
   };
 
   return (
-    <>
-      <Heading size="lg" mt={8}>
+    <Box>
+      <Heading size="xl" mt={8}>
         issue an immunization credential
       </Heading>
       <ImmunizationForm onImmunizationCreated={onImmunizationCreated} />
       {offerJwt && <QrModal onClose={reset} jwt={offerJwt} />}
-    </>
+    </Box>
   );
 };
 

@@ -22,8 +22,10 @@ export class FhirHL7VaccinationCredential extends ICheckCredentials {
       throw new Error('couldnt decode the provided immunization code');
     }
 
+    const doseSequence = resource.protocolApplied?.length > 0 ? resource.protocolApplied[0].doseNumberPositiveInt : 0;
+
     const immunization: CovidImmunization = {
-      doseSequence: resource.protocolApplied?.doseNumberPositiveInt || 0,
+      doseSequence: doseSequence,
       lotNumber: resource.lotNumber || '',
       occurrenceDateTime: new Date(resource.occurrenceDateTime),
       cvxCode: vaccination.cvxCode,

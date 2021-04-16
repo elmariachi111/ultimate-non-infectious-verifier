@@ -18,11 +18,14 @@ const CredentialsPage = () => {
       </Box>
       <Divider orientation="horizontal" my={8} />
       <Heading size="lg">Your Credentials</Heading>
-      <VStack spacing={4} mt={6} align="start">
-        {Object.keys(credentials).map((k: string) => {
-          return (
-            <>
-              <Heading size="sm">{k}</Heading>
+
+      {Object.keys(credentials).map((k: string, j) => {
+        return (
+          <Box key={`${k}-${j}`}>
+            <Heading size="sm" mt={6}>
+              {k}
+            </Heading>
+            <VStack spacing={4} align="start">
               {credentials[k].map((credential: VerifiableCredential, i) => (
                 <SwipeableListItem
                   key={`c-${i}`}
@@ -41,10 +44,10 @@ const CredentialsPage = () => {
                   <CredentialCard credential={credential} />
                 </SwipeableListItem>
               ))}
-            </>
-          );
-        })}
-      </VStack>
+            </VStack>
+          </Box>
+        );
+      })}
     </>
   );
 };

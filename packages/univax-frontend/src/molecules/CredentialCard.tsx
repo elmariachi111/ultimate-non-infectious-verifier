@@ -78,8 +78,8 @@ const CredentialCard = ({
           issued on: <b>{vm.issued}</b>{' '}
         </Text>
       </Box>
-      <Box align="center" w="100%" overflow="hidden" px={2}>
-        <Code colorScheme="whiteAlpha" variant="solid" fontSize="xs">
+      <Box align="center" w="100%" overflow="hidden" >
+        <Code p={1} colorScheme="whiteAlpha" variant="solid" fontSize="xs">
           {vm.issuer}{' '}
         </Code>
       </Box>

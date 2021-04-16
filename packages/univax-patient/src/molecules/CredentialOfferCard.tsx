@@ -33,7 +33,7 @@ const CredentialOfferCard = ({
         accept
       </Button>
       <Box align="center" w="100%" overflow="hidden" px={2}>
-        <Code colorScheme="whiteAlpha" variant="solid" fontSize="xs">
+        <Code colorScheme="whiteAlpha" variant="solid" fontSize="xs" p={1}>
           {issuer}
         </Code>
       </Box>

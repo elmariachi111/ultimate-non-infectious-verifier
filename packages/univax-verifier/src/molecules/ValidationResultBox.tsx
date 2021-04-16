@@ -6,8 +6,8 @@ const ValidationResultBox = ({isValid, errorMessage, reset}: ValidationResult & 
 })  => {
 
   return(
-  <Box>
-    <Heading size="sm">Validation Result</Heading>
+  <Box background={isValid ? "green.100" : "red.100"} p={3}>
+    <Heading size="md" my={2}>Validation Result</Heading>
     <Alert status={isValid ? 'success' : 'error'} variant="solid">
         <AlertIcon />
         {isValid ? "immunization has been proven" : errorMessage}
