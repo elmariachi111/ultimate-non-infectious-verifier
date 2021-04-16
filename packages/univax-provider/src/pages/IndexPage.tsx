@@ -16,15 +16,17 @@ import crypto from 'crypto';
 import bs58 from 'bs58';
 import { Box, Heading, useClipboard, useToast } from '@chakra-ui/react';
 
-import QRCode from 'qrcode';
+import QrModal from 'molecules/QrModal';
 
 const IndexPage: React.FC = () => {
   const { account, resolver, did, verifier, issuer } = useIdentity();
 
   const [offerJwt, setOfferJwt] = useState<string>('');
-  const [offerJwtQrCode, setOfferJwtQrCode] = useState<string>();
   const toast = useToast();
-  const { onCopy } = useClipboard(offerJwt);
+
+  const reset = async () => {
+    setOfferJwt('');
+  };
 
   const offerResponseReceived = async (
     response: SignedCredentialOfferResponseAttrs,
@@ -95,10 +97,7 @@ const IndexPage: React.FC = () => {
 
     const issuer = new Issuer(resolver, did);
     const jwt = await issuer.createAnyJwt(offerRequest, account.privateKey);
-    const qrCode = await QRCode.toDataURL(jwt);
-
     setOfferJwt(jwt);
-    setOfferJwtQrCode(qrCode);
 
     const eventSource = new EventSource(`${process.env.REACT_APP_COMM_SERVER}/comm/listen/${interactionToken}`);
 
@@ -115,12 +114,7 @@ const IndexPage: React.FC = () => {
         issue an immunization credential
       </Heading>
       <ImmunizationForm onImmunizationCreated={onImmunizationCreated} />
-      {offerJwt && (
-        <Box>
-          <img src={offerJwtQrCode} alt="qr code" onClick={onCopy} />
-          <code>{offerJwt}</code>
-        </Box>
-      )}
+      {offerJwt && <QrModal onClose={reset} jwt={offerJwt} />}
     </>
   );
 };

@@ -1,8 +1,6 @@
-import { Box, Link, Flex, Heading, HStack, Spacer, Tooltip } from '@chakra-ui/react';
-import { useIdentity } from '@univax/frontend';
-
+import { Box, Flex, Heading, HStack, Spacer, Tooltip } from '@chakra-ui/react';
+import { NavButton, useIdentity } from '@univax/frontend';
 import React from 'react';
-import { Link as RLink, NavLink } from 'react-router-dom';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 import Identicon from 'react-identicons';
@@ -13,13 +11,13 @@ const Navbar = () => {
   return (
     <Flex bg="teal.900" minH="60px" color="teal.300" direction="row" p={2} align="center">
       <Flex direction="row" align="center">
-        <Box p="2">
-          <Tooltip hasArrow label={did} bg="black">
-            <RLink to="/">
+        <Tooltip hasArrow label={did} bg="black">
+          <Box p="2">
+            <NavButton to="/">
               <Identicon string={did} size={40} />
-            </RLink>
-          </Tooltip>
-        </Box>
+            </NavButton>
+          </Box>
+        </Tooltip>
 
         <Heading size="md" color="white">
           Patient Wallet
@@ -28,12 +26,8 @@ const Navbar = () => {
 
       <Spacer />
       <HStack>
-        <Link as={NavLink} to="/credentials">
-          Your Credentials
-        </Link>
-        <Link as={NavLink} to="/">
-          Present
-        </Link>
+        <NavButton to="/credentials">Your Credentials</NavButton>
+        <NavButton to="/">Present</NavButton>
       </HStack>
     </Flex>
   );

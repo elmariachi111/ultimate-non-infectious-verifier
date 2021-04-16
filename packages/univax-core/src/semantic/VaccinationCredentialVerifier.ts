@@ -1,4 +1,4 @@
-import { VerifiableCredential } from 'did-jwt-vc';
+import { Verifiable, VerifiableCredential, VerifiedCredential, W3CCredential } from 'did-jwt-vc';
 
 import { Resolvable, Verifier } from '..';
 
@@ -40,11 +40,17 @@ export default class VaccinationCredentialVerifier {
     return this.strategies[strategyType];
   }
 
-  async verify(presentedCredentials: VerifiableCredential[], flags?: VerifierFlags) {
+  async verify(
+    presentedCredentials: VerifiableCredential[],
+    flags?: VerifierFlags
+  ): Promise<Verifiable<W3CCredential>[]> {
     const immunizations: CovidImmunization[] = [];
+    const verifiedCredentials: Verifiable<W3CCredential>[] = [];
 
     for await (const credential of presentedCredentials) {
       const verifiedCredential = await this.verifier.verifyCredential(credential);
+      verifiedCredentials.push(verifiedCredential);
+
       try {
         const iCheckCredentials = this.getStrategy(verifiedCredential.type);
 
@@ -59,6 +65,6 @@ export default class VaccinationCredentialVerifier {
 
     ICheckCredentials.checkVaccinationCombination(immunizations);
 
-    return true;
+    return verifiedCredentials;
   }
 }

@@ -1,10 +1,14 @@
-import { Alert, AlertIcon, Box, Button, Code, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useClipboard } from '@chakra-ui/react';
+import { Box, Code, Flex, Heading, Image, Text, useClipboard } from '@chakra-ui/react';
 import { createPresentationRequest } from '@univax/core';
 import { useCredentialVerifier, useIdentity } from '@univax/frontend';
 import bs58 from 'bs58';
 import crypto from 'crypto';
+import ValidationResultCredentials from 'molecules/ValidationResultCredentials';
+import ValidationResultModal from 'molecules/ValidationResultBox';
 import QRCode from 'qrcode';
 import { useEffect, useState } from 'react';
+import { ValidationResult } from 'types/ValidationResult';
+import ValidationResultBox from 'molecules/ValidationResultBox';
 
 interface PresentationResponseAttrs {
   presentationResponse: string;
@@ -13,11 +17,11 @@ interface PresentationResponseAttrs {
 const RequestPresentationPage: React.FC = () => {
   const [presentationRequestJwt, setPresentationRequestJwt] = useState<string>("");
   const [presentationJwtQrCode, setPresentationJwtQrCode] = useState<string>();
-  const [isValid, setIsValid] = useState<boolean | null>(null);
-  const { onCopy } = useClipboard(presentationRequestJwt)
-  const [eventSource, setEventSource] = useState<EventSource>();
-  const [errorMessage, setErrorMessage] = useState<string>();
+  const [validationResult, setValidationResult] = useState<ValidationResult | null>(null);
 
+  const { onCopy, hasCopied } = useClipboard(presentationRequestJwt)
+  const [eventSource, setEventSource] = useState<EventSource>();
+  
   const { issuer, account, resolver, did, verifier } = useIdentity();
 
   const { credentialVerifier } = useCredentialVerifier()
@@ -27,8 +31,7 @@ const RequestPresentationPage: React.FC = () => {
       eventSource.close();
       setEventSource(undefined);
     }
-    setIsValid(null);
-    setErrorMessage("");
+    setValidationResult(null);
     presentRequest();
   }
 
@@ -36,13 +39,21 @@ const RequestPresentationPage: React.FC = () => {
     const verifiedPresentation = await verifier.verifyPresentation(data.presentationResponse);
     const credentials = verifiedPresentation.payload.vp.verifiableCredential;
     console.log(credentials);
+    let result: ValidationResult;
     try {
-      await credentialVerifier.verify(credentials);
-      setIsValid(true);
+      const verifiedCredentials = await credentialVerifier.verify(credentials)
+      result = {
+        credentials: verifiedCredentials,
+        isValid: true
+      };
     } catch (e) {
-      setIsValid(false);
-      setErrorMessage(e.message);
+      result = {
+        credentials: [],
+        isValid: false,
+        errorMessage: e.message
+      }
     }
+    setValidationResult(result);
   }
 
   const presentRequest = async () => {
@@ -76,7 +87,7 @@ const RequestPresentationPage: React.FC = () => {
   }, [did, resolver])
 
   return (
-    <Box mt={6}>{presentationRequestJwt &&
+    <Box mt={6} >{presentationRequestJwt &&
       <Box>
         <Heading>present your credentials</Heading>
         <Box>
@@ -88,29 +99,20 @@ const RequestPresentationPage: React.FC = () => {
           </Box>
           <Text>at the moment</Text>
         </Box>
-        <img src={presentationJwtQrCode} alt="qr code" onClick={onCopy} />
-        <code >{presentationRequestJwt}</code>
+        <Flex direction="column" alignItems="center">
+          <Image src={presentationJwtQrCode} alt="qr code" onClick={onCopy} />
+          {hasCopied && <Text color="green.400">copied to clipboard</Text>}
+        </Flex>
       </Box>
     }
-
-      <Modal isOpen={(isValid !== null)} onClose={reset}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Verification Result</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Alert status={isValid ? 'success' : 'error'} variant="solid">
-              <AlertIcon />
-
-              {isValid ? "immunization has been proven" : errorMessage}
-            </Alert>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button w="100%" my={8} onClick={reset} colorScheme="red">reset</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+    {
+      validationResult && <>
+        <Box my={3}>
+          <ValidationResultBox {...validationResult} reset={reset} />
+        </Box>
+        <ValidationResultCredentials {...validationResult} />
+      </>
+    }
     </Box>
   );
 };

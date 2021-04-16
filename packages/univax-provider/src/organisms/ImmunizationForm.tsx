@@ -6,19 +6,22 @@ import {
   FormLabel,
   Input,
   Link,
+  Radio,
+  RadioGroup,
   Select,
+  Stack,
   Text
 } from '@chakra-ui/react';
 import { Covid19, SCHEMAORG_CRED_TYPE, SMARTHEALTH_CARD_CRED_TYPE } from '@univax/core';
 
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 
 const ImmunizationForm = ({
   onImmunizationCreated
 }: {
   onImmunizationCreated: (params: Covid19.CovidImmunization, type: string) => void;
 }) => {
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, control, handleSubmit, watch, errors } = useForm();
   const cvxCode = watch('cvxCode', 0);
   const selectedVaccine = Covid19.Covid19Vaccinations.find((vacc) => vacc.cvxCode === cvxCode);
 
@@ -30,17 +33,31 @@ const ImmunizationForm = ({
       occurrenceDateTime: new Date(),
       cvxCode: data.cvxCode
     };
+
     onImmunizationCreated(immunization, data.credentialType);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <FormControl id="credentialType" my={4}>
+      <FormControl my={4}>
         <FormLabel>Credential type</FormLabel>
-        <Select name="credentialType" placeholder="select credential type to issue" ref={register}>
-          <option value={SMARTHEALTH_CARD_CRED_TYPE}>{SMARTHEALTH_CARD_CRED_TYPE}</option>
-          <option value={SCHEMAORG_CRED_TYPE}>{SCHEMAORG_CRED_TYPE}</option>
-        </Select>
+        <Controller
+          control={control}
+          name="credentialType"
+          defaultValue={SMARTHEALTH_CARD_CRED_TYPE}
+          as={
+            <RadioGroup name="credentialType" defaultValue={SMARTHEALTH_CARD_CRED_TYPE}>
+              <Stack>
+                <Radio colorScheme="teal" size="md" value={SMARTHEALTH_CARD_CRED_TYPE}>
+                  {SMARTHEALTH_CARD_CRED_TYPE}
+                </Radio>
+                <Radio colorScheme="teal" size="md" value={SCHEMAORG_CRED_TYPE}>
+                  {SCHEMAORG_CRED_TYPE}
+                </Radio>
+              </Stack>
+            </RadioGroup>
+          }
+        />
       </FormControl>
 
       <FormControl id="lotNumber" isInvalid={errors.exampleRequired} my={4}>
@@ -80,10 +97,23 @@ const ImmunizationForm = ({
 
       <FormControl id="doseSequence" my={4}>
         <FormLabel>Dose Sequence</FormLabel>
-        <Select name="doseSequence" placeholder="select the administered sequence number" ref={register}>
-          <option value="1">1</option>
-          <option value="2">2</option>
-        </Select>
+        <Controller
+          control={control}
+          name="doseSequence"
+          defaultValue="1"
+          as={
+            <RadioGroup name="doseSequence" defaultValue="1">
+              <Stack direction="row">
+                <Radio colorScheme="teal" size="md" value="1">
+                  first
+                </Radio>
+                <Radio colorScheme="teal" size="md" value="2">
+                  second
+                </Radio>
+              </Stack>
+            </RadioGroup>
+          }
+        />
       </FormControl>
 
       <FormControl id="doseQuantity" isInvalid={errors.doseQuantity} my={4}>
@@ -97,7 +127,7 @@ const ImmunizationForm = ({
         />
       </FormControl>
 
-      <Button type="submit" colorScheme="teal">
+      <Button isFullWidth type="submit" colorScheme="teal">
         submit
       </Button>
     </form>
