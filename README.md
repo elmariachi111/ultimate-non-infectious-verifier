@@ -75,6 +75,7 @@ https://docs.google.com/drawings/d/1tlYGOYkzx7LOUWkncpYN8j2ZdULznufuDyzinlpTq24/
 
 An umbrella initiative for VCI / CCI and others is the Good Health Collaborative:
 https://www.goodhealthpass.org/ and its [whitepaper](https://www.goodhealthpass.org/wp-content/uploads/2021/02/Good-Health-Pass-Collaborative-Principles-Paper.pdf) 
+https://www.goodhealthpass.org/wp-content/uploads/2021/03/GHPC-Interoperability-Blueprint-Outline-v2.pdf
 
 Linux Foundation Public Health Covid Credential Initiative (LFPH CCI)  
 - https://www.covidcreds.org/  
@@ -99,6 +100,15 @@ Digital Immunization Passport
 Meta.me Hlth.id
 https://metame.com/
 https://hlthid.com/
+
+Hlth.id also supported in
+https://www.healthcerts.gov.sg/
+
+DIVOC is an open standard for vaccination proofs and used all over India
+https://divoc.egov.org.in/ and here's their verifier: https://verify.cowin.gov.in/
+
+NY Excelsior Pass (based on IBM's Digital Health Pass)
+https://www.business-standard.com/article/current-affairs/with-ibm-help-new-york-first-state-in-us-to-launch-vaccine-passport-121032800535_1.html
 
 David Janes / CCCC4 / Consensas
 opinion: https://www.yogitatrainingcenter.com/w3c-verifiable-credentials-the-fairly-odd-blueprints-by-david-janes-consensas-feb-2021/
@@ -127,6 +137,9 @@ A paper based, compressed credential by PathCheck
 https://vaccine-docs.pathcheck.org/
 https://github.com/Path-Check/paper-cred/
 https://github.pathcheck.org/vial.html
+
+IBM's Digital Health Pass
+https://www.ibm.com/products/digital-health-pass
 
 ### W3C oriented schemas
 https://w3id.org/vaccination/ ->
@@ -235,6 +248,21 @@ https://www.data.gov.qa/explore/dataset/h4-vaccination/information/
 Lumedic
 https://www.lumedic.io/
 
+Singapore wallet with Open Attestations support
+https://github.com/Open-Attestation/identity-wallet
+
+Healthcerts usage at Singapore
+1. Further information on HealthCerts: https://go.gov.sg/hc
+2. Notαrise: Platform for digital documents to be officiated by the Singapore Government: www.notarise.gov.sg 
+3. Open-sourced information on Verify (Platform for authorities to confirm authenticity and legitimacy of digital certificates): https://go.gov.sg/oaverify 
+4. For more information on Singapore’s open-sourced e-wallet reference implementation: https://go.gov.sg/oawallet 
+5. For more information on Open Attestation: https://go.gov.sg/oa 
+6. HealthCerts accredited partners: https://go.gov.sg/hcproviders 
+7. To collaborate on HealthCerts: https://go.gov.sg/healthcertscollab 
+8. Medium blog articles on HealthCerts (2 part article) https://go.gov.sg/hcblog1 https://go.gov.sg/hcblog2 
+9. To view video on HealthCerts: https://go.gov.sg/hcvid https://go.gov.sg/hc 
+
+
 A ruby impl of health cards (DVCI)
 https://github.com/dvci/health_cards
 
@@ -281,6 +309,15 @@ https://github.com/decentralized-identity/claims-credentials
 
 Credential Status Registry
 https://w3c-ccg.github.io/vc-csl2017/#introduction
+
+Open Attestation
+is a chain based credential storage
+https://www.openattestation.com
+https://www.openattestation.com/docs/getting-started/
+
+Related to attestations: Open Certs
+https://www.opencerts.io/
+
 
 ### Verifiable Presentation Requests
 
