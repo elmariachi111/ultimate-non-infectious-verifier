@@ -118,6 +118,11 @@ https://techcrunch.com/2021/01/19/europe-is-working-on-a-common-framework-for-va
 curated list of all vaccination passport providers in the world (David Janes)
 https://docs.google.com/document/d/1MQfZzlkYkXCXvnUXd7Cd6Y5g0RRXrKxGGqVcbBnSk1k/edit
 
+a really valuable recording of ID4Africa's April'21 session
+https://www.youtube.com/watch?v=2Ud4SWCShDA
+
+a talk by truu / evernym on that matter
+https://www.youtube.com/watch?v=iCL5bddCTtI
 
 ## Immunization schemas
 
