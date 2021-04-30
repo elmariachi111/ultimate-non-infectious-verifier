@@ -145,7 +145,11 @@ https://www.ibm.com/products/digital-health-pass
 https://w3id.org/vaccination/ ->
 https://w3c-ccg.github.io/vaccination-vocab/
 https://w3c-ccg.github.io/vaccination-vocab/context/v1/index.json
+https://w3c-ccg.github.io/vaccination-vocab/context/v1/EU/unstable.json
 
+### Idea of semantic FHIR<->Json-ld pipeline
+(John Walker & Mukund Parthasarathy)
+https://github.com/SemanticClarity/labtest-results-vocab/
 
 ### M$ Smart Health Cards (VCI)
 The preliminary FHIR4 spec, driven by M$ Smart Health Cards project & DVCI:
@@ -185,6 +189,7 @@ and a sample: https://consensas.world/did/did:cns:ABMY2TCODB.json
 
 ### LOINC
 yet another weird medical coding standard https://loinc.org/downloads/loinc-table/
+Loinc Covid19 specs: https://loinc.org/sars-cov-2-and-covid-19/
 
 ### American Immunization Registry Association
 https://repository.immregistries.org/resource/hl7-version-2-5-1-implementation-guide-for-immunization-messaging-release-1-5-1/
