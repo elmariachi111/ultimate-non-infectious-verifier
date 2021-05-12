@@ -86,6 +86,8 @@ Vaccination Credential Initiative
 (Microsoft, Oracle, Salesforce etc)
 - https://vaccinationcredential.org/
 
+European Health Network (EHN) Specs and Reference implementations  
+https://github.com/ehn-digital-green-development
 
 Spherity / SAP Reopen
 - https://devpost.com/software/reopen-einfuhrung-von-sars-cov-2-antigen-schnelltest-passen
