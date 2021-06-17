@@ -74,7 +74,8 @@ https://docs.google.com/drawings/d/1tlYGOYkzx7LOUWkncpYN8j2ZdULznufuDyzinlpTq24/
 ## Vaccination credential initiatives
 
 An umbrella initiative for VCI / CCI and others is the Good Health Collaborative:
-https://www.goodhealthpass.org/ and its [whitepaper](https://www.goodhealthpass.org/wp-content/uploads/2021/02/Good-Health-Pass-Collaborative-Principles-Paper.pdf) 
+https://www.goodhealthpass.org/ , comes with a  [whitepaper](https://www.goodhealthpass.org/wp-content/uploads/2021/02/Good-Health-Pass-Collaborative-Principles-Paper.pdf) and a [Blueprint Draft](https://wiki.trustoverip.org/download/attachments/76241/GHPC%20Interoperability%20Blueprint_v1.0.0_June%207%202021.pdf)
+
 https://www.goodhealthpass.org/wp-content/uploads/2021/03/GHPC-Interoperability-Blueprint-Outline-v2.pdf
 
 Linux Foundation Public Health Covid Credential Initiative (LFPH CCI)  
@@ -88,6 +89,8 @@ Vaccination Credential Initiative
 
 European Health Network (EHN) Specs and Reference implementations  
 https://github.com/ehn-digital-green-development
+https://github.com/ehn-dcc-development
+https://github.com/ehn-dcc-development/ehn-dcc-schema
 
 Spherity / SAP Reopen
 - https://devpost.com/software/reopen-einfuhrung-von-sars-cov-2-antigen-schnelltest-passen
@@ -234,6 +237,12 @@ https://ec.europa.eu/health/sites/health/files/preparedness_response/docs/covid-
 
 Recovery:
 https://ec.europa.eu/health/sites/health/files/ehealth/docs/citizen_recovery-interoperable-certificates_en.pdf
+
+Press Release on EU gateway:
+https://ec.europa.eu/commission/presscorner/detail/en/IP_21_2721
+
+Customer facing info site: 
+https://ec.europa.eu/info/live-work-travel-eu/coronavirus-response/safe-covid-19-vaccines-europeans/eu-digital-covid-certificate_en
 
 Digital Green Certificate overview
 https://ec.europa.eu/health/ehealth/covid-19_en
